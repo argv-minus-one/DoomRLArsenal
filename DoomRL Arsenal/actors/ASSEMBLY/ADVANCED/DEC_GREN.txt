@@ -1,0 +1,425 @@
+
+ACTOR RLGrenadeLauncher : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was blasted into the stratosphere by %k's grenade."
+  Inventory.Pickupmessage "You picked up a Grenade Launcher."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Grenade Launcher"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 2900
+  Weapon.SlotNumber 5
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLGrenadeLauncherClip"
+  Weapon.AmmoType2 "RocketAmmo"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherClip", 1, 4)
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherNanoMod",1,2)
+    GRLA A 1 A_WeaponReady (48)
+    Loop
+    GRLA A 1 A_WeaponReady (44)
+    Goto Ready+6
+    GRLA A 1 A_WeaponReady (32)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherClip", 1, "Ready")
+    GRLA A 70 A_WeaponReady (44)
+    Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLGrenadeLauncherClip", 1)
+    Goto NanoRegenCheck
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLGrenadeLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLGrenadeLauncher",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLGrenadeLauncher",1)
+	Stop
+  AfterModDrop:
+    GRLA A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    GRLA A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLGrenadeLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    GRLA A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLGrenadeLauncherSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    GRLA A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    GRLA A 3
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherBulkMod",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLGrenade", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLGrenadeB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_FireCustomMissile ("RLGrenadeP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_FireCustomMissile ("RLGrenadeA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_FireCustomMissile ("RLGrenadeS", frandom(1,-1), 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_FireCustomMissile ("RLGrenadeF", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFinish:
+    GRLA B 4 Bright A_GunFlash
+    GRLA I 4
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherNanoMod",1,"Ready")
+    GRLA A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RocketAmmo",1,1)
+	Goto Ready
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherClip",1,"Ready")
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherTechnicalMod",1,"Reload1")
+    GRLA C 7
+    GRLA D 5
+    GRLA E 5 A_PlaySound("weapons/grenadelauncheropen")
+    GRLA F 5
+    GRLA G 5
+	Goto ReloadWorking
+  Reload1:
+    GRLA C 7
+    GRLA D 5
+    GRLA E 4 A_PlaySound("weapons/grenadelauncheropen")
+    GRLA F 4
+    GRLA G 4
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("RocketAmmo", 1)
+	TNT1 A 0 A_GiveInventory("RLGrenadeLauncherClip", 1)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_PlaySound("weapons/grenadelauncherload", 5)
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherTechnicalMod",1,"ReloadFinish1")
+    GRLA H 5
+    GRLA F 5
+    GRLA E 5
+    GRLA D 5 A_PlaySound("weapons/grenadelauncherclose")
+    GRLA A 3
+    GRLA A 3 A_ReFire
+	Goto Ready
+  ReloadFinish1:
+    GRLA H 4
+    GRLA F 4
+    GRLA E 4
+    GRLA D 5 A_PlaySound("weapons/grenadelauncherclose")
+    GRLA A 3
+    GRLA A 3 A_ReFire
+	Goto Ready
+  Flash:
+    TNT1 A 2 Bright A_Light1
+    TNT1 A 2 Bright A_Light2
+    Goto LightDone
+  Spawn:
+    GRLA X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrenadeLauncherNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLGrenadeLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAgilityMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLGrenadeLauncher",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLGrenade : Rocket
+{
+  Radius 6
+  Height 4
+  Scale 0.7
+  Speed 35
+  Damage 20
+  Damagetype "Fire"
+  Gravity 0.7
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  -NOGRAVITY
+  +EXPLODEONWATER
+  BounceType "Doom"
+  BounceFactor 0.4
+  WallBounceFactor 0.8
+  BounceCount 5
+  ReactionTime 139
+  Decal "Scorch"
+  SeeSound "weapons/grenadelauncher"
+  BounceSound "weapons/grenadelauncherbounce"
+  DeathSound "weapons/blastexp"
+  States
+  {
+  Spawn:
+    TNT1 A 0 A_CountDown
+    GREX A 1
+    Loop
+  Death:
+    TNT1 A 0 A_SetScale (1.4)
+    TNT1 A 0 A_ChangeFlag ("NOGRAVITY", 1)
+    TNT1 A 0 A_Stop
+    MISL B 8 Bright A_Explode (256,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLGrenadeB : RLGrenade
+{
+  Damage 30
+}
+
+ACTOR RLGrenadeP : RLGrenade
+{
+  States
+  {
+  Death:
+    TNT1 A 0 A_SetScale (1.4)
+    TNT1 A 0 A_ChangeFlag ("NOGRAVITY", 1)
+    TNT1 A 0 A_Stop
+    MISL B 8 Bright A_Explode (288,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLGrenadeA : RLGrenade
+{
+  Speed 45
+}
+
+ACTOR RLGrenadeS : RLGrenade
+{
+  Gravity 0.4
+  Speed 50
+}
+
+ACTOR RLGrenadeF : RLGrenade
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.00)
+    TNT1 A 0 A_ChangeFlag ("NOGRAVITY", 1)
+    TNT1 A 0 A_Stop
+    MISL B 8 Bright A_Explode (256,164)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLGrenadeLauncherSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrenadeLauncherSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLGrenadeLauncherClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 1
+   Inventory.Icon ""
+}
+
+ACTOR RLGrenadeLauncherPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		GRLA X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncher",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/grenadelauncherpickup")
+		TNT1 A 0 A_GiveInventory("RLGrenadeLauncher",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvGrenade Launcher.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("RocketAmmo",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Grenade Launcher =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RocketAmmo",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("RocketAmmo",5)
+		Stop
+	AmmoFull:
+		GRLA X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLGrenadeLauncher
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		GRLA X 1
+		Loop
+	Death:
+		TNT1 A 0
+		GRLA X 1 A_SpawnItem("RLGrenadeLauncherPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,777 @@
+
+ACTOR RLNuclearBFG9000 : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o faced %k's nuclear onslaught."
+  Inventory.Pickupmessage "You picked up a Nuclear BFG9000. Oh yes."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Nuclear BFG9000"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 3900
+  Weapon.SlotNumber 7
+  Weapon.AmmoUse1 40
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLNuclearBFG9000Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    TNT1 A 0 A_PlaySound("weapons/nuclearbfg9000idle", 6, 1, 1)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 40, "ReadyCantAltFire")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyCanAltFire")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyCanAltFire")
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Charged",1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharging
+  ReadyCanAltFire:
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Charged",1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharging
+  ReadyCantAltFire:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyCanFire")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyCanFire")
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Charged",1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharged
+  ReadyCanFire:
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_WeaponReady (WRF_ALLOWZOOM)
+	Goto ReadyCycleCharged
+//=================================================================================
+  ReadyCycleCharging:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 40, "ReadyBeep")
+	Goto ReadyChargingAmmo
+  ReadyChargingAmmo:
+	TNT1 A 0 A_GiveInventory("RLNuclearBFG9000Clip", 1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyChargingAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyChargingAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    NUKB A 6 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+    NUKB A 3 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+  ReadyChargingAmmo2:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    NUKB A 6 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+    NUKB A 3 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+//=================================================================================
+  ReadyCycleCharged:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000BulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 40, "Ready")
+	Goto ReadyChargedAmmo
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000BulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 52, "Ready")
+	Goto ReadyChargedAmmo
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000BulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 64, "Ready")
+	Goto ReadyChargedAmmo
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000BulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 76, "Ready")
+	Goto ReadyChargedAmmo
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 88, "Ready")
+	Goto ReadyChargedAmmo
+  ReadyChargedAmmo:
+	TNT1 A 0 A_GiveInventory("RLNuclearBFG9000Clip", 1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyChargedAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyChargedAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    NUKB A 6 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+    NUKB A 3 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+  ReadyChargedAmmo2:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    NUKB A 6 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+    NUKB A 3 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+//=================================================================================
+  ReadyBeep:
+	TNT1 A 0 A_GiveInventory("RLNuclearBFG9000Charged",1)
+	TNT1 A 0 A_PlaySound("weapons/chargebeep", 7)
+    TNT1 A 0
+    Goto ReadyCycleCharged
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLStormNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGun",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusWeapon", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusActive", 1)
+  WeaponDropConfirmContinue:
+    TNT1 A 0 A_StopSound(6)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000ModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000PowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000BulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000AgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000FirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000SniperMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearBFG9000Confirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearVBFG9000Confirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearBiggestFuckingGunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Selected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNuclearBFG9000",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLNuclearBFG9000",1)
+	Stop
+  AfterModDrop:
+	TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+	TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+    TNT1 A 0 A_StopSound(6)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Selected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    NUKB A 2 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLNuclearBFG9000Selected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    NUKB A 2 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000Confirm",1, "AssembleHighPowerNuclearBFG9000")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000Confirm",1, "AssembleNuclearVBFG9000")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGunConfirm",1, "AssembleNuclearBiggestFuckingGun")
+	TNT1 A 0 A_JumpIfNoAmmo("Ready")
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Charged",1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_AlertMonsters
+    NUKB A 5 A_PlaySound("weapons/nukebfg9000fire", CHAN_WEAPON)
+    NUKB AAA 5 A_GunFlash ("Flash", GFF_NOEXTCHANGE) 
+    NUKB A 10 A_GunFlash ("FlashFire")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBall", frandom(1,-1), 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FirePA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FirePPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FirePAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",3,"FireAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FirePPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FirePPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",3,"FirePAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",4,"FireAAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallAAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPPPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPPPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPPAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallPAAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallAAAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireSA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallS", 0, 1)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",1,"FireFSS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireSSA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSS", 0, 1)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSP", 0, 1)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSA", 0, 1)
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireSSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSSP", 0, 1)
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireSSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSSA", 0, 1)
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireSPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSPP", 0, 1)
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireSPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSPA", 0, 1)
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",3,"FireSAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSAA", 0, 1)
+    Goto FireFinish
+  FireSSPP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSSPP", 0, 1)
+    Goto FireFinish
+  FireSSAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSSAA", 0, 1)
+    Goto FireFinish
+  FireSSPA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSSPA", 0, 1)
+    Goto FireFinish
+  FireSPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSPPP", 0, 1)
+    Goto FireFinish
+  FireSPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSPPA", 0, 1)
+    Goto FireFinish
+  FireSPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSPAA", 0, 1)
+    Goto FireFinish
+  FireSAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallSAAA", 0, 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFF")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallF", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFF:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFFA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFF", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FireFPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFSA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireFAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFS:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireFSS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFSA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFS", 0, 1)
+    Goto FireFinish
+  FireFFP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFFPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireFFAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFS:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFFSA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFS", 0, 1)
+    Goto FireFinish
+  FireFSS:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFSSA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSS", 0, 1)
+    Goto FireFinish
+  FireFSP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSP", 0, 1)
+    Goto FireFinish
+  FireFSA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",2,"FireFSSA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireFSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSA", 0, 1)
+    Goto FireFinish
+  FireFPP:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",3,"FireFPPP")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",1,"FireFPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFPA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",2,"FireFPPA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",2,"FireFPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFAA:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000FirestormMod",2,"FireFFAA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000SniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000PowerMod",1,"FireFPAA")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000AgilityMod",3,"FireFAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFSS:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFSS", 0, 1)
+    Goto FireFinish
+  FireFFSA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFSA", 0, 1)
+    Goto FireFinish
+  FireFFSP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFSP", 0, 1)
+    Goto FireFinish
+  FireFFPP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFPA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFFPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFSPP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSPP", 0, 1)
+    Goto FireFinish
+  FireFSPA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSPA", 0, 1)
+    Goto FireFinish
+  FireFSAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSAA", 0, 1)
+    Goto FireFinish
+  FireFSSP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSSP", 0, 1)
+    Goto FireFinish
+  FireFSSA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFSSA", 0, 1)
+    Goto FireFinish
+  FireFPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFPPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFPPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFPAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLBFGBallFAAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFinish:
+    NUKB A 7 Bright
+    NUKB A 5 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    NUKB A 5 A_Refire
+    Goto Ready
+  Flash:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 40, 9)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 32, 7)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 24, 5)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 16, 3)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000Clip", 8, 1)
+    Goto LightDone
+    NUKB B 6 Bright A_Light0
+    Goto LightDone
+    NUKB C 6 Bright A_Light0
+    Goto LightDone
+    NUKB D 6 Bright A_Light0
+    Goto LightDone
+    NUKB E 6 Bright A_Light0
+    Goto LightDone
+    NUKB F 6 Bright A_Light0
+    Goto LightDone
+  FlashFire:
+    NUKB G 11 Bright A_Light1
+    NUKB H 6 Bright A_Light2
+    Goto LightDone
+  FlashDrop:
+    TNT1 A 0 A_Light0
+    Goto LightDone
+  Spawn:
+    BFUG A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000Confirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000Confirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGunConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearBFG9000Confirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearVBFG9000Confirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearBiggestFuckingGunConfirm",1)
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000ModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000PowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000BulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000AgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000SniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000FirestormMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearBFG9000Confirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearVBFG9000Confirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearBiggestFuckingGunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Selected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLStormNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGun",1,"ScavengerContinue")
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusWeapon", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusActive", 1)
+  ScavengerContinue:
+	TNT1 A 0 A_Jump(32,2,3)
+	TNT1 A 0 A_Jump(256,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAgilityMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLNuclearBFG9000",1)
+	Stop
+  AssembleHighPowerNuclearBFG9000:
+	TNT1 A 0 A_Print("\cvHigh Power Nuclear BFG9000 \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Selected", 1)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000ModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000PowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000BulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000AgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000FirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000SniperMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearBFG9000Confirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_GiveInventory("RLHighPowerNuclearBFG9000",1)
+	TNT1 A 0 A_SelectWeapon("RLHighPowerNuclearBFG9000")
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000",1)
+	Stop
+  AssembleNuclearVBFG9000:
+	TNT1 A 0 A_Print("\cvNuclear VBFG9000 \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Selected", 1)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000ModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000PowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000BulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000AgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000FirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000SniperMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearVBFG9000Confirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_GiveInventory("RLNuclearVBFG9000",1)
+	TNT1 A 0 A_SelectWeapon("RLNuclearVBFG9000")
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000",1)
+	Stop
+  AssembleNuclearBiggestFuckingGun:
+	TNT1 A 0 A_Print("\cvBiggest Fucking Nuclear Gun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000Selected", 1)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000ModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000PowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000BulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000AgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000FirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLNuclearBFG9000SniperMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearBiggestFuckingGunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_GiveInventory("RLNuclearBiggestFuckingGun",1)
+	TNT1 A 0 A_SelectWeapon("RLNuclearBiggestFuckingGun")
+	TNT1 A 0 A_TakeInventory("RLNuclearBFG9000",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLNuclearBFG9000Selected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNuclearBFG9000Charged : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNuclearBFG9000ModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLNuclearBFG9000PowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLNuclearBFG9000BulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLNuclearBFG9000AgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLNuclearBFG9000FirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLNuclearBFG9000NanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLNuclearBFG9000SniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLNuclearBFG9000Clip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 88
+   Inventory.Icon ""
+}
+
+ACTOR RLNuclearBFG9000Pickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		NUK2 A 105
+		TNT1 A 0 A_PlaySound("weapons/chargebeep", CHAN_AUTO)
+		NUK2 B 5 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/nukebfg9000pickup")
+		TNT1 A 0 A_GiveInventory("RLNuclearBFG9000",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_GiveInventory("RLNuclearWeaponSetBonusWeapon",1)
+		TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusArmor",1,2)
+		TNT1 A 0 A_Print("Picked up a \ctNuclear BFG 9000. \c-Oh yes.")
+		Stop
+		TNT1 A 0 A_GiveInventory("RLNuclearWeaponSetBonusActive",1)
+		TNT1 A 0 A_Print("Picked up a \ctNuclear BFG 9000.\n\c-= FURIOUS FUSION =\n\cgNuclear weaponry recharges twice as fast", 8, "CONFONT")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Nuclear BFG 9000 =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLNuclearBFG9000
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		NUK2 A 1
+		Loop
+	Death:
+		TNT1 A 0
+		NUK2 A 1 A_SpawnItem("RLNuclearBFG9000Pickup",0,0,0,0)
+		Stop
+	}
+}

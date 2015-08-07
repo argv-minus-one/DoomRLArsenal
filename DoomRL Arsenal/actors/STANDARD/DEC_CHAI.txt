@@ -1,0 +1,900 @@
+
+ACTOR RLChaingun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was perforated by %k's chaingun."
+  Inventory.Pickupmessage "You picked up a Chaingun."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Chaingun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 25
+  Weapon.SlotNumber 4
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLChaingunClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_TakeInventory("RLChaingunState",1)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunNanoMod",1,2)
+    PKCG A 1 A_WeaponReady (48)
+    Goto Ready+1
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip",1,2)
+    PKCG A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin+1
+  NanoRegenCheckBegin:
+    PKCG A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 40, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 52, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 64, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 76, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 88, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLChaingunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunNanoMod",2,2)
+    PKCG A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    PKCG A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLGatlingGunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLBulletstormChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLChaingun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLChaingun",1)
+	Stop
+  AfterModDrop:
+    PKCG A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    PKCG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    PKCG A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLChaingunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    PKCG A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLGatlingGunConfirm",1, "AssembleGatlingGun")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerChaingunConfirm",1, "AssembleHighPowerChaingun")
+	TNT1 A 0 A_JumpIfInventory("RLBulletstormChaingunConfirm",1, "AssembleBulletstormChaingun")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleChaingunConfirm",1, "AssembleAssaultRifleChaingun")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonChaingunConfirm",1, "AssembleBurstCannonChaingun")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoChaingunConfirm",1, "AssembleNanoManufactureAmmoChaingun")
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoChaingunConfirm",1, "AssembleDemolitionAmmoChaingun")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_GiveInventory("RLChaingunAmmochain",1)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",2,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",3,"FireAAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 8, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 8, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",3,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",4,"FireAAAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePPPP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 9, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 9, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePPPA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 8, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 8, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePPAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FirePAAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireAAAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunSniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunSniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",2,"FireSAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunSniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",1,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunSniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",2,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunSniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunPowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAgilityMod",3,"FireSAAA")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSSPP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSSAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSSPA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSPPP:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 8, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 8, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSPPA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSPAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireSAAA:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunFirestormMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunFirestormMod",1,3)
+    Goto FireFinish+8
+    PKCG A 1 A_GunFlash
+    PKCG C 1
+    Goto FireFinish+12
+    PKCG A 1 A_GunFlash
+    PKCG BC 1
+    Goto FireFinish+12
+    PKCG A 1 A_GunFlash
+    PKCG BCD 1
+	TNT1 A 0 A_JumpIfInventory("RLChaingunAmmochain",4,2)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeInventory("RLChaingunAmmochain",4)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunState",1,2)
+	TNT1 A 0 A_GiveInventory("RLChaingunState",1)
+    Goto Fire
+	TNT1 A 0 A_TakeInventory("RLChaingunState",1)
+    TNT1 A 0 A_ReFire
+	PKCG AB 2
+	PKCG CD 3
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	PKCG A 4 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	PKCG B 4
+	PKCG CD 5
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunNanoMod",1,"Ready")
+	PKCG A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 40, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 52, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 64, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 76, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip", 88, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",4,"Reload4")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",3,"Reload3")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",1,"Reload1")
+    CHGG C 5
+    CHGG D 5
+    CHGG E 5
+    CHGG F 5 A_PlaySound("weapons/chaingununload", 5)
+    CHGG F 5
+	Goto ReloadWorking
+  Reload1:
+    CHGG C 4
+    CHGG D 4
+    CHGG E 4
+    CHGG F 5 A_PlaySound("weapons/chaingununload", 5)
+    CHGG F 5
+	Goto ReloadWorking
+  Reload2:
+    CHGG C 3
+    CHGG D 4
+    CHGG E 4
+    CHGG F 4 A_PlaySound("weapons/chaingununload", 5)
+    CHGG F 4
+	Goto ReloadWorking
+  Reload3:
+    CHGG C 3
+    CHGG D 3
+    CHGG E 3
+    CHGG F 3 A_PlaySound("weapons/chaingununload", 5)
+    CHGG F 4
+	Goto ReloadWorking
+  Reload4:
+    CHGG C 2
+    CHGG D 2
+    CHGG E 3
+    CHGG F 3 A_PlaySound("weapons/chaingununload", 5)
+    CHGG F 3
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLChaingunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip",40,9)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip",52,7)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip",64,5)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip",76,3)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip",88,2)
+	TNT1 A 0 A_JumpIfInventory("Clip",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/chaingunload", 6)
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",4,"ReloadFinish4")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",3,"ReloadFinish3")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLChaingunTechnicalMod",1,"ReloadFinish1")
+    CHGG G 5
+    CHGG F 5
+    CHGG E 5
+    CHGG D 5
+    CHGG C 5
+	Goto ReloadSpin
+  ReloadFinish1:
+    CHGG G 4
+    CHGG F 4
+    CHGG E 4
+    CHGG D 5
+    CHGG C 5
+	Goto ReloadSpin
+  ReloadFinish2:
+    CHGG G 3
+    CHGG F 4
+    CHGG E 4
+    CHGG D 4
+    CHGG C 4
+	Goto ReloadSpin
+  ReloadFinish3:
+    CHGG G 3
+    CHGG F 3
+    CHGG E 3
+    CHGG D 3
+    CHGG C 4
+	Goto ReloadSpin
+  ReloadFinish4:
+    CHGG G 2
+    CHGG F 2
+    CHGG E 3
+    CHGG D 3
+    CHGG C 3
+	Goto ReloadSpin
+  ReloadSpin:
+    TNT1 A 0 A_PlaySound("weapons/chaingunwinddown", 5)
+	PKCG AB 3
+	PKCG CD 4
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	PKCG AB 5
+	PKCG CD 6
+	Goto Ready
+  Flash:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunState",1,5)
+    PKCF A 1 Bright A_Light2
+	TNT1 A 0 A_JumpIfInventory("RLChaingunFirestormMod",2,2)
+    PKCF B 1 Bright A_Light1
+	TNT1 A 0
+    Goto LightDone
+    PKCF C 1 Bright A_Light2
+	TNT1 A 0 A_JumpIfInventory("RLChaingunFirestormMod",2,2)
+    PKCF D 1 Bright A_Light1
+	TNT1 A 0
+    Goto LightDone
+  Spawn:
+    MGUN A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLGatlingGunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerChaingunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLBulletstormChaingunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleChaingunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonChaingunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoChaingunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoChaingunConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLGatlingGunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLBulletstormChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoChaingunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoChaingunConfirm",1)
+	Goto Ready
+  AssembleGatlingGun:
+	TNT1 A 0 A_Print("\cvGatling Gun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLGatlingGunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLGatlingGun",1)
+	TNT1 A 0 A_SelectWeapon("RLGatlingGun")
+	TNT1 A 0 A_TakeInventory("RLChaingun",1)
+	Stop
+  AssembleHighPowerChaingun:
+	TNT1 A 0 A_Print("\cvHigh Power Chaingun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerChaingunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerChaingun",1)
+	TNT1 A 0 A_SelectWeapon("RLHighPowerChaingun")
+	TNT1 A 0 A_TakeInventory("RLChaingun",1)
+	Stop
+  AssembleBulletstormChaingun:
+	TNT1 A 0 A_Print("\cvBulletstorm Chaingun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBulletstormChaingunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLBulletstormChaingun",1)
+	TNT1 A 0 A_SelectWeapon("RLBulletstormChaingun")
+	TNT1 A 0 A_TakeInventory("RLChaingun",1)
+	Stop
+  AssembleAssaultRifleChaingun:
+	TNT1 A 0 A_Print("\cvAssault Chaingun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleChaingunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleChaingun",1)
+	TNT1 A 0 A_SelectWeapon("RLAssaultRifleChaingun")
+	TNT1 A 0 A_TakeInventory("RLChaingun",1)
+	Stop
+  AssembleBurstCannonChaingun:
+	TNT1 A 0 A_Print("\cvBurst Chaingun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonChaingunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLBurstCannonChaingun",1)
+	TNT1 A 0 A_SelectWeapon("RLBurstCannonChaingun")
+	TNT1 A 0 A_TakeInventory("RLChaingun",1)
+	Stop
+  AssembleNanoManufactureAmmoChaingun:
+	TNT1 A 0 A_Print("\cvNanomachic Chaingun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoChaingunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLNanoManufactureAmmoChaingun",1)
+	TNT1 A 0 A_SelectWeapon("RLNanoManufactureAmmoChaingun")
+	TNT1 A 0 A_TakeInventory("RLChaingun",1)
+	Stop
+  AssembleDemolitionAmmoChaingun:
+	TNT1 A 0 A_Print("\cvDemolition Ammo Chaingun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLChaingunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLChaingunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLChaingunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLChaingunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoChaingunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLDemolitionAmmoChaingun",1)
+	TNT1 A 0 A_SelectWeapon("RLDemolitionAmmoChaingun")
+	TNT1 A 0 A_TakeInventory("RLChaingun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLChaingunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLChaingunState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLChaingunAmmochain : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLChaingunModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLChaingunPowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLChaingunBulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLChaingunAgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLChaingunTechnicalMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLChaingunFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLChaingunNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLChaingunSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLChaingunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 88
+   Inventory.Icon ""
+}
+
+ACTOR RLChaingunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		MGUN A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLChaingun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/chaingunpickup")
+		TNT1 A 0 A_GiveInventory("RLChaingun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cjChaingun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Clip",0,1)
+		Goto AmmoPickup
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cj= Chaingun =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Clip",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Clip",40)
+		Stop
+	AmmoFull:
+		MGUN A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLChaingun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		MGUN A 1
+		Loop
+	Death:
+		TNT1 A 0
+		MGUN A 1 A_SpawnItem("RLChaingunPickup",0,0,0,0)
+		Stop
+	}
+}

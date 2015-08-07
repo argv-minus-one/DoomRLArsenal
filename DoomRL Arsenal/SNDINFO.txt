@@ -1,0 +1,1100 @@
+
+$playersound	Marine	male	*death		DSMARDTH
+$playersound	Marine	male	*xdeath		DSMARDTH
+$playersound	Marine	male	*gibbed		DSSLOP
+$playersound	Marine	male	*pain100	DSMARPAN
+$playersounddup	Marine	male	*pain75		*pain100
+$playersounddup	Marine	male	*pain50		*pain100
+$playersounddup	Marine	male	*pain25		*pain100
+$playersound	Marine	male	*grunt		DSMAROOF
+$playersounddup	Marine	male	*land		*grunt
+$playersound	Marine	male	*jump		DSJUMP
+$playersound	Marine	male	*fist		DSPUNCH
+$playersound	Marine	male	*usefail	DSMAROOF
+
+$playersound	Scout	male	*death		DSSCODTH
+$playersound	Scout	male	*xdeath		DSSCOXDT
+$playersound	Scout	male	*gibbed		DSSLOP
+$playersound	Scout	male	*pain100	DSSCOPAN
+$playersounddup	Scout	male	*pain75		*pain100
+$playersounddup	Scout	male	*pain50		*pain100
+$playersounddup	Scout	male	*pain25		*pain100
+$playersound	Scout	male	*grunt		DSSCOOOF
+$playersounddup	Scout	male	*land		*grunt
+$playersound	Scout	male	*jump		DSJUMP
+$playersound	Scout	male	*fist		DSPUNCH
+$playersound	Scout	male	*usefail	DSSCOOOF
+
+$playersound	Technician	male	*death		DSTECDTH
+$playersound	Technician	male	*xdeath		DSTECDTH
+$playersound	Technician	male	*gibbed		DSSLOP
+$playersound	Technician	male	*pain100	DSTECPAN
+$playersounddup	Technician	male	*pain75		*pain100
+$playersounddup	Technician	male	*pain50		*pain100
+$playersounddup	Technician	male	*pain25		*pain100
+$playersound	Technician	male	*grunt		DSOOF
+$playersounddup	Technician	male	*land		*grunt
+$playersound	Technician	male	*jump		DSJUMP
+$playersound	Technician	male	*fist		DSPUNCH
+$playersound	Technician	male	*usefail	DSNOWAY
+
+$playersound	Renegade	male	*death		DSRENDTH
+$playersound	Renegade	male	*xdeath		DSRENDTH
+$playersound	Renegade	male	*gibbed		DSSLOP
+$playeralias	Renegade	male	*pain100	renegade/pain
+$playersounddup	Renegade	male	*pain75		*pain100
+$playersounddup	Renegade	male	*pain50		*pain100
+$playersounddup	Renegade	male	*pain25		*pain100
+$playersound	Renegade	male	*grunt		DSRENOOF
+$playersounddup	Renegade	male	*land		*grunt
+$playersound	Renegade	male	*jump		DSJUMP
+$playersound	Renegade	male	*fist		DSPUNCH
+$playersound	Renegade	male	*usefail	DSRENOOF
+
+//==================================================================================
+
+technician/laugh							DSTECLAU
+renegade/laugh								DSRENLAU
+renegade/slimepain							DSRENSLI
+$random renegade/pain { renegade/pain1 renegade/pain2 renegade/pain3 }
+renegade/pain1								DSRENPN1
+renegade/pain2								DSRENPN2
+renegade/pain3								DSRENPN3
+
+weapons/fistswing							DSFISTGO
+weapons/fisthit								DSPUNCH
+weapons/fistwall							DSPWALL
+weapons/gothicfistswing						DSGOTHMS
+weapons/gothicfisthit						DSGOTHHT
+weapons/shotgun								DSSHOT1
+weapons/combatshotgun						DSCOMSHO
+weapons/chaingun1							DSCHAIN1
+weapons/chaingun2							DSCHAIN2
+weapons/chaingun3							DSCHAIN3
+$random weapons/chaingun { weapons/chaingun1 weapons/chaingun2 weapons/chaingun3 }
+
+weapons/combatpistol						DSCOMPIS
+weapons/supershotgun						DSKSSFIR
+weapons/heavyplasma							DSHVYPLS
+$limit weapons/heavyplasma	 0
+weapons/tristarblaster1						DSTRISF1
+weapons/tristarblaster2						DSTRISF2
+weapons/tristarblaster3						DSTRISF3
+$random weapons/tristarblaster { weapons/tristarblaster1 weapons/tristarblaster2 weapons/tristarblaster3 }
+weapons/tristarblasterhit					DSTRIHIT
+weapons/deserteagle							DSDEAGLE
+$limit weapons/deserteagle	0
+weapons/laserrifle							DSLASERF
+weapons/minigunold							DSMINIFI
+weapons/minigun								DSMINIF2
+$limit weapons/minigun 0
+weapons/missilelauncher						DSMLAUNC
+weapons/uzi									DSUZIFIR
+weapons/battlerifle							DSUACRIF
+
+weapons/superchargednukeplasmapistolcharge	DSNUKPPC
+weapons/superchargednukeplasmapistol		DSNUKPPF
+weapons/superchargednukeplasmapistolsuper	DSNUKPPS
+weapons/superchargednukeplasmapistolimpact	DSNUKPPH
+weapons/superchargednukeplasmapistolbeep	DSNUKPPB
+weapons/superchargednukeplasmapistolvent	DSNUKPPV
+weapons/superchargednukeplasmapistolalarm	DSNUKPPZ
+
+weapons/judgeofthedead						DSJOTDFI
+weapons/jotdsniper1							DSJOTDF1
+weapons/jotdsniper2							DSJOTDF2
+$random weapons/jotdsniper { weapons/jotdsniper1 weapons/jotdsniper2 }
+weapons/hurricanecannon						DSHURRIC
+$limit weapons/hurricanecannon 0
+weapons/neuralstunner						DSNEURAL
+weapons/neuralstunnerhit					DSNEURAH
+weapons/neuralstunnerheavyhit				DSNEURA2
+weapons/neuralstunnerclick					DSNSCLIK
+weapons/neuralstunnerpickup					DSNSGET
+weapons/baronblasteridle					DSBABLID
+weapons/baronblasterup						DSBABLUP
+weapons/baronblaster						DSBBFIRE
+weapons/baronblasterimpact					DSBBHIT
+weapons/baronblasterminiimpact				DSMBBHIT
+weapons/baronblasterfly						DSBBFLY
+weapons/rda									DSRDAFIR
+weapons/rdahitwall							DSRDAWAL
+weapons/rdatransform						DSRDATRA
+
+weapons/tantrumcannon						DSQTCFIR
+weapons/tantrumcannonreload					DSQTCREL
+weapons/tantrumcannonexplode				DSQTCEXP
+weapons/tantrumcannonbounce					DSQTCBOU
+weapons/longcolt							DSTRIGUN
+weapons/revenantslauncher					DSREVLAU
+weapons/revenantslaunchernightmarefire		DSREVLNF
+weapons/revenantslaunchernightmareimpact	DSREVLNI
+weapons/revenantslauncherheavyloop			DSREVLCL
+weapons/revenantslauncherheavyhoming		DSREVLCH
+weapons/revenantslauncherheavyfire			DSREVLCF
+weapons/jackal								DSJACKAL
+weapons/gcb									DSGCBFIR
+weapons/gcbmode								DSGCBMOD
+weapons/jackhammer							DSJACKFI
+weapons/fragshotgun							DSFRAGSH
+weapons/fragshotgunpump						DSFRAGPU
+weapons/quadshotgun4X						DSQUAD4X
+weapons/quadshotgun							DSQUADSH
+$limit weapons/quadshotgun 4
+weapons/quadshotgunsingle					DSQUAD1S
+weapons/lightweaverfire1					DSLITWF1
+weapons/lightweaverfire2					DSLITWF2
+weapons/lightweavercharge1					DSLITWC1
+weapons/lightweavercharge2					DSLITWC2
+weapons/railgun								DSRAISHT
+weapons/unknownherald						DSUNKHFI
+weapons/nullpointer							DSNULLFI
+weapons/nullpointerstart					DSNULLST
+weapons/nullpointerloop						DSNULLLO
+weapons/nullfieldloop						DSNULLZP
+weapons/nullfieldwall						DSNULLWL
+weapons/mysteriousmagnumsniperfire			DSMYSTSN
+weapons/mysteriousmagnumnoise1				DSMYSNOI
+weapons/mysteriousmagnumnoise2				DSMYSLOW
+weapons/mysteriousmagnumshotgun				DSMYSTSH
+weapons/mysteriousmagnumfire1				DSMYSTF1
+weapons/mysteriousmagnumfire2				DSMYSTF2
+weapons/mysteriousmagnumfire3				DSMYSTF3
+weapons/mysteriousmagnumfire4				DSMYSTF4
+$random weapons/mysteriousmagnumfire { weapons/mysteriousmagnumfire1 weapons/mysteriousmagnumfire2 weapons/mysteriousmagnumfire3  weapons/mysteriousmagnumfire4 }
+weapons/bfg10kidle							DS10KIDL
+weapons/bfg10kcooldown						DS10KCDN
+weapons/bfg10kcharge						DSBFG10K
+weapons/bfg10kfire							DSB10KFI
+weapons/particlebeamcannon					DSPBCNFI
+weapons/particlebeamcannoncharge			DSPBCNCH
+weapons/particlebeamcannonidle				DSPBCNID
+weapons/particlebeamcannonactivate			DSPBCNAC
+weapons/particlebeamcannonbeep				DSPBCNBP
+weapons/plasmaredirectioncannon				DSPRDCFI
+$limit weapons/plasmaredirectioncannon 0
+weapons/steelbeast							DSSBFIRE
+weapons/steelbeastpump						DSSBPUMP
+weapons/steelbeastfirestorm					DSSBFIST
+weapons/hellsreign1							DSHELLS1
+weapons/hellsreign2							DSHELLS2
+weapons/hellsreign3							DSHELLS3
+weapons/hellsreign4							DSHELLS4
+$random weapons/hellsreign { weapons/hellsreign1 weapons/hellsreign2 weapons/hellsreign3  weapons/hellsreign4 }
+weapons/sussgunpickup						DSSUSSPK
+weapons/sussgunselect						DSSUSSSE
+weapons/sussgun								DSSUSSGU
+weapons/sussgunhitscan						DSSUSSHS
+weapons/sussgunimpact1						DSSUSSR1
+weapons/sussgunimpact2						DSSUSSR2
+weapons/sussgunimpact3						DSSUSSR3
+weapons/sussgunimpact4						DSSUSSR4
+$random weapons/sussgunimpact { weapons/sussgunimpact1 weapons/sussgunimpact2 weapons/sussgunimpact3 weapons/sussgunimpact3 }
+
+weapons/silencedpistol						DSSILENC
+weapons/shredderpistol						DSSHREDD
+weapons/revolver							DSMAGNUM
+weapons/elephantgun							DSELEPHF
+weapons/microlauncher						DSMICROF
+weapons/gatlingfire1						DSGTFIR1
+weapons/gatlingfire2						DSGTFIR2
+weapons/gatlingfire3						DSGTFIR3
+$random weapons/gatlingfire { weapons/gatlingfire1 weapons/gatlingfire2 weapons/gatlingfire3 }
+weapons/tacticalshotgun						DSTACSHO
+weapons/stormpistol							DSSTORMP
+weapons/stormhandcannon						DSSTORMH
+weapons/plasmauzi							DSPUZIFI
+$limit weapons/plasmauzi	 0
+weapons/plasmauziidle						DSPUZIDL
+weapons/focuseddoubleshotgun				DSFOCDSH
+weapons/hyperblasteridle					DSHYPIDL
+weapons/hyperblaster						DSHYPERB
+weapons/grenadelauncher						DSGRENAD
+weapons/grenadelauncherbounce				DSGRENBO
+weapons/plasmapistol						DSPLASPI
+weapons/heavyshotgun						DSHSHOTG
+weapons/heavydoubleshotgun					DSDHSHOT
+$random weapons/autocannon { weapons/autocannon1 weapons/autocannon2 }
+weapons/autocannon1							DSAUTOC1
+weapons/autocannon2							DSAUTOC2
+weapons/bulletstorm							DSBULSTO
+$limit weapons/bulletstorm	0
+weapons/motherinlaw							DSMOTHER
+
+weapons/highpowerbattlerifle				DSHPUACR
+weapons/highpowerlaser						DSHPLASR
+weapons/highpowerplasma						DSHPPLAS
+weapons/highpowerchaingun					DSHPCHAI
+weapons/highpowerpistol						DSHPPIST
+weapons/highpowerminigun					DSHPMINI
+weapons/highpowercombatpistol				DSHPCOMP
+weapons/highpowerdeserteagle				DSHPDEAG
+weapons/hpuzi								DSHPUZIF
+$limit weapons/hpuzi	 0
+weapons/highpowertristarblaster1			DSTRISH1
+weapons/highpowertristarblaster2			DSTRISH2
+weapons/highpowertristarblaster3			DSTRISH3
+weapons/highpowertristarblaster4			DSTRISH4
+$random weapons/highpowertristarblaster { weapons/highpowertristarblaster1 weapons/highpowertristarblaster2 weapons/highpowertristarblaster3 weapons/highpowertristarblaster4 }
+
+weapons/plasmaticshotgun					DSPSSHOT
+weapons/plasmaticcombatshotgun				DSPSCOMS
+weapons/plasmaticdoubleshotgun				DSPSDOUB
+weapons/plasmaticsupershotgun				DSPSSUPS
+weapons/plasmaticassaultshotgun				DSPSTACS
+
+weapons/vbfg9000charge						DSVBFGCH
+weapons/vbfg9000fire						DSVBFGFI
+weapons/vbfg9000hit1						DSVBFGH1
+weapons/vbfg9000hit2						DSVBFGH2
+weapons/vbfg9000hit3						DSVBFGH3
+weapons/vbfg9000hit4						DSVBFGH4
+$random weapons/vbfg9000hit { weapons/vbfg9000hit1 weapons/vbfg9000hit2 weapons/vbfg9000hit3 weapons/vbfg9000hit4 }
+
+weapons/burstbattlerifle					DSBCURIF
+
+weapons/demominigun1						DSDMMIN1
+weapons/demominigun2						DSDMMIN2
+$random weapons/demominigun { weapons/demominigun1 weapons/demominigun2 }
+
+weapons/biggestfuckinggunidle				DSBFGIDL
+weapons/biggestfuckinggunoff				DSBFGOFF
+weapons/biggestfuckingguncharge				DSBIGFGC
+weapons/biggestfuckinggunfire				DSBIGBAF
+weapons/biggestfuckinggunhit				DSBIGBAH
+weapons/biggestfuckinggunball				DSBIGBAL
+
+
+weapons/nuclearplasmarifleidle				DSNUKPID
+weapons/nuclearbfg9000idle					DSNUKBID
+
+weapons/assembly							DSASSEMB
+weapons/masterassembly						DSMASTER
+weapons/unique								DSUNIQUE
+weapons/legendary							DSLEGEND
+weapons/nucleardoom							DSNUKARM
+weapons/nuclearbfgxalarm					DSNUKFUK
+weapons/nuclearboom							DSNUKBOM
+weapons/weaponholster						DSSWISH
+
+weapons/pistolcock							DSGLKCK
+weapons/pistolload							DSPISIN
+weapons/pistolunload						DSPISOUT
+weapons/battleriflecock						DSRIFCOC
+weapons/battlerifleload						DSRIFLOA
+weapons/battlerifleunload					DSRIFUNL
+weapons/shellload							DSSHOTLO
+weapons/shotgunpump2						DSSHOTP2
+weapons/shotgunpump							DSSHOTPU
+weapons/combatshotgunpump					DSSGPUMP
+weapons/plasmashotgunpump					DSPLASPP
+weapons/plasmashotgunspark					DSPSSPAR
+weapons/chaingunload						DSCHAINL
+weapons/rocketload2							DSRLLOAD
+weapons/rocketload							DSROCKLD
+weapons/plasmarifleunload					DSPLASL1
+weapons/plasmarifleload						DSPLASL2
+weapons/plasmapistolactivate				DSPPISAC
+weapons/plasmapistolunload					DSPPISL1
+weapons/plasmapistolload					DSPPISL2
+weapons/plasmapistolraise					DSPPUP
+weapons/bfg9000unload						DSBFGLOA
+weapons/bfg9000load							DSBFGLO2
+weapons/chargebeep							DSBFGBEP
+weapons/combatpistolload					DSGLKIN
+weapons/combatpistolunload					DSGLKOUT
+weapons/supershotgunload					DSKSSLOA
+weapons/supershotgunopen					DSKSSOPN
+weapons/supershotgunclose					DSKSSCLS
+weapons/laserrifleload						DSLASRLO
+weapons/revolveropen						DSMAGOPN
+weapons/revolverout							DSMAGOUT
+weapons/revolverin							DSMAGIN
+weapons/elephantgunload						DSELEPHL
+weapons/mysteriousmagnumup					DSMYSTUP
+weapons/mysteriousmagnumopen				DSMYSOPN
+weapons/mysteriousmagnumout					DSMYSOUT
+weapons/mysteriousmagnumclose				DSMYSIN
+weapons/laserriflehit1						DSLASRH1
+weapons/laserriflehit2						DSLASRH2
+weapons/laserriflehit3						DSLASRH3
+$random weapons/laserriflehit { weapons/laserriflehit1 weapons/laserriflehit2 weapons/laserriflehit3 }
+weapons/missileexplosion					DSMISEXP
+weapons/missilefly							DSMISFLY
+
+weapons/gatlingwindup						DSGTWNDU
+weapons/gatlingspin							DSGTSPIN
+weapons/gatlingwinddown						DSGTWNDD
+weapons/highpowerwindup						DSHPMIST
+weapons/highpowerspin						DSHPMILO
+weapons/highpowerwinddown					DSHPMIEN
+weapons/demolitionwindup					DSDEMSTA
+weapons/demolitionspin						DSDEMLOO
+weapons/demolitionwinddown					DSDEMEND
+weapons/kolwindup							DSKOLUP
+weapons/kolspin								DSKOLMID
+weapons/kolwinddown							DSKOLDWN
+
+//aliases for sound replacement mods, and for vanilla monsters and stuff
+//I had to write these goddamn pickup aliases twice because SLADE decided not to save it
+
+$alias weapons/chainsawpickup				misc/w_pkup
+$alias weapons/pistolpickup					misc/w_pkup
+$alias weapons/shotgunpickup				misc/w_pkup
+$alias weapons/combatshotgunpickup			misc/w_pkup
+$alias weapons/doubleshotgunpickup			misc/w_pkup
+$alias weapons/chaingunpickup				misc/w_pkup
+$alias weapons/rocketlauncherpickup			misc/w_pkup
+$alias weapons/plasmariflepickup			misc/w_pkup
+$alias weapons/bfg9000pickup				misc/w_pkup
+
+$alias weapons/blasterpickup				misc/w_pkup
+$alias weapons/combatpistolpickup			misc/w_pkup
+$alias weapons/handcannonpickup				misc/w_pkup
+$alias weapons/supershotgunpickup			misc/w_pkup
+$alias weapons/assaultshotgunpickup			misc/w_pkup
+$alias weapons/plasmashotgunpickup			misc/w_pkup
+$alias weapons/tristarblasterpickup			misc/w_pkup
+$alias weapons/minigunpickup				misc/w_pkup
+$alias weapons/missilelauncherpickup		misc/w_pkup
+$alias weapons/laserriflepickup				misc/w_pkup
+$alias weapons/nukeplasmapistolpickup		misc/w_pkup
+$alias weapons/nukeplasmariflepickup		misc/w_pkup
+$alias weapons/nukebfg9000pickup			misc/w_pkup
+$alias weapons/combattranslocatorpickup		misc/w_pkup
+$alias weapons/uzipickup					misc/w_pkup
+$alias weapons/battleriflepickup			misc/w_pkup
+$alias weapons/napalmlauncherpickup			misc/w_pkup
+
+$alias weapons/jackhammerpickup					weapons/unique
+$alias weapons/railgunpickup					weapons/unique
+$alias weapons/mysteriousmagnumpickup			weapons/unique
+$alias weapons/bfg10kpickup						weapons/unique
+$alias weapons/unknownheraldpickup				weapons/unique
+$alias weapons/fragshotgunpickup				weapons/unique
+$alias weapons/quadshotgunpickup				weapons/unique
+$alias weapons/lightweaverpickup				weapons/unique
+$alias weapons/trigunpickup						weapons/unique
+$alias weapons/gcbpickup						weapons/unique
+$alias weapons/antifreakjackalpickup			weapons/unique
+$alias weapons/tantrumcannonpickup				weapons/unique
+$alias weapons/revenantslauncherpickup			weapons/unique
+$alias weapons/nullpointerpickup				weapons/unique
+$alias weapons/particlebeamcannonpickup			weapons/unique
+$alias weapons/steelbeastpickup					weapons/unique
+$alias weapons/plasmaredirectioncannonpickup	weapons/unique
+$alias weapons/hellsreignpickup					weapons/unique
+
+$alias weapons/judgeofthedeadpickup			weapons/legendary
+$alias weapons/hurricanecannonpickup		weapons/legendary
+$alias weapons/rdcpickup					weapons/legendary
+$alias weapons/baronblasterpickup			weapons/legendary
+
+$alias weapons/silencedpistolpickup			misc/w_pkup
+$alias weapons/shredderpistolpickup			misc/w_pkup
+$alias weapons/revolverpickup				misc/w_pkup
+$alias weapons/elephantgunpickup			misc/w_pkup
+$alias weapons/gatlinggunpickup				misc/w_pkup
+$alias weapons/microlauncherpickup			misc/w_pkup
+$alias weapons/tacticalshotgunpickup		misc/w_pkup
+$alias weapons/heavyshotgunpickup			misc/w_pkup
+$alias weapons/heavydoubleshotgunpickup		misc/w_pkup
+
+$alias weapons/hppistolpickup				misc/w_pkup
+$alias weapons/hpchaingunpickup				misc/w_pkup
+$alias weapons/hpplasmariflepickup			misc/w_pkup
+$alias weapons/hpbfg9000pickup				misc/w_pkup
+$alias weapons/hpblasterpickup				misc/w_pkup
+$alias weapons/hpcombatpistolpickup			misc/w_pkup
+$alias weapons/hphandcannonpickup			misc/w_pkup
+$alias weapons/hptristarblasterpickup		misc/w_pkup
+$alias weapons/hpminigunpickup				misc/w_pkup
+$alias weapons/hplaserriflepickup			misc/w_pkup
+$alias weapons/hpnukeplasmapistolpickup		misc/w_pkup
+$alias weapons/hpnukeplasmariflepickup		misc/w_pkup
+$alias weapons/hpnukebfg9000pickup			misc/w_pkup
+$alias weapons/hpuzipickup					misc/w_pkup
+$alias weapons/hpbattleriflepickup			misc/w_pkup
+
+$alias weapons/psshotgunpickup				misc/w_pkup
+$alias weapons/pscombatshotgunpickup		misc/w_pkup
+$alias weapons/psdoubleshotgunpickup		misc/w_pkup
+$alias weapons/pssupershotgunpickup			misc/w_pkup
+$alias weapons/psassaultshotgunpickup		misc/w_pkup
+$alias weapons/psplasmashotgunpickup		misc/w_pkup
+
+$alias weapons/doublechainsawpickup					misc/w_pkup
+$alias weapons/tacrocketlauncherpickup				misc/w_pkup
+$alias weapons/stormpistolpickup					misc/w_pkup
+$alias weapons/stormcombatpistolpickup				misc/w_pkup
+$alias weapons/stormblasterpickup					misc/w_pkup
+$alias weapons/stormhandcannonpickup				misc/w_pkup
+$alias weapons/stormuzipickup						misc/w_pkup
+$alias weapons/stormnukeplasmapistolpickup			misc/w_pkup
+$alias weapons/plasmapistolpickup					misc/w_pkup
+$alias weapons/plasmacombatpistolpickup				misc/w_pkup
+$alias weapons/overchargedblasterpickup				misc/w_pkup
+$alias weapons/plasmahandcannonpickup				misc/w_pkup
+$alias weapons/plasmauzipickup						misc/w_pkup
+$alias weapons/superchargednukeplasmapistolpickup	misc/w_pkup
+$alias weapons/vbfg9000pickup						misc/w_pkup
+$alias weapons/nukevbfg9000pickup					misc/w_pkup
+$alias weapons/focuseddoubleshotgunpickup			misc/w_pkup
+$alias weapons/hyperblasterpickup					misc/w_pkup
+$alias weapons/bulletstormchaingunpickup			misc/w_pkup
+$alias weapons/autoshotgunpickup					misc/w_pkup
+$alias weapons/autodoubleshotgunpickup				misc/w_pkup
+$alias weapons/minimissilepistolpickup				misc/w_pkup
+$alias weapons/plasmariflemkiipickup				misc/w_pkup
+$alias weapons/grenadelauncherpickup				misc/w_pkup
+
+$alias weapons/assaultchaingunpickup		misc/w_pkup
+$alias weapons/assaultplasmariflepickup		misc/w_pkup
+$alias weapons/assaultminigunpickup			misc/w_pkup
+$alias weapons/assaultlaserriflepickup		misc/w_pkup
+$alias weapons/assaultnukeplasmapickup		misc/w_pkup
+$alias weapons/assaultuzipickup				misc/w_pkup
+$alias weapons/assaultriflepickup			misc/w_pkup
+
+$alias weapons/burstchaingunpickup			misc/w_pkup
+$alias weapons/burstplasmariflepickup		misc/w_pkup
+$alias weapons/burstminigunpickup			misc/w_pkup
+$alias weapons/burstlaserriflepickup		misc/w_pkup
+$alias weapons/burstnukeplasmapickup		misc/w_pkup
+$alias weapons/burstuzipickup				misc/w_pkup
+$alias weapons/burstriflepickup				misc/w_pkup
+
+$alias weapons/nanoshotgunpickup			misc/w_pkup
+$alias weapons/nanocombatshotgunpickup		misc/w_pkup
+$alias weapons/nanodoubleshotgunpickup		misc/w_pkup
+$alias weapons/nanosupershotgunpickup		misc/w_pkup
+$alias weapons/nanoassaultshotgunpickup		misc/w_pkup
+$alias weapons/nanoplasmashotgunpickup		misc/w_pkup
+
+$alias weapons/ripperpickup					misc/w_pkup
+$alias weapons/bfgxpickup					misc/w_pkup
+$alias weapons/nukebfgxpickup				misc/w_pkup
+$alias weapons/motherinlawpickup			misc/w_pkup
+$alias weapons/autocannonpickup				misc/w_pkup
+$alias weapons/plasmarefractorpickup		misc/w_pkup
+
+$alias weapons/nanopistolpickup				misc/w_pkup
+$alias weapons/nanochaingunpickup			misc/w_pkup
+$alias weapons/nanorocketlauncherpickup		misc/w_pkup
+$alias weapons/nanoplasmariflepickup		misc/w_pkup
+$alias weapons/nanoblasterpickup			misc/w_pkup
+$alias weapons/nanocombatpistolpickup		misc/w_pkup
+$alias weapons/nanohandcannonpickup			misc/w_pkup
+$alias weapons/nanotristarblasterpickup		misc/w_pkup
+$alias weapons/nanominigunpickup			misc/w_pkup
+$alias weapons/nanomissilelauncherpickup	misc/w_pkup
+$alias weapons/nanolaserriflepickup			misc/w_pkup
+$alias weapons/nanouzipickup				misc/w_pkup
+$alias weapons/nanobattleriflepickup		misc/w_pkup
+$alias weapons/nanonapalmlauncherpickup		misc/w_pkup
+
+$alias weapons/demopistolpickup				misc/w_pkup
+$alias weapons/demochaingunpickup			misc/w_pkup
+$alias weapons/democombatpistolpickup		misc/w_pkup
+$alias weapons/demohandcannonpickup			misc/w_pkup
+$alias weapons/demominigunpickup			misc/w_pkup
+$alias weapons/demouzipickup				misc/w_pkup
+$alias weapons/demobattleriflepickup		misc/w_pkup
+//gyaaaa
+
+$alias weapons/chaingununload				weapons/combatpistolunload
+$alias weapons/chaingunwinddown				weapons/gatlingwinddown
+
+$alias weapons/blaster						weapons/laserrifle
+
+$alias weapons/combatpistolcock				weapons/pistolcock
+
+$alias weapons/handcannonunload				weapons/pistolunload
+$alias weapons/handcannonload				weapons/pistolload
+$alias weapons/handcannoncock				weapons/pistolcock
+
+$alias weapons/assaultshotgun				weapons/tacticalshotgun
+$alias weapons/assaultshotgununload			weapons/pistolunload
+$alias weapons/assaultshotgunload			weapons/chaingunload
+
+$alias weapons/plasmashotgun				weapons/plasmaf
+$alias weapons/plasmashotgunimpact			weapons/plasmax
+$alias weapons/plasmashotgununload			weapons/plasmapistolunload
+$alias weapons/plasmashotgunload			weapons/plasmapistolload
+
+$alias weapons/tristarblasterunload			weapons/bfg9000unload
+$alias weapons/tristarblasterload			weapons/bfg9000load
+
+$alias weapons/minigunspin					weapons/gatlingspin
+$alias weapons/minigunwindup				weapons/gatlingwindup
+$alias weapons/minigunwinddown				weapons/gatlingwinddown
+$alias weapons/minigununload				weapons/combatpistolunload
+$alias weapons/minigunload					weapons/chaingunload
+
+$alias weapons/missileload					weapons/rocketload
+
+$alias weapons/laserrifleunload				weapons/plasmapistolunload
+$alias weapons/laserrifleload				weapons/plasmapistolload
+
+$alias weapons/nukebfg9000fire				weapons/bfgf
+
+$alias weapons/combattranslocatorbeep		weapons/chargebeep
+$alias weapons/combattranslocatorunload		weapons/plasmapistolunload
+$alias weapons/combattranslocatorload		weapons/plasmapistolload
+$alias weapons/combattranslocatorpump		weapons/plasmashotgunpump
+$alias weapons/combattranslocatorspark		weapons/plasmashotgunspark
+
+$alias weapons/uziunload					weapons/pistolunload
+$alias weapons/uziload						weapons/pistolload
+
+$alias weapons/napalmlauncher				weapons/rocklf
+$alias weapons/napalmimpact					weapons/rocklx
+$alias weapons/napalmload					weapons/rocketload
+
+$alias weapons/jackhammerunload				weapons/pistolunload
+$alias weapons/jackhammerload				weapons/chaingunload
+
+$alias weapons/railgununload				weapons/plasmarifleunload
+$alias weapons/railgunload					weapons/plasmarifleload
+$alias weapons/railgunidle					weapons/plasmauziidle
+
+$alias weapons/bfg10kunload					weapons/bfg9000unload
+$alias weapons/bfg10kload					weapons/bfg9000load
+
+$alias weapons/unknownheraldunload			weapons/pistolunload
+$alias weapons/unknownheraldload			weapons/pistolload
+
+$alias weapons/fragshotgununload			weapons/pistolunload
+$alias weapons/fragshotgunload				weapons/chaingunload
+
+$alias weapons/quadshotgunopen				weapons/sshoto
+$alias weapons/quadshotgunload				weapons/sshotl
+$alias weapons/quadshotgunclose				weapons/sshotc
+
+$alias weapons/trigunopen					weapons/mysteriousmagnumopen
+$alias weapons/trigunout					weapons/mysteriousmagnumout
+$alias weapons/trigunclose					weapons/mysteriousmagnumclose
+
+$alias weapons/gcbunload					weapons/pistolunload
+$alias weapons/gcbload						weapons/pistolload
+$alias weapons/gcbcock						weapons/pistolcock
+
+$alias weapons/antifreakjackalunload		weapons/combatpistolunload
+$alias weapons/antifreakjackalload			weapons/combatpistolload
+$alias weapons/antifreakjackalcock			weapons/pistolcock
+
+$alias weapons/revenantslauncherload		weapons/rocketload
+
+$alias weapons/nullpointerunload			weapons/bfg9000unload
+$alias weapons/nullpointerload				weapons/bfg9000load
+
+$alias weapons/particlebeamcannonunload		weapons/bfg9000unload
+$alias weapons/particlebeamcannonload		weapons/bfg9000load
+
+$alias weapons/plasmaredirectioncannonpulse	weapons/bfg10kidle
+$alias weapons/prdcunload					weapons/bfg9000unload
+$alias weapons/prdcload						weapons/bfg9000load
+
+$alias weapons/hellsreignunload				weapons/plasmarifleunload
+$alias weapons/hellsreignload				weapons/plasmarifleload
+$alias weapons/hellsreignidle				weapons/hyperblasteridle
+$alias weapons/hellsreignbounce				weapons/tantrumcannonbounce
+$alias weapons/hellsreignimpact				weapons/plasmax
+
+$alias weapons/sussgununload				weapons/bfg9000unload
+$alias weapons/sussgunload					weapons/bfg9000load
+
+$alias weapons/jotdopen						weapons/sshoto
+$alias weapons/jotdload						weapons/sshotl
+$alias weapons/jotdclose					weapons/sshotc
+
+$alias weapons/hurricanecannonload			weapons/rocketload2
+
+$alias weapons/baronblastermini				weapons/plasmaf
+$alias weapons/baronblasterload				weapons/plasmapistolload
+$alias weapons/baronblasterunload			weapons/plasmapistolunload
+
+$alias weapons/rdaidle						weapons/bfg10kidle
+$alias weapons/rdaunload					weapons/bfg9000unload
+$alias weapons/rdaload						weapons/bfg9000load
+
+$alias weapons/silencedpistolload			weapons/pistolload
+$alias weapons/silencedpistolunload			weapons/pistolunload
+$alias weapons/silencedpistolcock			weapons/pistolcock
+
+$alias weapons/shredderpistolload			weapons/shellload
+$alias weapons/shredderpistolcock			weapons/pistolcock
+
+$alias weapons/gatlinggununload				weapons/combatpistolunload
+$alias weapons/gatlinggunload				weapons/chaingunload
+
+$alias weapons/microlauncherload			weapons/rocketload
+
+$alias weapons/tacticalshotgununload		weapons/pistolunload
+$alias weapons/tacticalshotgunload			weapons/chaingunload
+
+$alias weapons/heavyshotgunpump				weapons/shotgunpump2
+
+$alias weapons/heavydoubleshotgunopen		weapons/sshoto
+$alias weapons/heavydoubleshotgunload		weapons/sshotl
+$alias weapons/heavydoubleshotgunclose		weapons/sshotc
+
+$alias weapons/saw2up						weapons/sawup
+$alias weapons/saw2idle						weapons/sawidle
+$alias weapons/saw2full						weapons/sawfull
+$alias weapons/saw2hit						weapons/sawhit
+
+$alias weapons/tacrocketlauncher			weapons/rocklf
+$alias weapons/tacrocketlauncherhit			weapons/rocklx
+$alias weapons/tacrocketlauncherload2		weapons/rocketload2
+$alias weapons/tacrocketlauncherload		weapons/rocketload
+
+$alias weapons/stormpistolunload			weapons/pistolunload
+$alias weapons/stormpistolload				weapons/pistolload
+
+$alias weapons/stormcombatpistol			weapons/stormpistol
+$alias weapons/stormcombatpistolunload		weapons/pistolunload
+$alias weapons/stormcombatpistolload		weapons/pistolload
+
+$alias weapons/plasmacombatpistolunload		weapons/plasmapistolunload
+$alias weapons/plasmacombatpistolload		weapons/plasmapistolload
+$alias weapons/plasmacombatpistolactivate	weapons/plasmapistolactivate
+
+$alias weapons/vbfgbeep						weapons/chargebeep
+$alias weapons/vbfg9000unload				weapons/bfg9000unload
+$alias weapons/vbfg9000load					weapons/bfg9000load
+
+$alias weapons/nukevbfg9000idle				weapons/nuclearbfg9000idle
+$alias weapons/nukevbfg9000beep				weapons/chargebeep
+$alias weapons/nukevbfg9000charge			weapons/vbfg9000charge
+
+$alias weapons/focuseddoubleshotgunopen		weapons/sshoto
+$alias weapons/focuseddoubleshotgunload		weapons/sshotl
+$alias weapons/focuseddoubleshotgunclose	weapons/sshotc
+
+$alias weapons/hyperblasterimpact			weapons/plasmax
+$alias weapons/hyperblasterunload			weapons/plasmarifleunload
+$alias weapons/hyperblasterload				weapons/plasmarifleload
+
+$alias weapons/autoshotgun					weapons/shotgun
+$alias weapons/autoshotgununload			weapons/combatpistolunload
+$alias weapons/autoshotgunload				weapons/chaingunload
+
+$alias weapons/autodoubleshotgun			weapons/sshotf
+$alias weapons/autodoubleshotgununload		weapons/combatpistolunload
+$alias weapons/autodoubleshotgunload		weapons/chaingunload
+
+$alias weapons/minimissilepistol			weapons/microlauncher
+$alias weapons/minimissilepistolopen		weapons/sshoto
+$alias weapons/minimissilepistolload		weapons/sshotl
+$alias weapons/minimissilepistolclose		weapons/sshotc
+
+$alias weapons/plasmariflemkiiimpact		weapons/plasmax
+$alias weapons/plasmariflemkiiunload		weapons/plasmarifleunload
+$alias weapons/plasmariflemkiiload			weapons/plasmarifleload
+$alias weapons/plasmariflemkiiactivate		weapons/plasmapistolactivate
+
+$alias weapons/grenadelauncheropen			weapons/supershotgunopen
+$alias weapons/grenadelauncherload			weapons/supershotgunload
+$alias weapons/grenadelauncherclose			weapons/supershotgunclose
+
+$alias weapons/bfgxunload					weapons/bfg9000unload
+$alias weapons/bfgxload						weapons/bfg9000load
+
+$alias weapons/nukebfgxidle					weapons/biggestfuckinggunidle
+$alias weapons/nukebfgxbeep					weapons/chargebeep
+$alias weapons/nukebfgxoff					weapons/biggestfuckinggunoff
+$alias weapons/nukebfgxcharge				weapons/biggestfuckingguncharge
+
+$alias weapons/motherinlawexplode			weapons/missileexplosion
+
+$alias weapons/autocannonload				weapons/rocketload2
+
+$alias weapons/plasmarefractoridle			weapons/plasmauziidle
+$alias weapons/plasmarefractorunload		weapons/bfg9000unload
+$alias weapons/plasmarefractorload			weapons/bfg9000load
+$alias weapons/plasmarefractor				weapons/highpowerplasma
+$alias weapons/plasmarefractorhit			weapons/vbfg9000hit
+
+//Functionally similar weapons
+
+$alias weapons/ripperup						weapons/sawup
+$alias weapons/ripperidle					weapons/sawidle
+$alias weapons/ripperfull					weapons/sawfull
+$alias weapons/ripperhit					weapons/sawhit
+
+$alias weapons/hppistolload					weapons/pistolload
+$alias weapons/hppistolunload				weapons/pistolunload
+$alias weapons/hppistolcock					weapons/pistolcock
+$alias weapons/demopistol					weapons/pistol
+$alias weapons/demopistolload				weapons/pistolload
+$alias weapons/demopistolunload				weapons/pistolunload
+$alias weapons/demopistolcock				weapons/pistolcock
+$alias weapons/nanopistol					weapons/pistol
+
+$alias weapons/psshotgunpump				weapons/shotgunpump2
+$alias weapons/nanoshotgun					weapons/shotgun
+
+$alias weapons/pscombatshotgunpump			weapons/combatshotgunpump
+$alias weapons/pscombatshotgunload			weapons/shellload
+$alias weapons/nanocombatshotgun			weapons/combatshotgun
+
+$alias weapons/psdoubleshotgunopen			weapons/sshoto
+$alias weapons/psdoubleshotgunload			weapons/sshotl
+$alias weapons/psdoubleshotgunclose			weapons/sshotc
+$alias weapons/nanodoubleshotgun			weapons/sshotf
+
+$alias weapons/hpchaingununload				weapons/combatpistolunload
+$alias weapons/hpchaingunload				weapons/chaingunload
+$alias weapons/hpchaingunwinddown			weapons/gatlingwinddown
+$alias weapons/assaultchaingun				weapons/chaingun
+$alias weapons/assaultchaingununload		weapons/combatpistolunload
+$alias weapons/assaultchaingunload			weapons/chaingunload
+$alias weapons/assaultchaingunwinddown		weapons/gatlingwinddown
+$alias weapons/burstchaingun				weapons/chaingun
+$alias weapons/burstchaingununload			weapons/combatpistolunload
+$alias weapons/burstchaingunload			weapons/chaingunload
+$alias weapons/burstchaingunwinddown		weapons/gatlingwinddown
+$alias weapons/demochaingun					weapons/chaingun
+$alias weapons/demochaingununload			weapons/combatpistolunload
+$alias weapons/demochaingunload				weapons/chaingunload
+$alias weapons/demochaingunwinddown			weapons/gatlingwinddown
+$alias weapons/nanochaingun					weapons/chaingun
+
+$alias weapons/hpplasmaimpact				weapons/plasmax
+$alias weapons/hpplasmarifleunload			weapons/plasmarifleunload
+$alias weapons/hpplasmarifleload			weapons/plasmarifleload
+$alias weapons/assaultplasmarifleunload		weapons/plasmarifleunload
+$alias weapons/assaultplasmarifleload		weapons/plasmarifleload
+$alias weapons/burstplasmarifleunload		weapons/plasmarifleunload
+$alias weapons/burstplasmarifleload			weapons/plasmarifleload
+
+$alias weapons/hpbfgfire					weapons/bfgf
+$alias weapons/hpbfgimpact					weapons/bfgx
+$alias weapons/hpbfgunload					weapons/bfg9000unload
+$alias weapons/hpbfgload					weapons/bfg9000load
+
+$alias weapons/hpblaster					weapons/highpowerlaser
+$alias weapons/stormblaster					weapons/laserrifle
+$alias weapons/overchargedblaster			weapons/highpowerlaser
+$alias weapons/nanoblaster					weapons/laserrifle
+
+$alias weapons/hpcombatpistolload			weapons/combatpistolload
+$alias weapons/hpcombatpistolunload			weapons/combatpistolunload
+$alias weapons/hpcombatpistolcock			weapons/combatpistolcock
+$alias weapons/democombatpistol				weapons/combatpistol
+$alias weapons/democombatpistolload			weapons/combatpistolload
+$alias weapons/democombatpistolunload		weapons/combatpistolunload
+$alias weapons/democombatpistolcock			weapons/combatpistolcock
+$alias weapons/nanocombatpistol				weapons/combatpistol
+
+$alias weapons/hphandcannonload				weapons/pistolload
+$alias weapons/hphandcannonunload			weapons/pistolunload
+$alias weapons/hphandcannoncock				weapons/pistolcock
+$alias weapons/stormhandcannonload			weapons/pistolload
+$alias weapons/stormhandcannonunload		weapons/pistolunload
+$alias weapons/stormhandcannoncock			weapons/pistolcock
+$alias weapons/plasmahandcannon				weapons/heavyplasma
+$alias weapons/plasmahandcannonunload		weapons/plasmapistolunload
+$alias weapons/plasmahandcannonload			weapons/plasmapistolload
+$alias weapons/plasmahandcannonraise		weapons/plasmapistolraise
+$alias weapons/demohandcannon				weapons/deserteagle
+$alias weapons/demohandcannonload			weapons/pistolload
+$alias weapons/demohandcannonunload			weapons/pistolunload
+$alias weapons/demohandcannoncock			weapons/pistolcock
+$alias weapons/nanohandcannon				weapons/deserteagle
+
+$alias weapons/pssupershotgunopen			weapons/supershotgunopen
+$alias weapons/pssupershotgunload			weapons/supershotgunload
+$alias weapons/pssupershotgunclose			weapons/supershotgunclose
+$alias weapons/nanosupershotgun				weapons/supershotgun
+
+$alias weapons/psassaultshotgununload		weapons/pistolunload
+$alias weapons/psassaultshotgunload			weapons/chaingunload
+$alias weapons/nanoassaultshotgun			weapons/tacticalshotgun
+
+$alias weapons/psplasmashotgunimpact		weapons/plasmax
+$alias weapons/psplasmashotgununload		weapons/plasmapistolunload
+$alias weapons/psplasmashotgunload			weapons/plasmapistolload
+$alias weapons/psplasmashotgunpump			weapons/plasmashotgunpump
+$alias weapons/psplasmashotgunspark			weapons/plasmashotgunspark
+$alias weapons/nanoplasmashotgun			weapons/plasmaf
+$alias weapons/nanoplasmashotgunimpact		weapons/plasmax
+
+$alias weapons/hptristarblasterhit			weapons/tristarblasterhit
+$alias weapons/hptristarblasterunload		weapons/bfg9000unload
+$alias weapons/hptristarblasterload			weapons/bfg9000load
+$alias weapons/nanotristarblaster			weapons/tristarblaster
+
+$alias weapons/hpminigunspin				weapons/highpowerspin
+$alias weapons/hpminigunwindup				weapons/highpowerwindup
+$alias weapons/hpminigunwinddown			weapons/highpowerwinddown
+$alias weapons/hpminigununload				weapons/combatpistolunload
+$alias weapons/hpminigunload				weapons/chaingunload
+$alias weapons/assaultminigun					weapons/minigun
+$alias weapons/assaultminigunspin			weapons/demolitionspin
+$alias weapons/assaultminigunwindup			weapons/demolitionwindup
+$alias weapons/assaultminigunwinddown		weapons/demolitionwinddown
+$alias weapons/assaultminigununload			weapons/combatpistolunload
+$alias weapons/assaultminigunload			weapons/chaingunload
+$alias weapons/burstminigun					weapons/minigun
+$alias weapons/burstminigunspin				weapons/demolitionspin
+$alias weapons/burstminigunwindup			weapons/demolitionwindup
+$alias weapons/burstminigunwinddown			weapons/demolitionwinddown
+$alias weapons/burstminigununload			weapons/combatpistolunload
+$alias weapons/burstminigunload				weapons/chaingunload
+$alias weapons/demominigunspin				weapons/kolspin
+$alias weapons/demominigunwindup			weapons/kolwindup
+$alias weapons/demominigunwinddown			weapons/kolwinddown
+$alias weapons/demominigununload			weapons/combatpistolunload
+$alias weapons/demominigunload				weapons/chaingunload
+$alias weapons/nanominigun					weapons/minigun
+$alias weapons/nanominigunspin				weapons/highpowerspin
+$alias weapons/nanominigunwindup			weapons/highpowerwindup
+$alias weapons/nanominigunwinddown			weapons/highpowerwinddown
+
+$alias weapons/hplaserrifleunload			weapons/plasmapistolunload
+$alias weapons/hplaserrifleload				weapons/plasmapistolload
+$alias weapons/assaultlaserrifle			weapons/laserrifle
+$alias weapons/assaultlaserrifleunload		weapons/plasmapistolunload
+$alias weapons/assaultlaserrifleload		weapons/plasmapistolload
+$alias weapons/burstlaserrifle				weapons/laserrifle
+$alias weapons/burstlaserrifleunload		weapons/plasmapistolunload
+$alias weapons/burstlaserrifleload			weapons/plasmapistolload
+$alias weapons/nanolaserrifle				weapons/laserrifle
+
+$alias weapons/nukeplasmapistolidle					weapons/nuclearplasmarifleidle
+$alias weapons/hpnukeplasmapistolidle				weapons/nuclearplasmarifleidle
+$alias weapons/stormnukeplasmapistolidle			weapons/nuclearplasmarifleidle
+$alias weapons/stormnukeplasma						weapons/plasmaf
+$alias weapons/stormnukeplasmaimpact				weapons/plasmax
+$alias weapons/superchargednukeplasmapistolidle		weapons/nuclearbfg9000idle
+
+$alias weapons/hpnukeplasmarifleidle		weapons/nuclearplasmarifleidle
+$alias weapons/assaultnukeplasmarifleidle	weapons/nuclearplasmarifleidle
+$alias weapons/burstnukeplasmarifleidle		weapons/nuclearplasmarifleidle
+
+$alias weapons/hpnukebfg9000fire			weapons/bfgf
+$alias weapons/hpnukebfgidle				weapons/nuclearbfg9000idle
+
+$alias weapons/hpuziunload					weapons/pistolunload
+$alias weapons/hpuziload					weapons/pistolload
+$alias weapons/stormuzi						weapons/uzi
+$alias weapons/stormuziload					weapons/pistolload
+$alias weapons/stormuziunload				weapons/pistolunload
+$alias weapons/stormuzicock					weapons/pistolcock
+$alias weapons/plasmauziimpact				weapons/plasmax
+$alias weapons/plasmauziload				weapons/plasmapistolload
+$alias weapons/plasmauziunload				weapons/plasmapistolunload
+$alias weapons/assaultuzi					weapons/uzi
+$alias weapons/assaultuziunload				weapons/pistolunload
+$alias weapons/assaultuziload				weapons/pistolload
+$alias weapons/burstuzi						weapons/uzi
+$alias weapons/burstuziunload				weapons/pistolunload
+$alias weapons/burstuziload					weapons/pistolload
+$alias weapons/nanouzi						weapons/uzi
+$alias weapons/demouzi						weapons/uzi
+$alias weapons/demouziunload				weapons/pistolunload
+$alias weapons/demouziload					weapons/pistolload
+
+$alias weapons/hpbattleriflecock			weapons/battleriflecock
+$alias weapons/hpbattlerifleunload			weapons/battlerifleunload
+$alias weapons/hpbattlerifleload			weapons/battlerifleload
+$alias weapons/assaultbattlerifle			weapons/burstbattlerifle
+$alias weapons/assaultbattleriflecock		weapons/battleriflecock
+$alias weapons/assaultbattlerifleunload		weapons/battlerifleunload
+$alias weapons/assaultbattlerifleload		weapons/battlerifleload
+$alias weapons/burstbattleriflecock			weapons/battleriflecock
+$alias weapons/burstbattlerifleunload		weapons/battlerifleunload
+$alias weapons/burstbattlerifleload			weapons/battlerifleload
+$alias weapons/nanobattlerifle				weapons/battlerifle
+$alias weapons/demobattlerifle				weapons/battlerifle
+$alias weapons/demobattleriflecock			weapons/battleriflecock
+$alias weapons/demobattlerifleunload		weapons/battlerifleunload
+$alias weapons/demobattlerifleload			weapons/battlerifleload
+
+//Monstroid aliases
+
+$alias baby/attack			weapons/heavyplasma
+$alias chainguy/attack		weapons/chaingun
+$alias spider/attack		weapons/minigun
+$alias vile/stop			weapons/largeexp
+$alias misc/brainexplode	weapons/largeexp
+$alias skeleton/tracex		weapons/smallexp
+$alias weapons/minigunexp	weapons/bulletexp
+
+misc/aaaaaa									DSAAAAAA
+
+//Other generic crap
+
+$random weapons/gundrop { weapons/gundrop1 weapons/gundrop2 weapons/gundrop3 }
+weapons/gundrop1							DSGUN1
+weapons/gundrop2							DSGUN2
+weapons/gundrop3							DSGUN3
+
+$alias misc/bootspickup			misc/armorbonuspickup
+misc/backpackpickup							DSBACKPK
+misc/armorbonuspickup						DSARMBPK
+misc/computerpickup							DSCOMPPK
+misc/trackingmappickup						DSTRKMAP
+misc/blueprintpickup						DSBLUPRN
+misc/modpackpickup							DSMODPAK
+
+
+hud/assemblyalert							DSASSEM1
+hud/assemblyconfirm							DSASSEM2
+hud/assemblycancel							DSASSEM3
+
+hud/nextpage								DSHUDNEX
+hud/generic									DSHUDGEN
+
+misc/rlarmor1								DSARMOR1
+misc/rlarmor2								DSARMOR2
+misc/rlarmor3								DSARMOR3
+misc/rlarmor4								DSARMOR4
+misc/rlarmor5								DSARMOR5
+misc/rlarmorlegendary						DSARMOR6
+misc/rlshield								DSRLSHLD
+misc/repulsionwave							DSREPULS
+misc/survivalmediarmor						DSSURVMA
+$random misc/shockwaveboots { misc/shockwaveboots1 misc/shockwaveboots2 misc/shockwaveboots3 misc/shockwaveboots4 }
+misc/shockwaveboots1						DSSHOKW1
+misc/shockwaveboots2						DSSHOKW2
+misc/shockwaveboots3						DSSHOKW3
+misc/shockwaveboots4						DSSHOKW4
+misc/sparta									DSSPARTA
+misc/prototypeassaultshieldon				DSPASHLD
+misc/prototypeassaultshieldoff				DSPASOFF
+misc/berserkpowersuit						DSBPSBER
+misc/jetpackon								DSJETON
+misc/jetpackoff								DSJETOFF
+misc/soulshatterarmor						DSSOULSH
+misc/demoniccarapaceball					DSDEMONA
+misc/katefire								DSKATEFI
+misc/kateexplode							DSKATEXP
+misc/blazingphoenixdevicecharge				DSBPDSCH
+misc/blazingphoenixdevice					DSBPDSXP
+misc/assaultforcearmorminigun				DSODMINI
+misc/kyleteslaboltloop						DSKTESLA
+misc/psychicamplifier						DSRCPSYA
+misc/solooperativesuit						DSSOLOSP
+misc/reactiveshieldsystem					DSREACSS
+misc/chronotrooperarmor						DSCHRONO
+misc/chronotrooperarmorstop					DSCHRONS
+
+weapons/xaserplasma							DSXASPLS
+$limit weapons/xaserplasma 0
+weapons/xaserhpplasma						DSXASHPP
+$limit weapons/xaserhpplasma 0
+weapons/xaserhyperblaster					DSXASHYP
+$limit weapons/xaserhyperblaster 0
+weapons/xaserheavyplasma					DSXASHVY
+$limit weapons/xaserheavyplasma 0
+
+$random misc/torgue { misc/torgue1 misc/torgue2 misc/torgue3 misc/torgue4 misc/torgue5 misc/torgue6 misc/torgue7 }
+misc/torgue1								DSTORGU1
+misc/torgue2								DSTORGU2
+misc/torgue3								DSTORGU3
+misc/torgue4								DSTORGU4
+misc/torgue5								DSTORGU5
+misc/torgue6								DSTORGU6
+misc/torgue7								DSTORGU7
+$random misc/torguemore { misc/torgue8 misc/torgue9 misc/torgue10 misc/torgue11 misc/torgue12 misc/torgue13 }
+misc/torgue8								DSTORGU8
+misc/torgue9								DSTORGU9
+misc/torgue10								DSTORG10
+misc/torgue11								DSTORG11
+misc/torgue12								DSTORG12
+misc/torgue13								DSTORG13
+$volume misc/torgue 5
+$volume misc/torguemore 5
+
+
+rlsentry/loop								DSSENTRL
+rlsentry/tracking							DSSENTRT
+rlsentry/pain								DSSENTRP
+rlsentry/deploy								DSSENTRD
+
+rlrestorer/loop								DSRESTLO
+rlrestorer/pulseloop						DSRESTPU
+
+weapons/bulletexp							DSPIPEX1
+$limit weapons/bulletexp 0
+$limit weapons/minigunexp 1
+$random weapons/smallexp { weapons/smallexp1 weapons/smallexp2 weapons/smallexp3 }
+weapons/smallexp1							DSPIPEX2
+weapons/smallexp2							DSPIPEX3
+weapons/smallexp3							DSPIPEX4
+$random weapons/mediumexp { weapons/mediumexp1 weapons/mediumexp2 weapons/mediumexp3 weapons/mediumexp4 }
+weapons/mediumexp1							DSBAREX1
+weapons/mediumexp2							DSBAREX2
+weapons/mediumexp3							DSBAREX3
+weapons/mediumexp4							DSBAREX4
+$random weapons/blastexp { weapons/blastexp1 weapons/blastexp2 weapons/blastexp3 weapons/blastexp4 }
+weapons/blastexp1							DSMEDEX1
+weapons/blastexp2							DSMEDEX2
+weapons/blastexp3							DSMEDEX3
+weapons/blastexp4							DSMEDEX4
+$random weapons/largeexp { weapons/largeexp1 weapons/largeexp2 weapons/largeexp3 weapons/largeexp4 weapons/largeexp5 weapons/largeexp6 weapons/largeexp7 }
+weapons/largeexp1							DSLAGEX1
+weapons/largeexp2							DSLAGEX2
+weapons/largeexp3							DSLAGEX3
+weapons/largeexp4							DSLAGEX4
+weapons/largeexp5							DSLAGEX5
+weapons/largeexp6							DSLAGEX6
+weapons/largeexp7							DSLAGEX7
+$random weapons/torgueexp { weapons/torgueexp1 weapons/torgueexp2 }
+weapons/torgueexp1							DSTORGX1
+weapons/torgueexp2							DSTORGX2
+$limit weapons/torgueexp1 1
+$limit weapons/torgueexp2 1
+
+steps/mediumstep							DSMEDFS1
+
+$random steps/xpstep { steps/xpstep1 steps/xpstep2 steps/xpstep3 steps/xpstep4 }
+steps/xpstep1								DSPSTEP1
+steps/xpstep2								DSPSTEP2
+steps/xpstep3								DSPSTEP3
+steps/xpstep4								DSPSTEP4
+
+$random steps/bloodstep { steps/bloodstep1 steps/bloodstep2 steps/bloodstep3 steps/bloodstep4 }
+steps/bloodstep1							DSBLDFS1
+steps/bloodstep2							DSBLDFS2
+steps/bloodstep3							DSBLDFS3
+steps/bloodstep4							DSBLDFS4
+
+$random steps/hydrostep { steps/hydrostep1 steps/hydrostep2 steps/hydrostep3 steps/hydrostep4 }
+steps/hydrostep1							DSHYDFS1
+steps/hydrostep2							DSHYDFS2
+steps/hydrostep3							DSHYDFS3
+steps/hydrostep4							DSHYDFS4
+
+$random steps/heavystep { steps/heavystep1 steps/heavystep2 steps/heavystep3 steps/heavystep4 }
+steps/heavystep1							DSHEVFS1
+steps/heavystep2							DSHEVFS2
+steps/heavystep3							DSHEVFS3
+steps/heavystep4							DSHEVFS4
+
+$random steps/techstep { steps/techstep1 steps/techstep2 steps/techstep3 steps/techstep4 }
+steps/techstep1								DSTEKFS1
+steps/techstep2								DSTEKFS2
+steps/techstep3								DSTEKFS3
+steps/techstep4								DSTEKFS4
+
+$random steps/metalstep { steps/metalstep1 steps/metalstep2 steps/metalstep3 steps/metalstep4 }
+steps/metalstep1							DSMETFS1
+steps/metalstep2							DSMETFS2
+steps/metalstep3							DSMETFS3
+steps/metalstep4							DSMETFS4
+
+solospaghetti/hammerswing					DSSSHSWG
+solospaghetti/hammerslam					DSSSHSLM
+
+solospaghetti/zap1							DSSSPZZ1
+solospaghetti/zap2							DSSSPZZ2
+solospaghetti/zap3							DSSSPZZ3
+$random solospaghetti/zap { solospaghetti/zap1 solospaghetti/zap2 solospaghetti/zap3 }
+
+sgtshivers/angry1							DSSHIVR1
+sgtshivers/angry2							DSSHIVR2
+$random sgtshivers/angry { sgtshivers/angry1 sgtshivers/angry2 }

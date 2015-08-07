@@ -1,0 +1,17 @@
+addkeysection "DoomRL Arsenal" DoomRLArsenalSection
+
+// Remove Armor
+addmenukey "Remove Armor" rl_removearmor
+alias rl_removearmor "use RLArmorRemover"
+
+// Remove Boots
+addmenukey "Remove Boots" rl_removeboots
+alias rl_removeboots "use RLBootsRemover"
+
+// Armor Special
+addmenukey "Armor Special" rl_armorspecial
+alias rl_armorspecial "use RLArmorSpecial"
+
+// HUD Page Changer
+addmenukey "Next HUD Page" rl_hudpagechanger
+alias rl_hudpagechanger "use RLHudPageChanger"

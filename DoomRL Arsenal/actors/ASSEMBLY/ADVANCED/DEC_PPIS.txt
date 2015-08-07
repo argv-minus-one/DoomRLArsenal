@@ -1,0 +1,435 @@
+
+ACTOR RLPlasmaPistol : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was atomized by %k's plasma pistol."
+  Inventory.Pickupmessage "You picked up a Plasma Pistol."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Plasma Pistol"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 700
+  Weapon.SlotNumber 2
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLPlasmaPistolClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolNanoMod",1,2)
+    CTPP A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolClip",1,2)
+    CTPP A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    CTPP A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolClip", 6, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolClip", 8, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLPlasmaPistolClip", 1)
+    CTPP A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPlasmaPistol",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLPlasmaPistol",1)
+	Stop
+  AfterModDrop:
+    CTPP A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    CTPP A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    CTPP A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaPistolSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    CTPP A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    CTPP A 4
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBall", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBallSharpshooter", frandom(1,-1), 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBallP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBallPSharpshooter", frandom(1,-1), 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBallA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBallASharpshooter", frandom(1,-1), 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBallS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaPistolBallSSharpshooter", 0, 1)
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolFirestormMod",1,"FireFinishF1")
+    CTPP B 2 Bright A_GunFlash
+    CTPP C 2 Bright
+    CTPP DEF 2
+    CTPP A 5 A_ReFire
+    Goto Ready
+  FireFinishF1:
+    CTPP B 2 Bright A_GunFlash
+    CTPP C 2 Bright
+    CTPP DEF 1
+    CTPP A 5 A_ReFire
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolNanoMod",1,"Ready")
+	CTPP A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolClip", 6, "Ready")
+	Goto Reload+5
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolClip", 8, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolTechnicalMod",1,"Reload1")
+    CTPP G 2
+    CTPP H 2
+    CTPP I 2
+    CTPP J 2
+	TNT1 A 0 A_PlaySound("weapons/plasmapistolunload", 5)
+    CTPP K 2
+    CTPP L 2
+    CTPP M 23
+    CTPP L 2
+    CTPP K 2
+	Goto ReloadWorking
+  Reload1:
+    CTPP G 2
+    CTPP H 2
+    CTPP I 2
+    CTPP J 2
+	TNT1 A 0 A_PlaySound("weapons/plasmapistolunload", 5)
+    CTPP K 2
+    CTPP L 2
+    CTPP M 20
+    CTPP L 2
+    CTPP K 2
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaPistolClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolClip",6,9)
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolClip",8,7)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_PlaySound("weapons/plasmapistolload", 7)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaPistolTechnicalMod",1,"ReloadFinish1")
+    CTPP J 2
+    CTPP I 2
+    CTPP H 2
+    CTPP G 2
+	TNT1 A 0 A_PlaySound("weapons/plasmapistolactivate", 5)
+	Goto Ready
+  ReloadFinish1:
+    CTPP J 2
+    CTPP I 2
+    CTPP H 2
+    CTPP G 2
+	TNT1 A 0 A_PlaySound("weapons/plasmapistolactivate", 5)
+	Goto Ready
+  Flash:
+    TNT1 A 3 A_Light2
+    TNT1 A 3 A_Light1
+    Goto LightDone
+  Spawn:
+    CPPP A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaPistolNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLPlasmaPistol",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLPlasmaPistolBall : RLPlasmaBall
+{
+  SeeSound "weapons/plasmapistol"
+  Damage 12
+}
+
+ACTOR RLPlasmaPistolBallP : RLPlasmaPistolBall
+{
+  Damage 14
+}
+
+ACTOR RLPlasmaPistolBallA : RLPlasmaPistolBall
+{
+  Speed 35
+}
+
+ACTOR RLPlasmaPistolBallS : RLPlasmaPistolBall
+{
+  States
+  {
+  Spawn:
+    PLSS AB 4 Bright A_ScaleVelocity(1.10)
+    Loop
+  }
+}
+
+//-------------------------------------------------------------------
+//		SHARPSHOOTER PROJECTILES
+
+ACTOR RLPlasmaPistolBallSharpshooter : RLPlasmaBall
+{
+  SeeSound "weapons/plasmapistol"
+  Damage (96)
+}
+
+ACTOR RLPlasmaPistolBallPSharpshooter : RLPlasmaPistolBallSharpshooter
+{
+  Damage (112)
+}
+
+ACTOR RLPlasmaPistolBallASharpshooter : RLPlasmaPistolBallSharpshooter
+{
+  Speed 35
+}
+
+ACTOR RLPlasmaPistolBallSSharpshooter : RLPlasmaPistolBallSharpshooter
+{
+  States
+  {
+  Spawn:
+    PLSS AB 6 Bright A_ScaleVelocity(1.10)
+    Loop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLPlasmaPistolSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaPistolSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLPlasmaPistolClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 8
+   Inventory.Icon ""
+}
+
+ACTOR RLPlasmaPistolPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		CPPP A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLPlasmaPistol",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/plasmapistolpickup")
+		TNT1 A 0 A_GiveInventory("RLPlasmaPistol",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvPlasma Pistol.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Cell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Plasma Pistol =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Cell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Cell",6)
+		Stop
+	AmmoFull:
+		CPPP A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLPlasmaPistol
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		CPPP A 1
+		Loop
+	Death:
+		TNT1 A 0
+		CPPP A 1 A_SpawnItem("RLPlasmaPistolPickup",0,0,0,0)
+		Stop
+	}
+}

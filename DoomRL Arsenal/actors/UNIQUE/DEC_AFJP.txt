@@ -1,0 +1,503 @@
+
+ACTOR RLAntiFreakJackal : RLWeapon
+{
+  Inventory.Pickupsound "weapons/unique"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was banished from this world by %k's Jackal. AMEN."
+  Inventory.Pickupmessage "You picked up the Anti-Freak Jackal."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Anti-Freak Jackal"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 11
+  Weapon.SlotNumber 2
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLAntiFreakJackalClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalClip",666,3)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoMod",1,"ReadyNanoCheck")
+    JACK A 1 A_WeaponReady (48)
+    Loop
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoMod",1,2)
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalClip", 660)
+    JACK A 1 A_WeaponReady (48)
+    Goto Ready
+  ReadyNanoCheck:
+	TNT1 A 0 A_GiveInventory("RLAntiFreakJackalClip", 666)
+    Goto Ready
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalNanoClip", 60)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAntiFreakJackal",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLAntiFreakJackal",1)
+	Stop
+  AfterModDrop:
+    JACK A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    JACK A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    JACK A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLAntiFreakJackalSelected", 1)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalClip",9,1)
+	Goto SelectLoop
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalClip", 660)
+	Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    JACK A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoFiring",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoClip",6,"Reload")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoClip",0,"Reload")
+	TNT1 A 0 A_AlertMonsters
+    JACK A 1
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoMod",1,"FireN")
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 2, -1, 20, "RLJackalPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 2, -1, (160), "RLJackalPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 2, -1, 22, "RLJackalPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 2, -1, (176), "RLJackalPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, 20, "RLJackalPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, (160), "RLJackalPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 20, "RLJackalPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (160), "RLJackalPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 2, -1, 20, "RLJackalPlasmaPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 2, -1, (160), "RLJackalPlasmaPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireN:
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoFiring",1,2)
+	TNT1 A 0 A_GiveInventory("RLAntiFreakJackalNanoFiring", 1)
+	TNT1 A 0 A_GiveInventory("RLAntiFreakJackalNanoClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 2, -1, 20, "RLJackalPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 2, -1, (160), "RLJackalPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/jackal", CHAN_WEAPON)
+	TNT1 A 0 A_CheckFloor (2)
+	TNT1 A 0 A_Jump(256,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingSteelBootsToken",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingProtectiveBootsToken",1,3)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingPlasteelBootsToken",1,2)
+    TNT1 A 0 A_ChangeVelocity (Cos(Pitch) * -1, 0, Sin(Pitch) * 1, 1)
+    JACK B 3 Bright A_GunFlash
+    JACK C 3 Bright
+    JACK DEF 2
+    JACK G 3
+    JACK HIJ 2
+    JACK A 3
+    JACK AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_WeaponReady (WRF_NOBOB | WRF_NOSECONDARY | WRF_ALLOWRELOAD)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalNanoFiring", 1)
+    Goto Ready
+  Reload:
+	JACK A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoMod",1,"ReloadNano")
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalClip", 6, "Ready")
+	Goto Reload+5
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalClip", 8, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+  Reload0:
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalNanoClip", 60)
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalTechnicalMod",1,"Reload1")
+    JACK M 2
+    JACK N 2
+    JACK O 2
+    JACK P 2
+    JACK Q 2
+    JACK R 2
+    TNT1 A 0 A_PlaySound("weapons/antifreakjackalunload", 5)
+	Goto ReloadWorking
+  Reload1:
+    JACK M 1
+    JACK N 1
+    JACK O 1
+    JACK P 2
+    JACK Q 2
+    JACK R 2
+    TNT1 A 0 A_PlaySound("weapons/antifreakjackalunload", 5)
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLAntiFreakJackalClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalClip",6,"ReloadFinish")
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalClip",8,"ReloadFinish")
+	TNT1 A 0 A_JumpIfInventory("Clip",1,1)
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalTechnicalMod",1,"ReloadFinish1")
+    JACK S 3
+    JACK T 3
+    JACK U 3
+    JACK V 3
+    JACK W 3
+    TNT1 A 0 A_PlaySound("weapons/antifreakjackalload", 7)
+    JACK X 3
+    JACK Y 3
+    JACK Z 3
+	TNT1 A 0 A_PlaySound("weapons/antifreakjackalcock", 5)
+    JACK N 3
+    JACK M 3
+    JACK A 7 A_ReFire
+	Goto Ready
+  ReloadFinish1:
+    JACK S 2
+    JACK T 2
+    JACK U 2
+    JACK V 3
+    JACK W 3
+    TNT1 A 0 A_PlaySound("weapons/antifreakjackalload", 7)
+    JACK X 3
+    JACK Y 3
+    JACK Z 3
+	TNT1 A 0 A_PlaySound("weapons/antifreakjackalcock", 5)
+    JACK N 3
+    JACK M 3
+    JACK A 7 A_ReFire
+	Goto Ready
+  ReloadNano:
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoClip", 1, 1)
+	Goto Ready
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+  Reload0Nano:
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoClip",7,1)
+	Goto Reload0Nano+3
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalNanoClip", 60)
+	TNT1 A 0 A_GiveInventory("RLAntiFreakJackalNanoClip", 6)
+	TNT1 A 0 // Play the reload animation.
+    JACK M 3
+    JACK N 3
+    JACK O 3
+    JACK P 3
+    JACK Q 3
+    JACK R 3
+    TNT1 A 0 A_PlaySound("weapons/antifreakjackalunload", 5)
+	Goto ReloadWorkingNano
+  ReloadWorkingNano:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalNanoClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackalNanoClip",1,1)
+	Goto ReloadFinishNano
+	TNT1 A 0 A_JumpIfInventory("Clip",1,1)
+	Goto ReloadFinishNano
+	TNT1 A 0
+	Goto ReloadWorkingNano
+  ReloadFinishNano:
+    JACK S 3
+    JACK T 3
+    JACK U 3
+    JACK V 3
+    JACK W 3
+    TNT1 A 0 A_PlaySound("weapons/antifreakjackalload", 7)
+    JACK X 3
+    JACK Y 3
+    JACK Z 3
+	TNT1 A 0 A_PlaySound("weapons/antifreakjackalcock", 5)
+    JACK N 3
+    JACK M 3
+    JACK A 7 A_ReFire
+	Goto Ready
+  Flash:
+    TNT1 A 3 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  Spawn:
+    AFJK X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAntiFreakJackalNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAntiFreakJackalSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLOnyxMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLAntiFreakJackal",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLJackalPuff
+{ 
+   ActiveSound "weapons/mediumexp"
+   PainSound "weapons/mediumexp"
+   AttackSound "weapons/mediumexp"
+   +NOGRAVITY
+   +NOBLOCKMAP
+   +PUFFONACTORS
+   +PUFFGETSOWNER
+   +RANDOMIZE
+   +THRUGHOST
+   Decal "Scorch"
+   RenderStyle Add
+   Alpha 0.9
+   Mass 5
+   Scale 0.7
+  Damagetype "Fire"
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      MISL B 4 Bright A_Explode (300,98)
+      MISL C 4 Bright
+      MISL D 4 Bright
+      Stop
+   }
+}
+
+ACTOR RLJackalPlasmaPuff : RLJackalPuff
+{ 
+  Damagetype "Plasma"
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      IXPL A 4 Bright A_Explode (666,98)
+      IXPL B 4 Bright
+      IXPL V 4 Bright
+      Stop
+   }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLAntiFreakJackalSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalNanoClip : Inventory
+{
+inventory.maxamount 60
+}
+
+Actor RLAntiFreakJackalNanoFiring : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAntiFreakJackalSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLAntiFreakJackalClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 666
+   Inventory.Icon ""
+}
+
+ACTOR RLAntiFreakJackalPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		AFJK X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLAntiFreakJackal",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/antifreakjackalpickup")
+		TNT1 A 0 A_GiveInventory("RLAntiFreakJackal",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up the \cdAnti-Freak Jackal.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Anti-Freak Jackal =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLAntiFreakJackal
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		AFJK X 1
+		Loop
+	Death:
+		TNT1 A 0
+		AFJK X 1 A_SpawnItem("RLAntiFreakJackalPickup",0,0,0,0)
+		Stop
+	}
+}

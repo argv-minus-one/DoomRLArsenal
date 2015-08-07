@@ -1,0 +1,151 @@
+
+texture optional P_RLMAR1
+	pic P_RLMAR1 tics 2
+	pic P_RLMAR2 tics 2
+	
+texture optional P_RLSCO1
+	pic P_RLSCO1 tics 18
+	pic P_RLSCO2 tics 5
+	pic P_RLSCO3 tics 18
+	pic P_RLSCO2 tics 5
+	
+texture optional P_RLTEC1
+	pic P_RLTEC1 tics 6
+	pic P_RLTEC2 tics 6
+	pic P_RLTEC1 tics 6
+	pic P_RLTEC2 tics 6
+	pic P_RLTEC1 tics 6
+	pic P_RLTEC2 tics 6
+	pic P_RLTEC1 tics 6
+	pic P_RLTEC2 tics 6
+	pic P_RLTEC3 tics 1
+	pic P_RLTEC1 tics 1
+	pic P_RLTEC4 tics 1
+	pic P_RLTEC1 tics 1
+	pic P_RLTEC3 tics 1
+	pic P_RLTEC1 tics 1
+	pic P_RLTEC4 tics 1
+	pic P_RLTEC1 tics 13
+	pic P_RLTEC3 tics 1
+	pic P_RLTEC1 tics 1
+	pic P_RLTEC4 tics 1
+	
+texture optional P_RLREN1
+	pic P_RLREN1 tics 18
+	pic P_RLREN2 tics 2
+	pic P_RLREN1 tics 10
+	pic P_RLREN2 tics 2
+	pic P_RLREN1 tics 4
+	pic P_RLREN2 tics 2
+	pic P_RLREN1 tics 14
+	pic P_RLREN2 tics 2
+	pic P_RLREN1 tics 62
+	pic P_RLREN2 tics 2
+	
+texture optional LAVUI0
+	pic LAVUI0 tics 6
+	pic LAVUJ0 tics 6
+	pic LAVUK0 tics 6
+	pic LAVUL0 tics 6
+	
+texture optional CYN1I0
+	pic CYN1I0 tics 4
+	pic CYN1J0 tics 4
+	pic CYN1K0 tics 4
+	
+texture optional CYN2I0
+	pic CYN2I0 tics 4
+	pic CYN2J0 tics 4
+	pic CYN2K0 tics 4
+	
+texture optional CYN3I0
+	pic CYN3I0 tics 4
+	pic CYN3J0 tics 4
+	pic CYN3K0 tics 4
+	
+texture optional BSHDI0
+	pic BSHDI0 tics 6
+	pic BSHDJ0 tics 6
+	
+texture optional ESVAI0
+	pic ESVAI0 tics 6
+	pic ESVAJ0 tics 6
+	
+texture optional FSHDI0
+	pic FSHDI0 tics 6
+	pic FSHDJ0 tics 6
+	
+texture optional ESHDI0
+	pic ESHDI0 tics 6
+	pic ESHDJ0 tics 6
+	
+texture optional PSHDI0
+	pic PSHDI0 tics 6
+	pic PSHDJ0 tics 6
+	
+texture optional SSHDI0
+	pic SSHDI0 tics 6
+	pic SSHDJ0 tics 6
+	
+texture optional LAVBI0
+	pic LAVBI0 tics 6
+	pic LAVBJ0 tics 6
+	pic LAVBK0 tics 6
+	pic LAVBL0 tics 6
+	
+texture optional SHKBI0
+	pic SHKBM0 tics 15
+	pic SHKBN0 tics 1
+	pic SHKBO0 tics 1
+	pic SHKBP0 tics 1
+	pic SHKBQ0 tics 1
+	pic SHKBR0 tics 1
+	pic SHKBS0 tics 1
+	pic SHKBT0 tics 1
+	pic SHKBU0 tics 1
+	pic SHKBV0 tics 1
+	pic SHKBW0 tics 1
+	pic SHKBX0 tics 1
+	
+texture optional RESHI0
+	pic RESHI0 tics 6
+	pic RESHJ0 tics 6
+	
+texture optional SURVJ0
+	pic SURVJ0 tics 2
+	pic SURVK0 tics 2
+	pic SURVL0 tics 2
+	pic SURVM0 tics 2
+	pic SURVN0 tics 2
+	pic SURVO0 tics 2
+	pic SURVO0 tics 2
+	pic SURVP0 tics 2
+	pic SURVQ0 tics 2
+	pic SURVR0 tics 2
+	
+texture optional JETPI0
+	pic JETPI0 tics 4
+	pic JETPJ0 tics 2
+	pic JETPK0 tics 2
+	pic JETPJ0 tics 2
+	
+texture optional XASPI0
+	pic XASPI0 tics 5
+	pic XASPJ0 tics 5
+	pic XASPK0 tics 5
+	pic XASPJ0 tics 5
+	
+texture optional K8MHI0
+	pic K8MHI0 tics 2
+	pic K8MHJ0 tics 2
+	pic K8MHK0 tics 2
+	pic K8MHL0 tics 2
+	pic K8MHM0 tics 2
+	pic K8MHN0 tics 2
+	
+texture optional CHROI0
+	pic CHROI0 tics 4
+	pic CHROJ0 tics 4
+	pic CHROK0 tics 4
+	pic CHROJ0 tics 4
+	

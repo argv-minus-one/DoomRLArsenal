@@ -1,0 +1,492 @@
+
+ACTOR RLBurstCannonMinigun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was transformed into a fine spray by %k's minigun."
+  Inventory.Pickupmessage "You picked up an Burst Minigun."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Burst Minigun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 25
+  Weapon.SlotNumber 4
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLBurstCannonMinigunClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunNanoMod",1,3)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSpin",1,"ReadySpin")
+    ZGGG A 1 A_WeaponReady (48)
+    Loop
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSpin",1,"ReadySpin")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunClip",1,2)
+    ZGGG A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    ZGGG A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunClip", 400, "Ready")
+	Goto Ready+8
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunClip", 520, "Ready")
+	Goto Ready+8
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunClip", 1)
+    ZGGG A 16 A_WeaponReady (32)
+    Goto Ready+5
+  ReadySpin:
+    TNT1 A 0 A_PlaySound("weapons/burstminigunspin", 6, 1, 1)
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunState",1)
+	TNT1 A 0 A_Jump(128,2)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSpin",7,2)
+    ZGGG A 1 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+    Goto ReadySpin+7
+    ZGGG A 1 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunState",1)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSpin",7,2)
+    ZGGG C 1 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+    Goto ReadySpin+11
+    ZGGG C 1 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunSpin",1)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSpin",80,"WindDown")
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBurstCannonMinigun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLBurstCannonMinigun",1)
+	Stop
+  AfterModDrop:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSpin",1,"AfterModDropSpin")
+    ZGGG A 8 A_WeaponReady (16)
+    Goto Ready
+  AfterModDropSpin:
+    ZGGG ACACACAC 1 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    ZGGG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSpin",80)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    ZGGG A 2 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    ZGGG A 2 A_Raise
+    Loop
+  FireSpinCheck:
+	TNT1 A 0 A_JumpIfNoAmmo("WindDown")
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSpin",80)
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunSpin",1)
+    Goto FireStart
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSpin",1,"FireSpinCheck")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+  FireWindUp:
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunSpin",1)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunFirestormMod",1,"FireWindUp1")
+	ZGGG B 4 A_PlaySound("weapons/burstminigunwindup", 6)
+	ZGGG CD 3
+	ZGGG AB 3
+	ZGGG CD 2
+	ZGGG ABCD 1
+    Goto FireStart
+  FireWindUp1:
+	ZGGG B 3 A_PlaySound("weapons/burstminigunwindup", 6)
+	ZGGG CD 2
+	ZGGG AB 2
+	ZGGG CD 1
+    Goto FireStart
+  FireStart:
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunBurst",1)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBurst",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (7, 3, -1, 15, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (7, 3, -1, 15, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBurst",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (7, 3, -1, 20, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (7, 3, -1, 20, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBurst",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6.5, 2.5, -1, 15, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6.5, 2.5, -1, 15, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBurst",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1, -1, 15, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, 15, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunState",1,"FireState")
+    TNT1 A 0 A_PlaySound("weapons/burstminigun", CHAN_WEAPON, 1, 0, 0.7)
+    ZGGF A 1 Bright A_GunFlash
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunState",1)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBurst",3,1)
+    Goto Fire
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunBurst",3)
+    Goto Ready
+  FireState:
+    TNT1 A 0 A_PlaySound("weapons/burstminigun", CHAN_WEAPON, 1, 0, 0.7)
+    ZGGF B 1 Bright A_GunFlash
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunState",1)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBurst",3,1)
+    Goto Fire
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunBurst",3)
+    Goto Ready
+  WindDown:
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSpin",80)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunFirestormMod",1,"WindDown1")
+	ZGGG A 2 A_PlaySound("weapons/burstminigunwinddown", 6)
+	ZGGG BC 2
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG D 2
+	ZGGG ABC 3
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG DAB 4
+	ZGGG CD 2
+	Goto Ready
+  WindDown1:
+	ZGGG A 1 A_PlaySound("weapons/burstminigunwinddown", 6)
+	ZGGG BC 1
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG D 2
+	ZGGG ABC 2
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG D 3
+	Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunNanoMod",1,"Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto WindDown
+	ZGGG A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSpin",80)
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunClip", 400, "Ready")
+	Goto Reload+8
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunClip", 520, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunTechnicalMod",1,"Reload1")
+    ZGGR A 5
+    ZGGR B 5
+    ZGGR C 5
+    ZGGR D 5
+    ZGGR E 5
+    ZGGR F 5
+    ZGGR G 5 A_PlaySound("weapons/burstminigununload", 5)
+    ZGGR G 5
+	Goto ReloadWorking
+  Reload1:
+    ZGGR A 4
+    ZGGR B 4
+    ZGGR C 4
+    ZGGR D 5
+    ZGGR E 5
+    ZGGR F 5
+    ZGGR G 5 A_PlaySound("weapons/burstminigununload", 5)
+    ZGGR G 5
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLBurstCannonMinigunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunClip",400,3)
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunClip",520,2)
+	TNT1 A 0 A_JumpIfInventory("Clip",1,2)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunBurst", 3)
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/burstminigunload", 7)
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunTechnicalMod",1,"ReloadFinish1")
+    ZGGR H 8
+    ZGGR G 5
+    ZGGR F 5
+    ZGGR E 5
+    ZGGR D 5
+    ZGGR C 5
+    ZGGR B 5
+    ZGGR A 5
+	Goto ReloadSpin
+  ReloadFinish1:
+    ZGGR H 8
+    ZGGR G 4
+    ZGGR F 4
+    ZGGR E 4
+    ZGGR D 5
+    ZGGR C 5
+    ZGGR B 5
+    ZGGR A 5
+	Goto ReloadSpin
+  ReloadSpin:
+	TNT1 A 0 A_PlaySound("weapons/burstminigunwinddown", 6)
+	ZGGG A 3
+	ZGGG B 3
+	ZGGG C 3
+	ZGGG D 4
+	ZGGG A 4
+	ZGGG B 4
+	ZGGG C 5
+	ZGGG D 5
+	Goto Ready
+  Flash:
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigunState",1,2)
+    TNT1 A 1 A_Light2
+    Goto LightDone
+    TNT1 A 1 A_Light1
+    Goto LightDone
+  Spawn:
+    ZGGP A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_StopSound(6)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonMinigunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLBurstCannonMinigun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLBurstCannonMinigunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunSpin : Inventory
+{
+inventory.maxamount 80
+}
+
+Actor RLBurstCannonMinigunBurst : Inventory
+{
+inventory.maxamount 3
+}
+
+Actor RLBurstCannonMinigunModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBurstCannonMinigunSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLBurstCannonMinigunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 520
+   Inventory.Icon ""
+}
+
+ACTOR RLBurstCannonMinigunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		ZGGP A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBurstCannonMinigun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/burstminigunpickup")
+		TNT1 A 0 A_GiveInventory("RLBurstCannonMinigun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvBurst Minigun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Clip",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Burst Minigun =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Clip",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Clip",400)
+		Stop
+	AmmoFull:
+		ZGGP A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLBurstCannonMinigun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		ZGGP A 1
+		Loop
+	Death:
+		TNT1 A 0
+		ZGGP A 1 A_SpawnItem("RLBurstCannonMinigunPickup",0,0,0,0)
+		Stop
+	}
+}

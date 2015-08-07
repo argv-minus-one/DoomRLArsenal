@@ -1,0 +1,373 @@
+
+ACTOR RLBiggestFuckingGun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was completely overkilled by %k's Biggest Fucking Gun."
+  Inventory.Pickupmessage "You picked up the Biggest Fucking Gun. Time to take some names."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Biggest Fucking Gun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 3900
+  Weapon.SlotNumber 7
+  Weapon.AmmoUse1 100
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLBiggestFuckingGunClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    TNT1 A 0 A_PlaySound("weapons/biggestfuckinggunidle", 6, 1, 1)
+    PRCG ABC 1 A_WeaponReady (48)
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_PlaySound("weapons/biggestfuckinggunoff", 6, 1, 0)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBiggestFuckingGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBiggestFuckingGun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLBiggestFuckingGun",1)
+	Stop
+  AfterModDrop:
+    PRCG ABCABCABC 1 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    PRCG ABCABCABC 1 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+    TNT1 A 0 A_StopSound(CHAN_WEAPON)
+    TNT1 A 0 A_PlaySound("weapons/biggestfuckinggunoff", 6, 1, 0)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLBiggestFuckingGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    PRCG A 2 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLBiggestFuckingGunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    PRCG A 2 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_PlaySound("weapons/biggestfuckingguncharge", CHAN_WEAPON)
+	PRCG DEDEDEDEDEDEDEDEDEDE 3 Bright
+	TNT1 A 0 A_AlertMonsters
+	PRCG DEDEDEDEDEDEDEDEDEDE 2 Bright
+	TNT1 A 0 A_AlertMonsters
+	PRCG DEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDEDE 1 Bright
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_GunFlash
+	TNT1 A 0 A_FireCustomMissile ("RLBiggestFuckingGunBall", 0, 1)
+    Goto FireFinish
+  FireFinish:
+    PRCG FGH 2 Bright
+    PRCG ED 4 Bright
+    PRCG CB 6
+    PRCG A 6 A_Refire
+    Goto Ready
+  Reload:
+	PRCG ABC 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLBiggestFuckingGunClip", 250, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+    TNT1 A 0 A_PlaySound("weapons/biggestfuckinggunoff", 6, 1, 0)
+    PRCG I 4
+    PRCG A 4
+    PRCG J 4
+    PRCG K 4
+    PRCG L 4
+    PRCG M 4
+    PRCG N 4
+    PRCG O 4
+	TNT1 A 0 A_PlaySound("weapons/bfgxunload", 5)
+    TNT1 A 45
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLBiggestFuckingGunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLBiggestFuckingGunClip",250,2)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_PlaySound("weapons/bfgxload", 7)
+    PRCG O 2
+    PRCG N 2
+    PRCG M 2
+    PRCG L 2
+    PRCG K 2
+    PRCG J 2
+    PRCG A 2
+    PRCG I 2
+    PRCG A 7 A_ReFire
+	Goto Ready
+  Flash:
+	TNT1 A 2 Bright A_Light(5)
+	TNT1 A 2 Bright A_Light2
+	TNT1 A 2 Bright A_Light1
+	Goto LightDone
+  Spawn:
+    PRCW A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBiggestFuckingGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLBiggestFuckingGun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLBiggestFuckingGunBall : BFGBall
+{
+  Radius 14
+  Height 9
+  Alpha 0.95
+  Scale 0.8
+  Damagetype "Plasma"
+  Damage 250
+  Species "Player"
+  +THRUSPECIES
+  +RIPPER
+  +FULLVOLDEATH
+  +NOBOSSRIP
+  +SKYEXPLODE
+  +FORCEPAIN
+  +FORCERADIUSDMG
+  +THRUGHOST
+  Decal "BiggestBFGLightning"
+  Translation "192:207=112:127"
+  SeeSound "weapons/biggestfuckinggunfire"
+  DeathSound "weapons/biggestfuckinggunhit"
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/biggestfuckinggunball", 5, 1, 1, 0.5)
+    PULS CDEFGFED 2 Bright A_CustomMissile("RLBiggestFuckingGunBallTrail", 8, 0, 0)
+    Loop
+  Death:
+    TNT1 A 0 A_StopSound(5)
+    TNT1 A 0 A_SetScale (2)
+    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("RLBiggestFuckingGunSpark", 16, 0, random (0,360))
+    PULS HI 4 Bright A_Explode (256, 512, 0)
+    PULS J 4 Bright A_BFGSpray ("BFGExtra3", 100, 20)
+    PULS KLMNOPQRST 4 Bright A_Explode (64, 128, 0)
+    Stop
+  }
+}
+
+ACTOR RLBiggestFuckingGunBallTrail
+{
+	Radius 1
+	Height 1
+	PROJECTILE
+	+NOGRAVITY
+	+FLOORCLIP
+	+NOCLIP
+	+NOINTERACTION
+	Alpha 0.3
+	Scale 0.8
+	Speed 0.2
+    Translation "192:207=112:127"
+	Mass 0
+	RenderStyle Add
+	States
+	{
+	Spawn:
+		PULS AB 8
+	Stop
+	}
+}
+
+ACTOR BFGExtra3 : BFGExtra
+{
+  +PUFFGETSOWNER
+  +THRUGHOST
+  Damagetype "Plasma"
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/bfgx", CHAN_BODY, 1, 0, 0.9)
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_Explode (128, 128, 0)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLBiggestFuckingGunSpark
+{
+	radius 3
+	height 6
+	speed 12
+	RenderStyle ADD
+	Alpha		0.9
+	Scale		1.25
+	Mass		0
+	Gravity 0.4
+	+MISSILE
+	+DOOMBOUNCE
+	+FLOORCLIP
+	+DONTSPLASH
+	+NOTELEPORT
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_ScaleVelocity (random (0.5, 1.5))
+	PLBS DDDDD 1  Bright A_SetTranslucent(.8,1)
+	PLBS CCCCCC 1  Bright A_SetTranslucent(.6,1)
+	PLBS BBBBBBB 1  Bright A_SetTranslucent(.4,1)
+	PLBS AAAAAAAAAA 1 Bright A_SetTranslucent(.2,1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLBiggestFuckingGunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLBiggestFuckingGunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 250
+   Inventory.Icon ""
+}
+
+ACTOR RLBiggestFuckingGunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		PRCW A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBiggestFuckingGun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/bfgxpickup")
+		TNT1 A 0 A_GiveInventory("RLBiggestFuckingGun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up the \cvBiggest Fucking Gun. \c-Time to take some names.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Cell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv=M= Biggest Fucking Gun =M=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Cell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Cell",250)
+		Stop
+	AmmoFull:
+		PRCW A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLBiggestFuckingGun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		PRCW A 1
+		Loop
+	Death:
+		TNT1 A 0
+		PRCW A 1 A_SpawnItem("RLBiggestFuckingGunPickup",0,0,0,0)
+		Stop
+	}
+}

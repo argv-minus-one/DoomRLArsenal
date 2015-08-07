@@ -1,0 +1,567 @@
+
+ACTOR RLJudgeOfTheDead : RLWeapon
+{
+  Inventory.Pickupsound "weapons/legendary"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%k delivered a last judgement onto %o."
+  Inventory.Pickupmessage "You picked up the Judge of the Dead."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Judge of the Dead"
+  Weapon.Kickback 200
+  Weapon.SelectionOrder 11
+  Weapon.SlotNumber 3
+  Weapon.AmmoUse1 2
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLJudgeOfTheDeadClip"
+  Weapon.AmmoType2 "Shell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    JOTD A 1 A_WeaponReady (48)
+    Loop
+  ReadyReload:
+    JOTD A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    Goto Ready
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLJudgeOfTheDead",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLJudgeOfTheDead",1)
+	Stop
+  AfterModDrop:
+    JOTD A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    JOTD A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    JOTD A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLJudgeOfTheDeadSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    JOTD A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    JOTD A 3
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadBulkMod",1,"FireB")
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadNanoCounter",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadNanoMod",1,2)
+  FireNormal:
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissile",0,1,2)
+    Goto FireNormal+2
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissile",0,0,2)
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissile",0,0,-2)
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegade")
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissile",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissile",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireRenegade:
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissile",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissile",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileP",0,1,2)
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileP",0,0,-2)
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeP")
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileP",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileP",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireRenegadeP:
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileP",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileP",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileA",0,1,2)
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileA",0,0,-2)
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeA")
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileA",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileA",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireRenegadeA:
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileA",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileA",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireB:
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileB",0,1,2)
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileB",0,0,-2)
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeB")
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileB",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileB",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireRenegadeB:
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileB",frandom(9,-9),0,2,0,0,frandom(5,-5))
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileB",frandom(9,-9),0,-2,0,frandom(5,-5))
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileF",0,1,2)
+	TNT1 A 0 A_FireCustomMissile("RLJOTDMiniMissileF",0,0,-2)
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeF")
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileF",frandom(18,-18),0,2,0,0,frandom(10,-10))
+	TNT1 AAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileF",frandom(18,-18),0,-2,0,frandom(10,-10))
+    Goto FireFinish
+  FireRenegadeF:
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileF",frandom(18,-18),0,2,0,0,frandom(10,-10))
+	TNT1 AAAAAAAAAAAA 0 A_FireCustomMissile("RLJOTDSubMiniMissileF",frandom(18,-18),0,-2,0,frandom(10,-10))
+    Goto FireFinish
+  FireS:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeS")
+	TNT1 A 0 A_FireBullets (9, 5, 18, 20, "RLJOTDPuff")
+    Goto FireFinish
+  FireRenegadeS:
+	TNT1 A 0 A_FireBullets (9, 5, 26, 20, "RLJOTDPuff")
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadNanoMod",1,1)
+    Goto FireFinish+2
+	TNT1 A 0 A_GiveInventory("RLJudgeOfTheDeadNanoCounter",1)
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadSniperMod",1,1)
+    Goto FireFinish+4
+    TNT1 A 0 A_PlaySound("weapons/jotdsniper", CHAN_WEAPON)
+    Goto FireFinish+5
+    TNT1 A 0 A_PlaySound("weapons/judgeofthedead", CHAN_WEAPON)
+    JOTD B 3 Bright A_GunFlash
+    JOTD C 3 Bright
+    JOTD D 3 
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadNanoCounter",3,4)
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadNanoMod",1,2)
+    JOTD E 3 A_Refire ("Reload")
+    Goto Ready
+    JOTD E 3
+    Goto Ready
+	TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadNanoCounter",3)
+    JOTD E 3 A_Refire ("Reload")
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadClip", 2, "ReadyReload")
+	TNT1 A 0 A_JumpIfInventory("Shell", 2, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+    TNT1 A 0 A_PlaySound("weapons/jotdopen", 5)
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadTechnicalMod",1,"Reload1")
+    JOTD F 4
+    JOTD G 16
+    JOTD H 4
+    JOTD I 2
+    TNT1 A 0 A_PlaySound("weapons/jotdload", 6)
+	Goto ReloadWorking
+  Reload1:
+    JOTD F 3
+    JOTD G 15
+    JOTD H 3
+    JOTD I 2
+    TNT1 A 0 A_PlaySound("weapons/jotdload", 6)
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Shell", 2)
+	TNT1 A 0 A_GiveInventory("RLJudgeOfTheDeadClip", 2)
+	Goto ReloadFinish
+  ReloadFinish:
+	TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDeadTechnicalMod",1,"ReloadFinish1")
+    JOTD I 2
+    JOTD J 4
+    JOTD K 4
+    JOTD L 4
+    TNT1 A 0 A_PlaySound("weapons/jotdclose", 5)
+    JOTD E 4
+	Goto Ready
+  ReloadFinish1:
+    JOTD I 2
+    JOTD J 3
+    JOTD K 3
+    JOTD L 3
+    TNT1 A 0 A_PlaySound("weapons/jotdclose", 5)
+    JOTD E 4
+	Goto Ready
+  Flash:
+    TNT1 A 3 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  Spawn:
+    JOTD X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLJudgeOfTheDeadSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLOnyxMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLJudgeOfTheDead",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLJOTDMiniMissile : Rocket
+{
+  Radius 5
+  Height 3
+  Scale 0.5
+  Speed 20
+  Decal "RevenantScorch"
+  Damage 10
+  Damagetype "Fire"
+  SeeSound ""
+  DeathSound "weapons/smallexp"
+  Species "Player"
+  +THRUSPECIES
+  -DEHEXPLOSION
+  -ROCKETTRAIL
+  -RANDOMIZE
+  +THRUGHOST
+  States
+  {
+  Spawn:
+    FLAR A 1 Bright
+    Loop
+  Death:
+    FREX A 6 Bright A_Explode (8,32)
+    FREX B 4 Bright
+    FREX C 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLJOTDSubMiniMissile : RLJOTDMiniMissile
+{
+  Scale 0.3
+  Damage 8
+}
+
+ACTOR RLJOTDMiniMissileB : RLJOTDMiniMissile
+{
+  Damage 15
+}
+
+ACTOR RLJOTDSubMiniMissileB : RLJOTDMiniMissile
+{
+  Scale 0.3
+  Damage 13
+}
+
+ACTOR RLJOTDMiniMissileP : RLJOTDMiniMissile
+{
+  States
+  {
+  Death:
+    FREX A 6 Bright A_Explode (12,32)
+    FREX B 4 Bright
+    FREX C 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLJOTDSubMiniMissileP : RLJOTDMiniMissileP
+{
+  Scale 0.3
+  Damage 8
+}
+
+ACTOR RLJOTDMiniMissileA : RLJOTDMiniMissile
+{
+  Speed 30
+}
+
+ACTOR RLJOTDSubMiniMissileA : RLJOTDMiniMissileA
+{
+  Scale 0.3
+  Damage 8
+}
+
+ACTOR RLJOTDMiniMissileF : RLJOTDMiniMissile
+{
+  +SEEKERMISSILE
+  States
+  {
+  Spawn:
+    TNT1 A 0 A_SeekerMissile(35,70,SMF_PRECISE)
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    Loop
+  Death:
+	TNT1 A 0 A_SetScale (0.7)
+    MISL B 8 Bright A_Explode (64,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLJOTDSubMiniMissileF : RLJOTDMiniMissileF
+{
+  +SCREENSEEKER
+  Scale 0.3
+  Damage 8
+  States
+  {
+  Spawn:
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+  SpawnLoop:
+    TNT1 A 0 A_SeekerMissile(2,2,SMF_LOOK | SMF_PRECISE,128,10)
+    TNT1 A 0 A_ChangeVelocity (1, frandom(-3, 3), frandom(-2, 2), 1)
+    FLAR A 1 Bright
+    Loop
+  Death:
+	TNT1 A 0 A_SetScale (0.7)
+    MISL B 8 Bright A_Explode (32,64)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLJOTDPuff
+{ 
+   ActiveSound "weapons/smallexp"
+   PainSound "weapons/smallexp"
+   AttackSound "weapons/smallexp"
+   +NOGRAVITY
+   +NOBLOCKMAP
+   +PUFFONACTORS
+   +PUFFGETSOWNER
+   +RANDOMIZE
+   RenderStyle Add
+   Alpha 0.9
+   Mass 5
+   Scale 0.8
+  Damagetype "Fire"
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      FREX A 6 Bright A_Explode (8,32)
+      FREX B 4 Bright
+      FREX C 2 Bright
+      Stop
+   }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLJudgeOfTheDeadSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadNanoCounter : Inventory
+{
+inventory.maxamount 3
+}
+
+Actor RLJudgeOfTheDeadModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLJudgeOfTheDeadSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLJudgeOfTheDeadClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 2
+   Inventory.Icon ""
+}
+
+ACTOR RLJudgeOfTheDeadPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		JOTD X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLJudgeOfTheDead",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/judgeofthedeadpickup")
+		TNT1 A 0 A_GiveInventory("RLJudgeOfTheDead",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up the \ckJudge of the Dead. \c-Punish the guilty...")
+		TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+		Stop
+		TNT1 A 0 A_PlaySound("renegade/laugh", CHAN_VOICE)
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ck=L= Judge of the Dead =L=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLJudgeOfTheDead
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		JOTD X 1
+		Loop
+	Death:
+		TNT1 A 0
+		JOTD X 1 A_SpawnItem("RLJudgeOfTheDeadPickup",0,0,0,0)
+		Stop
+	}
+}

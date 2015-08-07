@@ -1,0 +1,176 @@
+
+decal BlueBFGLightning1
+{
+	pic BFGLITE1
+	shade "10 80 ff"
+	fullbright
+	randomflipx
+	animator GoAway2
+	lowerdecal BFGScorch
+}
+
+decal BlueBFGLightning2
+{
+	pic BFGLITE2
+	shade "10 80 ff"
+	fullbright
+	randomflipy
+	animator GoAway2
+	lowerdecal BFGScorch
+}
+
+decalgroup BlueBFGLightning
+{
+	BlueBFGLightning1	1
+	BlueBFGLightning2	1
+}
+
+decal RedBFGLightning1
+{
+	pic BFGLITE1
+	shade "ff 20 20"
+	fullbright
+	randomflipx
+	animator GoAway2
+	lowerdecal BFGScorch
+}
+
+decal RedBFGLightning2
+{
+	pic BFGLITE2
+	shade "ff 20 20"
+	fullbright
+	randomflipy
+	animator GoAway2
+	lowerdecal BFGScorch
+}
+
+decalgroup RedBFGLightning
+{
+	RedBFGLightning1	1
+	RedBFGLightning2	1
+}
+
+decal BigBFGScorch1
+{
+	pic BFGSCRC1
+	shade "00 00 00"
+    x-scale 1.5
+    y-scale 1.5
+	randomflipx
+	randomflipy
+}
+
+decal BigBFGScorch2
+{
+	pic BFGSCRC2
+	shade "00 00 00"
+    x-scale 1.5
+    y-scale 1.5
+	randomflipx
+	randomflipy
+}
+
+decalgroup BigBFGScorch
+{
+	BigBFGScorch1	1
+	BigBFGScorch2	1
+}
+
+fader BigGoAway
+{
+	DecayStart	2.0
+	DecayTime	5.0
+}
+
+decal BigBFGLightning1
+{
+	pic BFGLITE1
+	shade "80 ff 80"
+    x-scale 1.5
+    y-scale 1.5
+	fullbright
+	randomflipx
+	animator BigGoAway
+	lowerdecal BigBFGScorch
+}
+
+decal BigBFGLightning2
+{
+	pic BFGLITE2
+	shade "80 ff 80"
+    x-scale 1.5
+    y-scale 1.5
+	fullbright
+	randomflipy
+	animator BigGoAway
+	lowerdecal BigBFGScorch
+}
+
+decalgroup BigBFGLightning
+{
+	BigBFGLightning1	1
+	BigBFGLightning2	1
+}
+
+decal BiggestBFGScorch1
+{
+	pic BFGSCRC1
+	shade "00 00 00"
+    x-scale 2.5
+    y-scale 2.5
+	randomflipx
+	randomflipy
+}
+
+decal BiggestBFGScorch2
+{
+	pic BFGSCRC2
+	shade "00 00 00"
+    x-scale 2.5
+    y-scale 2.5
+	randomflipx
+	randomflipy
+}
+
+decalgroup BiggestBFGScorch
+{
+	BiggestBFGScorch1	1
+	BiggestBFGScorch2	1
+}
+
+fader BiggestGoAway
+{
+	DecayStart	5.0
+	DecayTime	15.0
+}
+
+decal BiggestBFGLightning1
+{
+	pic BFGLITE1
+	shade "80 ff 80"
+    x-scale 4.5
+    y-scale 4.5
+	fullbright
+	randomflipx
+	animator BiggestGoAway
+	lowerdecal BiggestBFGScorch
+}
+
+decal BiggestBFGLightning2
+{
+	pic BFGLITE2
+	shade "80 ff 80"
+    x-scale 4.5
+    y-scale 4.5
+	fullbright
+	randomflipy
+	animator BiggestGoAway
+	lowerdecal BiggestBFGScorch
+}
+
+decalgroup BiggestBFGLightning
+{
+	BiggestBFGLightning1	1
+	BiggestBFGLightning2	1
+}

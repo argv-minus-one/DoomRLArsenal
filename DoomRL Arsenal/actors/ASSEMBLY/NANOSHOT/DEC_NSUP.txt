@@ -1,0 +1,292 @@
+
+ACTOR RLNanoShrapnelSuperShotgun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was erased by %k's super shotgun."
+  Inventory.Pickupmessage "You picked up a Nano Super Shotgun!"
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Nano Super Shotgun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 1500
+  Weapon.SlotNumber 3
+  Weapon.AmmoUse1 0
+  Weapon.AmmoGive1 0
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    NSSG A 1 A_WeaponReady (32)
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunFirestormMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoShrapnelSuperShotgun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLNanoShrapnelSuperShotgun",1)
+	Stop
+  AfterModDrop:
+    NSSG A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    NSSG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    NSSG A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLNanoShrapnelSuperShotgunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    NSSG A 1 A_Raise
+    Loop
+  Fire:
+    NSSG A 3
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgunFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgunBulkMod",1,"FireB")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgunAgilityMod",1,"FireA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegade")
+	TNT1 A 0 A_FireBullets (12, 7.5, 20, 3, "RLPiercingPuff")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgunBulkMod",1,1)
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (12, 7.5, 2, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireRenegade:
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgunBulkMod",1,2)
+	TNT1 A 0 A_FireBullets (12, 7.5, 30, 3, "RLPiercingPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (12, 7.5, 33, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeP")
+	TNT1 A 0 A_FireBullets (12, 7.5, 20, 4, "RLPiercingPuff")
+    Goto FireFinish
+  FireRenegadeP:
+	TNT1 A 0 A_FireBullets (12, 7.5, 30, 4, "RLPiercingPuff")
+    Goto FireFinish
+  FireA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeA")
+	TNT1 A 0 A_FireBullets (11.5, 7, 20, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireRenegadeA:
+	TNT1 A 0 A_FireBullets (11.5, 7, 30, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireB:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeB")
+	TNT1 A 0 A_FireBullets (12, 7.5, 21, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireRenegadeB:
+	TNT1 A 0 A_FireBullets (12, 7.5, 32, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireS:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeS")
+	TNT1 A 0 A_FireBullets (10, 5.5, 19, 3, "RLPiercingPuff")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireRenegadeS:
+	TNT1 A 0 A_FireBullets (10, 5.5, 29, 3, "RLPiercingPuff")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireF:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeF")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 15, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (12, 7.5, 20, 3, "RLPiercingPuffF")
+    Goto FireFinish
+  FireRenegadeF:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 15, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (12, 7.5, 30, 3, "RLPiercingPuff")
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/nanosupershotgun", CHAN_WEAPON)
+	TNT1 A 0 A_CheckFloor (2)
+	TNT1 A 0 A_Jump(256,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingSteelBootsToken",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingProtectiveBootsToken",1,3)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingPlasteelBootsToken",1,2)
+    TNT1 A 0 A_ChangeVelocity (Cos(Pitch) * -1.2, 0, Sin(Pitch) * 1.2, 1)
+    NSSG B 4 Bright A_GunFlash
+    NSSG C 3 Bright
+    NSSG A 3
+    Goto Ready
+  Flash:
+    TNT1 A 4 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  Spawn:
+    NSSG X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunFirestormMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelSuperShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLNanoShrapnelSuperShotgun",1)
+	Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLNanoShrapnelSuperShotgunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNanoShrapnelSuperShotgunModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNanoShrapnelSuperShotgunPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNanoShrapnelSuperShotgunBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNanoShrapnelSuperShotgunAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNanoShrapnelSuperShotgunSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNanoShrapnelSuperShotgunFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLNanoShrapnelSuperShotgunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		NSSG X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelSuperShotgun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/nanosupershotgunpickup")
+		TNT1 A 0 A_GiveInventory("RLNanoShrapnelSuperShotgun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvNano Super Shotgun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Nano Super Shotgun =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLNanoShrapnelSuperShotgun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		NSSG X 1
+		Loop
+	Death:
+		TNT1 A 0
+		NSSG X 1 A_SpawnItem("RLNanoShrapnelSuperShotgunPickup",0,0,0,0)
+		Stop
+	}
+}

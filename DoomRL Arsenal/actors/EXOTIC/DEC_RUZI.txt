@@ -1,0 +1,1097 @@
+
+ACTOR RLUzi : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was riddled by %k's uzi."
+  Inventory.Pickupmessage "You picked up an uzi."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Uzi"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 25
+  Weapon.SlotNumber 4
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLUziClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLUziNanoMod",1,2)
+    RUZI A 1 A_WeaponReady (48)
+    Goto Ready
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLUziClip",1,2)
+    RUZI A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    RUZI A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 32, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 42, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 52, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 62, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 72, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLUziClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLUziNanoMod",2,2)
+    RUZI A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    RUZI A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLStormUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLUzi",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLUzi",1)
+	Stop
+  AfterModDrop:
+    RUZI A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    RUZI A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    RUZI A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLUziSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    RUZI A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerUziConfirm",1, "AssembleHighPowerUzi")
+	TNT1 A 0 A_JumpIfInventory("RLStormUziConfirm",1, "AssembleStormUzi")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaUziConfirm",1, "AssemblePlasmaUzi")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleUziConfirm",1, "AssembleAssaultRifleUzi")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonUziConfirm",1, "AssembleBurstCannonUzi")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoUziConfirm",1, "AssembleNanoManufactureAmmoUzi")
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoUziConfirm",1, "AssembleDemolitionAmmoUzi")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_GiveInventory("RLUziAmmochain",1)
+	TNT1 A 0 A_JumpIfInventory("RLUziSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",2,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",3,"FireAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1, -1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",3,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",4,"FireAAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPPP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 8, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 8, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, (64), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPPA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 1.5, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 1, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePAAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0.5, -1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireAAAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, -1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, -1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, -1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLUziSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLUziSniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLUziSniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",2,"FireSAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLUziSniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",1,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLUziSniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",2,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLUziSniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLUziPowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLUziAgilityMod",3,"FireSAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSPP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSPA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPPP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, 1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, 1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPPA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, 6, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, 1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 5, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, 5, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, (40), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSAAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, 4, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, 4, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, (32), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/uzi", CHAN_WEAPON)
+	TNT1 A 0 A_JumpIfInventory("RLUziFirestormMod",2,"FireFinishFF")
+	TNT1 A 0 A_JumpIfInventory("RLUziFirestormMod",1,"FireFinishF")
+    Goto FireFinishNormal
+  FireFinishFF:
+	TNT1 A 0 A_JumpIfInventory("RLUziState",1,3)
+    RUZI B 1 Bright A_GunFlash
+	TNT1 A 0 A_GiveInventory("RLUziState",1)
+    Goto FireFinishContinue
+    RUZI C 1 Bright A_GunFlash
+	TNT1 A 0 A_TakeInventory("RLUziState",1)
+    Goto FireFinishContinue
+  FireFinishF:
+    RUZI B 1 Bright A_GunFlash
+    RUZI C 1 Bright
+    Goto FireFinishContinue
+  FireFinishNormal:
+    RUZI B 1 Bright A_GunFlash
+    RUZI C 1 Bright
+    RUZI D 1
+  FireFinishContinue:
+	TNT1 A 0 A_JumpIfInventory("RLUziAmmochain",4,2)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeInventory("RLUziAmmochain",4)
+    TNT1 A 0 A_ReFire
+	TNT1 A 0 A_JumpIfInventory("RLUziFirestormMod",1,1)
+    Goto Ready
+    RUZI D 1
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLUziNanoMod",1,"Ready")
+	RUZI A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 32, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 42, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 52, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 62, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLUziClip", 72, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",4,"Reload4")
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",3,"Reload3")
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",1,"Reload1")
+    RUZI E 2
+    RUZI F 2
+    RUZI G 2
+    RUZI H 2
+    RUZI I 2
+    RUZI J 2
+    TNT1 A 0 A_PlaySound("weapons/uziunload", 5)
+    RUZI K 2
+    RUZI L 2
+    RUZI M 2
+    RUZI N 2
+    RUZI O 2
+    RUZI P 2
+	Goto ReloadWorking
+  Reload1:
+    RUZI E 1
+    RUZI F 1
+    RUZI G 1
+    RUZI H 2
+    RUZI I 2
+    RUZI J 2
+    TNT1 A 0 A_PlaySound("weapons/uziunload", 5)
+    RUZI K 2
+    RUZI L 2
+    RUZI M 2
+    RUZI N 2
+    RUZI O 2
+    RUZI P 2
+	Goto ReloadWorking
+  Reload2:
+    RUZI E 1
+    RUZI F 1
+    RUZI G 1
+    RUZI H 1
+    RUZI I 1
+    RUZI J 1
+    TNT1 A 0 A_PlaySound("weapons/uziunload", 5)
+    RUZI K 2
+    RUZI L 2
+    RUZI M 2
+    RUZI N 2
+    RUZI O 2
+    RUZI P 2
+	Goto ReloadWorking
+  Reload3:
+    RUZI E 1
+    RUZI F 1
+    RUZI G 1
+    RUZI H 1
+    RUZI I 1
+    RUZI J 1
+    TNT1 A 0 A_PlaySound("weapons/uziunload", 5)
+    RUZI K 1
+    RUZI L 1
+    RUZI M 1
+    RUZI N 2
+    RUZI O 2
+    RUZI P 2
+	Goto ReloadWorking
+  Reload4:
+    RUZI E 1
+    RUZI F 1
+    RUZI G 1
+    RUZI H 1
+    RUZI I 1
+    RUZI J 1
+    TNT1 A 0 A_PlaySound("weapons/uziunload", 5)
+    RUZI K 1
+    RUZI L 1
+    RUZI M 1
+    RUZI N 1
+    RUZI O 1
+    RUZI P 1
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLUziClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip",32,9)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip",42,7)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip",52,5)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLUziBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLUziClip",62,3)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLUziClip",72,2)
+	TNT1 A 0 A_JumpIfInventory("Clip",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/uziload", 7)
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",4,"ReloadFinish4")
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",3,"ReloadFinish3")
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLUziTechnicalMod",1,"ReloadFinish1")
+    RUZI Q 2
+    RUZI R 2
+    RUZI S 2
+    RUZI T 2
+    RUZI U 2
+    RUZI V 2
+    RUZI W 2
+    RUZI Y 2
+    RUZI Z 2
+    RUZI A 4
+	Goto Ready
+  ReloadFinish1:
+    RUZI Q 1
+    RUZI R 1
+    RUZI S 1
+    RUZI T 2
+    RUZI U 2
+    RUZI V 2
+    RUZI W 2
+    RUZI Y 2
+    RUZI Z 2
+    RUZI A 4
+	Goto Ready
+  ReloadFinish2:
+    RUZI Q 1
+    RUZI R 1
+    RUZI S 1
+    RUZI T 1
+    RUZI U 1
+    RUZI V 1
+    RUZI W 2
+    RUZI Y 2
+    RUZI Z 2
+    RUZI A 4
+	Goto Ready
+  ReloadFinish3:
+    RUZI Q 1
+    RUZI R 1
+    RUZI S 1
+    RUZI T 1
+    RUZI U 1
+    RUZI V 1
+    RUZI W 1
+    RUZI Y 1
+    RUZI Z 1
+    RUZI A 4
+	Goto Ready
+  ReloadFinish4:
+    RUZI Q 1
+    RUZI R 1
+    RUZI S 1
+    RUZI T 1
+    RUZI U 1
+    RUZI V 1
+    RUZI W 1
+    RUZI Y 1
+    RUZI Z 1
+    RUZI A 1
+	Goto Ready
+  Flash:
+    TNT1 A 1 A_Light2
+	TNT1 A 0 A_JumpIfInventory("RLUziFirestormMod",2,2)
+    TNT1 A 1 A_Light1
+	TNT1 A 0
+    Goto LightDone
+  Spawn:
+    RUZI X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerUziConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLStormUziConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaUziConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleUziConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonUziConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoUziConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoUziConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLHighPowerUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziConfirm",1)
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLStormUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_Jump(32,2,3)
+	TNT1 A 0 A_Jump(256,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAgilityMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLUzi",1)
+	Stop
+  AssembleHighPowerUzi:
+	TNT1 A 0 A_Print("\cvHigh Power Uzi \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerUziConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerUzi",1)
+	TNT1 A 0 A_SelectWeapon("RLHighPowerUzi")
+	TNT1 A 0 A_TakeInventory("RLUzi",1)
+	Stop
+  AssembleStormUzi:
+	TNT1 A 0 A_Print("\cvDual Uzis \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLStormUziConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLStormUzi",1)
+	TNT1 A 0 A_SelectWeapon("RLStormUzi")
+	TNT1 A 0 A_TakeInventory("RLUzi",1)
+	Stop
+  AssemblePlasmaUzi:
+	TNT1 A 0 A_Print("\cvPlasma Uzi \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaUziConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaUzi",1)
+	TNT1 A 0 A_SelectWeapon("RLPlasmaUzi")
+	TNT1 A 0 A_TakeInventory("RLUzi",1)
+	Stop
+  AssembleAssaultRifleUzi:
+	TNT1 A 0 A_Print("\cvAssault Uzi \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleUziConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleUzi",1)
+	TNT1 A 0 A_SelectWeapon("RLAssaultRifleUzi")
+	TNT1 A 0 A_TakeInventory("RLUzi",1)
+	Stop
+  AssembleBurstCannonUzi:
+	TNT1 A 0 A_Print("\cvBurst Uzi \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBurstCannonUziConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLBurstCannonUzi",1)
+	TNT1 A 0 A_SelectWeapon("RLBurstCannonUzi")
+	TNT1 A 0 A_TakeInventory("RLUzi",1)
+	Stop
+  AssembleNanoManufactureAmmoUzi:
+	TNT1 A 0 A_Print("\cvNanomachic Uzi \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoUziConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLNanoManufactureAmmoUzi",1)
+	TNT1 A 0 A_SelectWeapon("RLNanoManufactureAmmoUzi")
+	TNT1 A 0 A_TakeInventory("RLUzi",1)
+	Stop
+  AssembleDemolitionAmmoUzi:
+	TNT1 A 0 A_Print("\cvDemolition Ammo Uzi \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLUziSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLUziModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLUziPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLUziFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLUziNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLDemolitionAmmoUzi",1)
+	TNT1 A 0 A_SelectWeapon("RLDemolitionAmmoUzi")
+	TNT1 A 0 A_TakeInventory("RLUzi",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLUziSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLUziAmmochain : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLUziState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLUziModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLUziPowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLUziBulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLUziAgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLUziTechnicalMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLUziFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLUziNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLUziSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLUziClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 72
+   Inventory.Icon ""
+}
+
+ACTOR RLUziPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Scale 0.5
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		RUZI X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLUzi",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/uzipickup")
+		TNT1 A 0 A_GiveInventory("RLUzi",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up an \ctUzi.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Clip",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Uzi =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Clip",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Clip",32)
+		Stop
+	AmmoFull:
+		RUZI X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLUzi
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	Scale 0.5
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		RUZI X 1
+		Loop
+	Death:
+		TNT1 A 0
+		RUZI X 1 A_SpawnItem("RLUziPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,463 @@
+
+ACTOR RLAssaultRifleMinigun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was transformed into a fine spray by %k's minigun."
+  Inventory.Pickupmessage "You picked up an Assault Minigun."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Assault Minigun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 25
+  Weapon.SlotNumber 4
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLAssaultRifleMinigunClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunNanoMod",1,3)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",1,"ReadySpin")
+    ZGGG A 1 A_WeaponReady (48)
+    Loop
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",1,"ReadySpin")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunClip",1,2)
+    ZGGG A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    ZGGG A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunClip", 200, "Ready")
+	Goto Ready+8
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunClip", 260, "Ready")
+	Goto Ready+8
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunClip", 1)
+    ZGGG A 16 A_WeaponReady (32)
+    Goto Ready+5
+  ReadySpin:
+    TNT1 A 0 A_PlaySound("weapons/assaultminigunspin", 6, 1, 1)
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunState",1)
+	TNT1 A 0 A_Jump(128,2)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",7,2)
+    ZGGG A 1 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+    Goto ReadySpin+7
+    ZGGG A 1 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunState",1)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",7,2)
+    ZGGG C 1 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+    Goto ReadySpin+11
+    ZGGG C 1 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWRELOAD | WRF_ALLOWZOOM | WRF_NOBOB)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunSpin",1)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",80,"WindDown")
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAssaultRifleMinigun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLAssaultRifleMinigun",1)
+	Stop
+  AfterModDrop:
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",1,"AfterModDropSpin")
+    ZGGG A 8 A_WeaponReady (16)
+    Goto Ready
+  AfterModDropSpin:
+    ZGGG ACACACAC 1 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    ZGGG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSpin",80)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    ZGGG A 2 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    ZGGG A 2 A_Raise
+    Loop
+  FireSpinCheck:
+	TNT1 A 0 A_JumpIfNoAmmo("WindDown")
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSpin",80)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunSpin",1)
+    Goto FireStart
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",1,"FireSpinCheck")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+  FireWindUp:
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunSpin",1)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunFirestormMod",1,"FireWindUp1")
+	ZGGG B 4 A_PlaySound("weapons/assaultminigunwindup", 6)
+	ZGGG CD 3
+	ZGGG AB 3
+	ZGGG CD 2
+	ZGGG ABCD 1
+    Goto FireStart
+  FireWindUp1:
+	ZGGG B 3 A_PlaySound("weapons/assaultminigunwindup", 6)
+	ZGGG CD 2
+	ZGGG AB 2
+	ZGGG CD 1
+    Goto FireStart
+  FireStart:
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunAgilityMod",1,"FireA")
+	TNT1 A 0 A_FireBullets (1, 1, -1, 15, "RLBulletPuff")
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_FireBullets (1, 1, -1, 20, "RLBulletPuff")
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_FireBullets (0.5, 0.5, -1, 15, "RLBulletPuff")
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 15, "RLBulletPuff")
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunState",1,"FireState")
+    TNT1 A 0 A_PlaySound("weapons/assaultminigun", CHAN_WEAPON, 1, 0, 0.7)
+    ZGGF A 1 Bright A_GunFlash
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",1,2)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunState",1)
+	TNT1 A 0
+    Goto Ready
+  FireState:
+    TNT1 A 0 A_PlaySound("weapons/assaultminigun", CHAN_WEAPON, 1, 0, 0.7)
+    ZGGF B 1 Bright A_GunFlash
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunSpin",1,2)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunState",1)
+	TNT1 A 0
+    Goto Ready
+  WindDown:
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSpin",80)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunFirestormMod",1,"WindDown1")
+	ZGGG A 2 A_PlaySound("weapons/assaultminigunwinddown", 6)
+	ZGGG BC 2
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG D 2
+	ZGGG ABC 3
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG DAB 4
+	ZGGG CD 2
+	Goto Ready
+  WindDown1:
+	ZGGG A 1 A_PlaySound("weapons/assaultminigunwinddown", 6)
+	ZGGG BC 1
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG D 2
+	ZGGG ABC 2
+	TNT1 A 0 A_JumpIfNoAmmo(2)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
+	ZGGG D 3
+	Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunNanoMod",1,"Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto WindDown
+	ZGGG A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSpin",80)
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunClip", 200, "Ready")
+	Goto Reload+8
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunClip", 260, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunTechnicalMod",1,"Reload1")
+    ZGGR A 5
+    ZGGR B 5
+    ZGGR C 5
+    ZGGR D 5
+    ZGGR E 5
+    ZGGR F 5
+    ZGGR G 5 A_PlaySound("weapons/assaultminigununload", 5)
+    ZGGR G 5
+	Goto ReloadWorking
+  Reload1:
+    ZGGR A 4
+    ZGGR B 4
+    ZGGR C 4
+    ZGGR D 5
+    ZGGR E 5
+    ZGGR F 5
+    ZGGR G 5 A_PlaySound("weapons/assaultminigununload", 5)
+    ZGGR G 5
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunClip",200,3)
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunClip",260,2)
+	TNT1 A 0 A_JumpIfInventory("Clip",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/assaultminigunload", 7)
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunTechnicalMod",1,"ReloadFinish1")
+    ZGGR H 8
+    ZGGR G 5
+    ZGGR F 5
+    ZGGR E 5
+    ZGGR D 5
+    ZGGR C 5
+    ZGGR B 5
+    ZGGR A 5
+	Goto ReloadSpin
+  ReloadFinish1:
+    ZGGR H 8
+    ZGGR G 4
+    ZGGR F 4
+    ZGGR E 4
+    ZGGR D 5
+    ZGGR C 5
+    ZGGR B 5
+    ZGGR A 5
+	Goto ReloadSpin
+  ReloadSpin:
+	TNT1 A 0 A_PlaySound("weapons/assaultminigunwinddown", 6)
+	ZGGG A 3
+	ZGGG B 3
+	ZGGG C 3
+	ZGGG D 4
+	ZGGG A 4
+	ZGGG B 4
+	ZGGG C 5
+	ZGGG D 5
+	Goto Ready
+  Flash:
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigunState",1,2)
+    TNT1 A 1 A_Light2
+    Goto LightDone
+    TNT1 A 1 A_Light1
+    Goto LightDone
+  Spawn:
+    ZGGP A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_StopSound(6)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssaultRifleMinigunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAgilityMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLAssaultRifleMinigun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLAssaultRifleMinigunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunSpin : Inventory
+{
+inventory.maxamount 80
+}
+
+Actor RLAssaultRifleMinigunModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLAssaultRifleMinigunSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLAssaultRifleMinigunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 260
+   Inventory.Icon ""
+}
+
+ACTOR RLAssaultRifleMinigunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		ZGGP A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLAssaultRifleMinigun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/assaultminigunpickup")
+		TNT1 A 0 A_GiveInventory("RLAssaultRifleMinigun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvAssault Minigun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Clip",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Assault Minigun =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Clip",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Clip",200)
+		Stop
+	AmmoFull:
+		ZGGP A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLAssaultRifleMinigun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		ZGGP A 1
+		Loop
+	Death:
+		TNT1 A 0
+		ZGGP A 1 A_SpawnItem("RLAssaultRifleMinigunPickup",0,0,0,0)
+		Stop
+	}
+}

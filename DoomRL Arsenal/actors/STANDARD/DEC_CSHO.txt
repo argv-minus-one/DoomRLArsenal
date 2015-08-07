@@ -1,0 +1,1158 @@
+
+ACTOR RLCombatShotgun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was shredded by %k's combat shotgun."
+  Inventory.Pickupmessage "You picked up a Combat Shotgun."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Combat Shotgun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 1900
+  Weapon.SlotNumber 3
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLCombatShotgunClip"
+  Weapon.AmmoType2 "Shell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunNanoMod",1,2)
+    CSHO A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip",1,2)
+    CSHO A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    CSHO A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 5, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 6, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 7, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 8, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 9, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLCombatShotgunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunNanoMod",2,2)
+    CSHO A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    CSHO A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLTacticalShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaticShrapnelCombatShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelCombatShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLCombatShotgun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLCombatShotgun",1)
+	Stop
+  AfterModDrop:
+    CSHO A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    CSHO A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    CSHO A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLCombatShotgunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    CSHO A 1 A_Raise
+    Goto SelectLoop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLTacticalShotgunConfirm",1, "AssembleTacticalShotgun")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaticShrapnelCombatShotgunConfirm",1, "AssemblePlasmaticShrapnelCombatShotgun")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelCombatShotgunConfirm",1, "AssembleNanoShrapnelCombatShotgun")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFinalPump",1,"ReloadFinish")
+    CSHO A 3
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegade")
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegade:
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FirePA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeP")
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeP:
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeA")
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeA:
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FirePPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePP")
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePP:
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FirePAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePA")
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePA:
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",3,"FireAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeAA")
+	TNT1 A 0 A_FireBullets (3.5, 0, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeAA:
+	TNT1 A 0 A_FireBullets (3.5, 0, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FirePPPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPP")
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*8), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePPP:
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*8), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FirePPAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPA")
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePPA:
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",3,"FirePAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePAA")
+	TNT1 A 0 A_FireBullets (3.5, 0, 7, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePAA:
+	TNT1 A 0 A_FireBullets (3.5, 0, 11, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",4,"FireAAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeAAA")
+	TNT1 A 0 A_FireBullets (3, 0, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeAAA:
+	TNT1 A 0 A_FireBullets (3, 0, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePPPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPPP")
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*9), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePPPP:
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*9), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePPPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPPA")
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*8), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePPPA:
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*8), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePPAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPAA")
+	TNT1 A 0 A_FireBullets (3.5, 0, 7, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePPAA:
+	TNT1 A 0 A_FireBullets (3.5, 0, 11, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FirePAAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePAAA")
+	TNT1 A 0 A_FireBullets (3, 0, 7, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadePAAA:
+	TNT1 A 0 A_FireBullets (3, 0, 11, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireAAAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeAAAA")
+	TNT1 A 0 A_FireBullets (2.5, 0, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeAAAA:
+	TNT1 A 0 A_FireBullets (2.5, 0, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireSA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeS")
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeS:
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireSSA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSS")
+	TNT1 A 0 A_FireBullets (0.5, 0, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSS:
+	TNT1 A 0 A_FireBullets (0.5, 0, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireSPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSP")
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSP:
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireSAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSA")
+	TNT1 A 0 A_FireBullets (2, 0, 6, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSA:
+	TNT1 A 0 A_FireBullets (2, 0, 10, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireSSPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSP")
+	TNT1 A 0 A_FireBullets (0.5, 0, 7, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSSP:
+	TNT1 A 0 A_FireBullets (0.5, 0, 11, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireSSAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSA")
+	TNT1 A 0 A_FireBullets (0, 0, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSSA:
+	TNT1 A 0 A_FireBullets (0, 0, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireSPPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPP")
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*7), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSPP:
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*7), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireSPAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPA")
+	TNT1 A 0 A_FireBullets (2, 0, 6, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSPA:
+	TNT1 A 0 A_FireBullets (2, 0, 10, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",3,"FireSAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSAA")
+	TNT1 A 0 A_FireBullets (1.5, 0, 6, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSAA:
+	TNT1 A 0 A_FireBullets (1.5, 0, 10, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSSPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSPP")
+	TNT1 A 0 A_FireBullets (0.5, 0, 7, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSSPP:
+	TNT1 A 0 A_FireBullets (0.5, 0, 11, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireSSAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSAA")
+	TNT1 A 0 A_FireBullets (0, 0, 7, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSSAA:
+	TNT1 A 0 A_FireBullets (0, 0, 11, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireSSPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSPA")
+	TNT1 A 0 A_FireBullets (0, 0, 7, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSSPA:
+	TNT1 A 0 A_FireBullets (0, 0, 11, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireSPPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPPP")
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*8), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*8), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSPPP:
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*8), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*8), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSPPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPPA")
+	TNT1 A 0 A_FireBullets (2, 0, 6, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*7), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSPPA:
+	TNT1 A 0 A_FireBullets (2, 0, 10, (random(1,2)*7), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*7), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSPAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPAA")
+	TNT1 A 0 A_FireBullets (1.5, 0, 6, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSPAA:
+	TNT1 A 0 A_FireBullets (1.5, 0, 10, (random(1,2)*6), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireSAAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSAAA")
+	TNT1 A 0 A_FireBullets (1, 0, 6, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeSAAA:
+	TNT1 A 0 A_FireBullets (1, 0, 10, (random(1,2)*5), "RLBulletPuff", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLBulletPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFF")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeF")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeF:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFF:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFFA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFF")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFF:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FireFPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFSA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireFAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFS:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireFSS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFSA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFS")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFS:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFFP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFFPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 60, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*6), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 60, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*6), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFFA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireFFAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFFS:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFFSA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFS")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffFF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFS:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffFF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFSS:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFSSA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSS")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (0.5, 0, 7, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSS:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (0.5, 0, 11, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFSP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFSPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFSA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",2,"FireFSSA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireFSAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2, 0, 6, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2, 0, 10, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFPP:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",3,"FireFPPP")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",1,"FireFPPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFPP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 35, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*7), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFPP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 35, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*7), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFPA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",2,"FireFPPA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",2,"FireFPAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFPA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFPA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFAA:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFirestormMod",2,"FireFFAA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunPowerMod",1,"FireFPAA")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunAgilityMod",3,"FireFAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFAA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (3.5, 0, 7, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFAA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (3.5, 0, 11, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFFSS:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFSS")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (0.5, 0, 7, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFSS:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (0.5, 0, 11, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFFSA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFSA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (2, 0, 6, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffFF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFSA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (2, 0, 10, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffFF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFFSP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFSP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 60, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (2.5, 0, 7, (random(1,2)*6), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLShotgunPuffFF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFSP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 60, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*6), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLShotgunPuffFF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFFPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFPP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 70, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*7), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFPP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 70, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*7), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFFAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFAA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (3.5, 0, 7, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFAA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (3.5, 0, 11, (random(1,2)*5), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFFPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFFPA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 60, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*6), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFFPA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 60, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*6), "RLShotgunPuffFF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFSPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSPP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 35, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2.5, 0, 6, (random(1,2)*7), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*7), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSPP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 35, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2.5, 0, 10, (random(1,2)*7), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*7), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFSPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSPA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2, 0, 6, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSPA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (2, 0, 10, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*6), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFSAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSAA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (1.5, 0, 6, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSAA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (1.5, 0, 10, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+	TNT1 A 0 A_FireBullets (0, 0, 1, (random(1,2)*5), "RLShotgunPuffF", FBF_NORANDOM)
+    Goto FireFinish
+  FireFSSP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSSP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (0.5, 0, 7, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSSP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (0.5, 0, 11, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFSSA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFSSA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (0, 0, 7, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFSSA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (0, 0, 11, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFPPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFPPP")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 40, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 7, (random(1,2)*8), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFPPP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 40, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4.5, 1, 11, (random(1,2)*8), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFPPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFPPA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 35, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4, 0.5, 7, (random(1,2)*7), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFPPA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 35, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (4, 0.5, 11, (random(1,2)*7), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFPAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFPAA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (3.5, 0, 7, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFPAA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (3.5, 0, 11, (random(1,2)*6), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFAAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeFAAA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (3, 0, 7, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireRenegadeFAAA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (3, 0, 11, (random(1,2)*5), "RLShotgunPuffF", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/combatshotgun", CHAN_WEAPON)
+    CSHO B 4 Bright A_GunFlash
+    CSHO C 3 Bright
+    CSHO MA 2
+	TNT1 A 0 A_JumpIfNoAmmo(1)
+    Goto FireFinish+7
+	TNT1 A 0 A_GiveInventory("RLCombatShotgunFinalPump",1)
+    Goto FireFinish+10
+    CSHO D 3
+    CSHO E 3 A_PlaySound("weapons/combatshotgunpump", CHAN_AUTO)
+    CSHO D 3
+	TNT1 A 0
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunReloadSequence",1,"ReloadWorking")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunNanoMod",1,"Ready")
+	CSHO A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 5, "Ready")
+	Goto Reload+12
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 6, "Ready")
+	Goto Reload+12
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 7, "Ready")
+	Goto Reload+12
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 8, "Ready")
+	Goto Reload+12
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip", 9, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Shell", 1, 1)
+	Goto Ready
+	CSHO A 1
+    CSHO FG 2
+    CSHO H 2
+	Goto ReloadWorking
+  ReloadWorking:
+	TNT1 A 0 A_GiveInventory("RLCombatShotgunReloadSequence", 1)
+	TNT1 A 0 A_JumpIfInventory("Shell",1,1)
+	Goto ReloadFinish
+	TNT1 A 0 A_TakeInventory("Shell", 1)
+	TNT1 A 0 A_GiveInventory("RLCombatShotgunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip",5, "ReloadFinishing")
+	Goto ReloadTechnical
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip",6, "ReloadFinishing")
+	Goto ReloadTechnical
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip",7, "ReloadFinishing")
+	Goto ReloadTechnical
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip",8, "ReloadFinishing")
+	Goto ReloadTechnical
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunClip",9, "ReloadFinishing")
+	Goto ReloadTechnical
+  ReloadFinishing:
+	TNT1 A 0
+	TNT1 A 0 A_GiveInventory("RLCombatShotgunReloadDone", 1)
+	TNT1 A 0 // Play the reload animation.
+  ReloadTechnical:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",4,"Reload4")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",3,"Reload3")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",1,"Reload1")
+  Reload0:
+    CSHO N 4 A_PlaySound("weapons/shellload", CHAN_WEAPON)
+    CSHO O 4
+    CSHO P 4
+    CSHO Q 2
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunReloadDone",1,"ReloadFinish")
+	CSHO Q 2 A_WeaponReady(WRF_NOFIRE | WRF_NOBOB | WRF_NOSWITCH | WRF_ALLOWRELOAD)
+	Goto ReloadFinish
+  Reload1:
+    CSHO N 3 A_PlaySound("weapons/shellload", CHAN_WEAPON)
+    CSHO O 3
+    CSHO P 3
+    CSHO Q 2
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunReloadDone",1,"ReloadFinish")
+	CSHO Q 2 A_WeaponReady(WRF_NOFIRE | WRF_NOBOB | WRF_NOSWITCH | WRF_ALLOWRELOAD)
+	Goto ReloadFinish
+  Reload2:
+    CSHO N 2 A_PlaySound("weapons/shellload", CHAN_WEAPON)
+    CSHO O 2
+    CSHO P 3
+    CSHO Q 1
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunReloadDone",1,"ReloadFinish")
+	CSHO Q 2 A_WeaponReady(WRF_NOFIRE | WRF_NOBOB | WRF_NOSWITCH | WRF_ALLOWRELOAD)
+	Goto ReloadFinish
+  Reload3:
+    CSHO N 1 A_PlaySound("weapons/shellload", CHAN_WEAPON)
+    CSHO O 2
+    CSHO P 2
+    CSHO Q 1
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunReloadDone",1,"ReloadFinish")
+	CSHO Q 1 A_WeaponReady(WRF_NOFIRE | WRF_NOBOB | WRF_NOSWITCH | WRF_ALLOWRELOAD)
+	Goto ReloadFinish
+  Reload4:
+    CSHO N 1 A_PlaySound("weapons/shellload", CHAN_WEAPON)
+    CSHO O 1
+    CSHO P 1
+    CSHO Q 1
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunReloadDone",1,"ReloadFinish")
+	CSHO Q 1 A_WeaponReady(WRF_NOFIRE | WRF_NOBOB | WRF_NOSWITCH | WRF_ALLOWRELOAD)
+	Goto ReloadFinish
+  ReloadFinish:
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunReloadSequence", 1)
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunReloadDone", 1)
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",4,"ReloadFinish4")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",3,"ReloadFinish3")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunTechnicalMod",1,"ReloadFinish1")
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFinalPump",1,1)
+	Goto ReloadFinish+13
+    CSHO I 2
+    CSHO J 2 A_PlaySound("weapons/combatshotgunpump", CHAN_ITEM)
+    CSHO K 2
+    CSHO L 2
+    CSHO K 2
+    CSHO J 2
+    CSHO I 2
+    CSHO H 2
+    CSHO G 2
+    CSHO F 2
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunFinalPump",1)
+    CSHO A 7 A_ReFire
+	Goto Ready
+  ReloadFinish1:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFinalPump",1,1)
+	Goto ReloadFinish1+7
+    CSHO I 1
+    CSHO J 1 A_PlaySound("weapons/combatshotgunpump", CHAN_ITEM)
+    CSHO K 1
+    CSHO L 2
+    CSHO K 2
+    CSHO J 2
+    CSHO I 2
+    CSHO H 2
+    CSHO G 2
+    CSHO F 2
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunFinalPump",1)
+    CSHO A 7 A_ReFire
+	Goto Ready
+  ReloadFinish2:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFinalPump",1,1)
+	Goto ReloadFinish2+7
+    CSHO I 1
+    CSHO J 1 A_PlaySound("weapons/combatshotgunpump", CHAN_ITEM)
+    CSHO K 1
+    CSHO L 1
+    CSHO K 1
+    CSHO J 1
+    CSHO I 2
+    CSHO H 2
+    CSHO G 2
+    CSHO F 2
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunFinalPump",1)
+    CSHO A 7 A_ReFire
+	Goto Ready
+  ReloadFinish3:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFinalPump",1,1)
+	Goto ReloadFinish3+7
+    CSHO I 1
+    CSHO J 1 A_PlaySound("weapons/combatshotgunpump", CHAN_ITEM)
+    CSHO K 1
+    CSHO L 1
+    CSHO K 1
+    CSHO J 1
+    CSHO I 1
+    CSHO H 1
+    CSHO G 1
+    CSHO F 2
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunFinalPump",1)
+    CSHO A 4 A_ReFire
+	Goto Ready
+  ReloadFinish4:
+	TNT1 A 0 A_JumpIfInventory("RLCombatShotgunFinalPump",1,1)
+	Goto ReloadFinish4+7
+    CSHO I 1
+    CSHO J 1 A_PlaySound("weapons/combatshotgunpump", CHAN_ITEM)
+    CSHO K 1
+    CSHO L 1
+    CSHO K 1
+    CSHO J 1
+    CSHO I 1
+    CSHO H 1
+    CSHO G 1
+    CSHO F 1
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunFinalPump",1)
+    CSHO A 2 A_ReFire
+	Goto Ready
+  Flash:
+    TNT1 A 4 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  Spawn:
+    CSHP A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLTacticalShotgunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaticShrapnelCombatShotgunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelCombatShotgunConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLTacticalShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaticShrapnelCombatShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelCombatShotgunConfirm",1)
+	Goto Ready
+  AssembleTacticalShotgun:
+	TNT1 A 0 A_Print("\cvTactical Shotgun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLTacticalShotgunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLTacticalShotgun",1)
+	TNT1 A 0 A_SelectWeapon("RLTacticalShotgun")
+	TNT1 A 0 A_TakeInventory("RLCombatShotgun",1)
+	Stop
+  AssemblePlasmaticShrapnelCombatShotgun:
+	TNT1 A 0 A_Print("\cvPlasmatic Combat Shotgun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaticShrapnelCombatShotgunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaticShrapnelCombatShotgun",1)
+	TNT1 A 0 A_SelectWeapon("RLPlasmaticShrapnelCombatShotgun")
+	TNT1 A 0 A_TakeInventory("RLCombatShotgun",1)
+	Stop
+  AssembleNanoShrapnelCombatShotgun:
+	TNT1 A 0 A_Print("\cvNano Combat Shotgun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLCombatShotgunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLCombatShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelCombatShotgunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLNanoShrapnelCombatShotgun",1)
+	TNT1 A 0 A_SelectWeapon("RLNanoShrapnelCombatShotgun")
+	TNT1 A 0 A_TakeInventory("RLCombatShotgun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLCombatShotgunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLCombatShotgunReloadDone : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLCombatShotgunFinalPump : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLCombatShotgunReloadSequence : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLCombatShotgunModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLCombatShotgunPowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLCombatShotgunBulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLCombatShotgunAgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLCombatShotgunTechnicalMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLCombatShotgunNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLCombatShotgunFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLCombatShotgunSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLCombatShotgunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 9
+   Inventory.Icon ""
+}
+
+ACTOR RLCombatShotgunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		CSHP A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLCombatShotgun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/combatshotgunpickup")
+		TNT1 A 0 A_GiveInventory("RLCombatShotgun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cjCombat Shotgun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Shell",0,1)
+		Goto AmmoPickup
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cj= Combat Shotgun =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Shell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Shell",5)
+		Stop
+	AmmoFull:
+		CSHP A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLCombatShotgun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		CSHP A 1
+		Loop
+	Death:
+		TNT1 A 0
+		CSHP A 1 A_SpawnItem("RLCombatShotgunPickup",0,0,0,0)
+		Stop
+	}
+}

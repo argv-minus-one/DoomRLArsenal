@@ -1,0 +1,498 @@
+
+ACTOR RLRailgun : RLWeapon
+{
+  Inventory.Pickupsound "weapons/unique"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was sniped by %k's Railgun."
+  Inventory.Pickupmessage "You picked up a Railgun."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Railgun"
+  Weapon.Kickback 400
+  Weapon.SelectionOrder 20
+  Weapon.SlotNumber 6
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLRailgunClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    TNT1 A 0 A_PlaySound("weapons/railgunidle", 6, 1, 1)
+	TNT1 A 0 A_TakeInventory("RLRailgunState",1)
+    RAIL CDE 1 A_WeaponReady (48)
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLRailgunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLRailgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLRailgun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLRailgun",1)
+	Stop
+  AfterModDrop:
+    RAIL CDECDECDE 1 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    RAIL CDECDECDE 1 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLRailgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    RAIL Q 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLRailgunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    RAIL Q 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_JumpIfInventory("RLRailgunNanoMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLRailgunClip", 5, 2)
+	Goto Reload
+	TNT1 A 0 A_JumpIfInventory("RLRailgunClip", 2, 1)
+	Goto Reload
+    RAIL A 2 Bright A_GunFlash
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLRailgunFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLRailgunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLRailgunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLRailgunAgilityMod",1,"FireA")
+	TNT1 A 0 A_RailAttack (200, 0, 1, "Blue", "White", RGF_FULLBRIGHT | RGF_SILENT, 0, "RLRailPuff", 0, 0, 0, 15, 1, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLRailShockwave", 0, 1)
+	TNT1 A 0 A_JumpIfInventory("RLRailgunNanoMod",1,"FireFinish")
+	TNT1 AAA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_RailAttack (225, 0, 1, "Blue", "White", RGF_FULLBRIGHT | RGF_SILENT, 0, "RLRailPuff", 0, 0, 0, 15, 1, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLRailShockwave", 0, 1)
+	TNT1 AAA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_RailAttack (200, 0, 1, "Blue", "White", RGF_FULLBRIGHT | RGF_SILENT, 0, "RLRailPuff", 0, 0, 0, 15, 1, 0x7FFFFFF)
+	TNT1 A 0 A_FireCustomMissile ("RLRailShockwave", 0, 1)
+	TNT1 AAA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_RailAttack (200, 0, 1, "Blue", "LightBlue", RGF_FULLBRIGHT | RGF_SILENT, 0, "RLRailPuff", 0, 0, 0, 15, 1, 20)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 0, "RLRailPuffBlast", 0)
+	TNT1 A 0 A_RailAttack (0, 0, 1, "None", "LightBlue", RGF_FULLBRIGHT | RGF_SILENT, 0, "RLRailPuff", 0, 0, 0, 15, 15, 20, "RLRailBlastShockwave")
+	TNT1 A 0 A_FireCustomMissile ("RLRailShockwave", 0, 1)
+	TNT1 AA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_RailAttack (200, 0, 1, "Orange", "White", RGF_FULLBRIGHT | RGF_SILENT, 0, "RLRailPuff", 0, 0, 0, 15, 1, 1)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 0, "RLRailDemoPuff")
+	TNT1 A 0 A_FireCustomMissile ("RLRailShockwave", 0, 1)
+	TNT1 AA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/railgun", 7)
+    RAIL B 3 Bright
+    TNT1 A 0 A_StopSound(6)
+    RAIL GHIJK 3
+    TNT1 A 0 A_PlaySound("weapons/railgunidle", 6, 1, 1)
+	RAIL CDE 1 A_WeaponReady (62)
+    Goto Ready
+  NoReloadLoop:
+	RAIL CDE 1 A_WeaponReady (WRF_NOFIRE)
+	Goto Ready
+  Reload:
+	TNT1 A 0
+	TNT1 A 0 A_JumpIfInventory("RLRailgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLRailgunClip", 40, "NoReloadLoop")
+	Goto Reload+4
+	TNT1 A 0 A_JumpIfInventory("RLRailgunClip", 52, "NoReloadLoop")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto NoReloadLoop
+	TNT1 A 0 // Play the reload animation.
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_JumpIfInventory("RLRailgunTechnicalMod",1,"Reload1")
+    RAIL J 4
+    RAIL L 3
+    RAIL M 2
+    RAIL N 2
+    RAIL O 2
+    RAIL P 2
+    TNT1 A 0 A_PlaySound("weapons/railgununload", 5)
+    TNT1 A 35
+	Goto ReloadWorking
+  Reload1:
+    RAIL J 4
+    RAIL L 3
+    RAIL M 2
+    RAIL N 2
+    RAIL O 2
+    RAIL P 2
+    TNT1 A 0 A_PlaySound("weapons/railgununload", 5)
+    TNT1 A 32
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLRailgunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLRailgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLRailgunClip",40,3)
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLRailgunClip",52,2)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/railgunload", 7)
+	TNT1 A 0 A_JumpIfInventory("RLRailgunTechnicalMod",1,"ReloadFinish1")
+    RAIL P 2
+    RAIL O 2
+    RAIL N 2
+    RAIL M 2
+    RAIL L 3
+    RAIL J 4
+	Goto Ready
+  ReloadFinish1:
+    RAIL P 2
+    RAIL O 2
+    RAIL N 2
+    RAIL M 2
+    RAIL L 3
+    RAIL J 4
+	Goto Ready
+  Flash:
+    TNT1 A 2 A_Light1
+    TNT1 A 2 A_Light2
+    Goto LightDone
+  Spawn:
+    RAIL X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto NoReloadLoop
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLRailgunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLRailgunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLRailgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_Jump(256,1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLRailgun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLRailPuff : BulletPuff
+{
+  -ALLOWPARTICLES
+  -RANDOMIZE
+  +PUFFONACTORS
+  +ALWAYSPUFF
+  +PUFFGETSOWNER
+  +THRUGHOST
+  RenderStyle Add
+  Translation "112:127=192:207"
+  Alpha 1
+  Scale 0.35
+  VSpeed 0
+  Mass 5
+  Decal "RailScorch"
+  Damagetype "Bullet"
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/bulletexp", CHAN_BODY, 1, 0, 2)
+    SHOK ACEGIKMOQ 1 Bright A_FadeTo (0.1, 0.1, 0)
+	Stop
+  Melee:
+    Goto Spawn
+  }
+}
+
+ACTOR RLRailPuffBlast : RLRailPuff
+{
+  Scale 0.75
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_RadiusThrust (50000, 128, RTF_NOIMPACTDAMAGE)
+    TNT1 A 0 A_PlaySound("weapons/bulletexp", CHAN_BODY, 1, 0, 2)
+    SHOK ACEGIKMOQ 1 Bright A_FadeTo (0.1, 0.1, 0)
+	Stop
+  Melee:
+    Goto Spawn
+  }
+}
+
+ACTOR RLAmmoIncrement : PlasmaBall
+{
+  -SOLID
+  +THRUGHOST
+  +THRUACTORS
+  Speed 0
+  Damage 0
+  Damagetype "Plasma"
+  SeeSound ""
+  DeathSound ""
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 1
+	Stop
+  Death:
+    TNT1 A 0
+    TNT1 A 1
+	Stop
+  }
+}
+
+ACTOR RLRailShockwave : PlasmaBall
+{
+  -SOLID
+  +NOCLIP
+  Translation "112:127=192:207"
+  Speed 12
+  Damage 0
+  Alpha 0.85
+  Scale 0.4
+  VSpeed 0
+  SeeSound ""
+  DeathSound ""
+  States
+  {
+  Spawn:
+    SHOK ACEGIKMOQ 1 Bright A_FadeTo (0.1, 0.1, 0)
+	Stop
+  Death:
+    TNT1 A 0
+	Goto Spawn
+  }
+}
+
+ACTOR RLRailBlastShockwave : RLRailShockwave
+{
+  Speed 0
+  Scale 0.3
+  Alpha 0.95
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    SHOK ABCDEFGHIJKLMNOPQ 1 Bright A_FadeTo (0.1, 0.05, 0)
+	Stop
+  Death:
+    TNT1 A 0
+	Goto Spawn
+  }
+}
+
+ACTOR RLRailDemoPuff
+{ 
+   ActiveSound "weapons/bulletexp"
+   PainSound "weapons/bulletexp"
+   AttackSound "weapons/bulletexp"
+   +NOGRAVITY
+   +NOBLOCKMAP
+   +PUFFONACTORS
+   +PUFFGETSOWNER
+   +ALWAYSPUFF
+   +RANDOMIZE
+   +THRUGHOST
+   RenderStyle Add
+   Alpha 0.9
+   Mass 5
+   Scale 1.8
+   Decal "Scorch"
+   Damagetype "Fire"
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      MICX A 2 Bright A_Explode (128,96, 0, 1)
+      MICX BCDEFG 2 Bright
+      Stop
+   }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLRailgunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRailgunSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLRailgunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 52
+   Inventory.Icon ""
+}
+
+ACTOR RLRailgunPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		RAIL X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLRailgun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/railgunpickup")
+		TNT1 A 0 A_GiveInventory("RLRailgun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cdRailgun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Railgun =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLRailgun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		RAIL X 1
+		Loop
+	Death:
+		TNT1 A 0
+		RAIL X 1 A_SpawnItem("RLRailgunPickup",0,0,0,0)
+		Stop
+	}
+}

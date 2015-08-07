@@ -1,0 +1,21 @@
+gameinfo
+{
+    quitmessages = "Exotic mods have unusual effects on\nunique weaponry.", 
+	"Chainsaw spawns have a chance of spawning\nany weapon in the game!", 
+	"Wearing a piece of a set causes supply\ncrates to have a chance of spawning\nanother piece of that set!", 
+	"Computer Maps will print out a random\nassembly combination.", 
+	"Tracking Maps will print out an assembly\ncombination for your current weapon.", 
+	"In Co-op, work together with each classes\nstrengths for maximum effectiveness.", 
+	"The Marine loves rapid-fire weaponry.\nAmmo conservation is for wusses!", 
+	"The Scout does incredible damage with\npistols. Take 'em down!",
+    "The Technician is great at using modpacks.\nAssemble a VBFG and take names!", 
+    "The Renegade is a master of shotguns.\nBlow 'em apart!", 
+	"The rarities of items are;\nUncommon, Assembled,\nExotic, Unique, Legendary.", 
+	"Use your ground kick to stun enemies,\nor even knock them away!", 
+	"There are four damage types in the game.\nBullet, Melee, Fire and Plasma.", 
+	"Remember, every assembly has it's use.\nEven when they aren't apparent...", 
+	"Remember, you can't put an assembly onto\nan assembled weapon!", 
+	"Legendaries are super hard to find.\nIf you got one, celebrate!"
+                  
+    playerclasses = "DoomRLMarine", "DoomRLScout", "DoomRLTechnician", "DoomRLRenegade"
+}

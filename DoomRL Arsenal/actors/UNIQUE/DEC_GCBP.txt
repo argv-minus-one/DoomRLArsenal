@@ -1,0 +1,1111 @@
+
+ACTOR RLGrammatonClericBeretta : RLWeapon
+{
+  Inventory.Pickupsound "weapons/unique"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o fell to %k's impressive gun kata."
+  Inventory.Pickupmessage "You picked up a Grammaton Cleric Beretta."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Grammaton Cleric Beretta"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 11
+  Weapon.SlotNumber 2
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLGrammatonClericBerettaClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaBurst",3)
+    GCBP A 1 A_WeaponReady (48)
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLGrammatonClericBeretta",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLGrammatonClericBeretta",1)
+	Stop
+  AfterModDrop:
+    GCBP A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    GCBP A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    GCBP A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLGrammatonClericBerettaSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    GCBP A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",2,"FireAuto")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",1,"FireBurst")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireBurst:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBurst",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, 7, "RLBulletPuff")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinishBurst
+  FireAuto:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 7, "RLBulletPuff")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinishAuto
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",2,"FireAutoP")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",1,"FireBurstP")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, 8, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, (64), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireBurstP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBurst",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, 8, "RLBulletPuff")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, 8, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, (64), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinishBurst
+  FireAutoP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 8, "RLBulletPuff")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 8, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, (64), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinishAuto
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",2,"FireAutoA")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",1,"FireBurstA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireBurstA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBurst",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 1.5, -1, 7, "RLBulletPuff")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3, 1.5, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3, 1.5, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinishBurst
+  FireAutoA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 1.5, -1, 7, "RLBulletPuff")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5, 1.5, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5, 1.5, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinishAuto
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",2,"FireAutoS")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",1,"FireBurstS")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 1.5, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireBurstS:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip", 3, 1)
+    Goto Reload
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeBurst")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,4)
+	TNT1 A 0 A_FireBullets (3.5, 2, 3, 7, "RLBulletPuff")
+	TNT1 AA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 2, 3, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+	TNT1 AA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+  FireRenegadeBurst:
+	TNT1 A 0 A_FireBullets (3.5, 2, 3, 7, "RLBulletPuff")
+	TNT1 AA 0 A_FireCustomMissile ("RLAmmoIncrement", 0, 1)
+    Goto FireFinish
+  FireAutoS:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeAuto")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,"FireAutoSLoopSharpshooter")
+  FireAutoSLoop:
+	TNT1 A 0 A_JumpIfInventory("DRPGRedAuraInfiniteAmmo",1,"FireAutoSLoopDRPG")
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 7, "RLBulletPuff")
+	TNT1 A 0 A_JumpIfNoAmmo("FireFinishAuto")
+    Goto FireAutoSLoop
+  FireAutoSLoopSharpshooter:
+	TNT1 A 0 A_JumpIfInventory("DRPGRedAuraInfiniteAmmo",1,"FireAutoSLoopDRPGSharpshooter")
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+	TNT1 A 0 A_JumpIfNoAmmo("FireFinishAuto")
+    Goto FireAutoSLoopSharpshooter
+  FireRenegadeAuto:
+	TNT1 A 0 A_JumpIfInventory("DRPGRedAuraInfiniteAmmo",1,"FireAutoSLoopDRPGRenegade")
+	TNT1 A 0 A_FireBullets (5.5, 2, 2, 7, "RLBulletPuff")
+	TNT1 A 0 A_JumpIfNoAmmo("FireFinishAuto")
+    Goto FireRenegadeAuto
+  FireAutoSLoopDRPG:
+	TNT1 A 0 A_FireBullets (5.5, 2, 18, 7, "RLBulletPuff")
+    Goto FireFinishAuto
+  FireAutoSLoopDRPGSharpshooter:
+	TNT1 A 0 A_FireBullets (5.5, 2, 18, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinishAuto
+  FireAutoSLoopDRPGRenegade:
+	TNT1 A 0 A_FireBullets (5.5, 2, 27, 7, "RLBulletPuff")
+    Goto FireFinishAuto
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",2,"FireAutoF")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",1,"FireBurstF")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,"FireFSharpshooter")
+	TNT1 A 0 A_FireBullets (2, 1, -1, 7, "RLBulletPuff")
+    Goto FireExtraShots
+  FireFSharpshooter:
+	TNT1 A 0 A_FireBullets (2, 1, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireExtraShots
+  FireBurstF:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBurst",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, 7, "RLBulletPuff")
+    Goto FireExtraShotsBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireExtraShotsBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireExtraShotsBurst
+  FireAutoF:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 7, "RLBulletPuff")
+    Goto FireExtraShotsAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireExtraShotsAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireExtraShotsAuto
+  FireExtraShots:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",17,"FireExtraShots1")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",16,"FireExtraShots2")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",15,"FireExtraShots3")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",14,"FireExtraShots4")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",13,"FireExtraShots5")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",12,"FireExtraShots6")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",11,"FireExtraShots7")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",10,"FireExtraShots8")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",9,"FireExtraShots9")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",8,"FireExtraShots10")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",7,"FireExtraShots11")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",6,"FireExtraShots12")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",5,"FireExtraShots13")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",4,"FireExtraShots14")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",3,"FireExtraShots15")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",2,"FireExtraShots16")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",1,"FireExtraShots17")
+    Goto FireFinish
+  FireExtraShots17:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 17, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 17, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 26, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots16:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 16, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 16, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 25, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots15:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 15, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 15, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 23, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots14:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 14, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 14, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 22, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots13:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 13, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 13, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 20, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots12:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 12, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 12, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 19, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots11:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 11, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 11, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 17, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots10:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 10, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 10, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 16, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots9:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 9, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 9, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 14, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots8:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 8, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 8, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 13, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots7:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 7, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 7, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 11, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots6:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 6, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 6, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 10, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots5:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 5, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 5, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 8, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots4:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 4, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 4, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 7, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots3:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 3, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 3, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 5, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots2:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, 2, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 2, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 4, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShots1:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 1, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, -1, (56), "RLBulletPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 1, 2, 7, "RLBulletPuff", "None")
+    Goto FireFinish
+  FireExtraShotsBurst:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",17,"FireExtraShotsBurst1")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",16,"FireExtraShotsBurst2")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",15,"FireExtraShotsBurst3")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",14,"FireExtraShotsBurst4")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",13,"FireExtraShotsBurst5")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",12,"FireExtraShotsBurst6")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",11,"FireExtraShotsBurst7")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",10,"FireExtraShotsBurst8")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",9,"FireExtraShotsBurst9")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",8,"FireExtraShotsBurst10")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",7,"FireExtraShotsBurst11")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",6,"FireExtraShotsBurst12")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",5,"FireExtraShotsBurst13")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",4,"FireExtraShotsBurst14")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",3,"FireExtraShotsBurst15")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",2,"FireExtraShotsBurst16")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",1,"FireExtraShotsBurst17")
+    Goto FireFinishBurst
+  FireExtraShotsBurst17:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 17, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 17, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 26, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst16:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 16, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 16, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 25, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst15:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 15, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 15, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 23, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst14:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 14, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 14, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 22, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst13:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 13, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 13, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 20, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst12:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 12, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 12, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 19, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst11:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 11, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 11, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 17, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst10:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 10, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 10, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 16, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst9:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 9, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 9, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 14, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst8:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 8, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 8, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 13, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst7:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 7, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 7, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 11, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst6:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 6, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 6, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 10, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst5:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 5, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 5, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 8, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst4:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 4, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 4, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 7, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst3:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 3, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 3, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 5, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst2:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, 2, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 2, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 4, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsBurst1:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, -1, (56), "RLBulletPuff", "None")
+    Goto FireFinishBurst
+	TNT1 A 0 A_FireBullets (3.5, 2, 2, 7, "RLBulletPuff", "None")
+    Goto FireFinishBurst
+  FireExtraShotsAuto:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",17,"FireExtraShotsAuto1")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",16,"FireExtraShotsAuto2")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",15,"FireExtraShotsAuto3")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",14,"FireExtraShotsAuto4")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",13,"FireExtraShotsAuto5")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",12,"FireExtraShotsAuto6")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",11,"FireExtraShotsAuto7")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",10,"FireExtraShotsAuto8")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",9,"FireExtraShotsAuto9")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",8,"FireExtraShotsAuto10")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",7,"FireExtraShotsAuto11")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",6,"FireExtraShotsAuto12")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",5,"FireExtraShotsAuto13")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",4,"FireExtraShotsAuto14")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",3,"FireExtraShotsAuto15")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",2,"FireExtraShotsAuto16")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",1,"FireExtraShotsAuto17")
+    Goto FireFinishAuto
+  FireExtraShotsAuto17:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 17, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 17, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 26, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto16:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 16, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 16, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 25, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto15:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 15, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 15, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 23, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto14:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 14, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 14, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 22, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto13:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 13, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 13, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 20, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto12:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 12, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 12, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 19, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto11:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 11, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 11, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 17, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto10:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 10, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 10, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 16, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto9:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 9, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 9, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 14, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto8:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 8, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 8, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 13, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto7:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 7, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 7, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 11, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto6:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 6, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 6, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 10, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto5:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 5, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 5, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 8, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto4:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 4, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 4, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 7, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto3:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 3, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 3, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 5, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto2:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, 2, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 2, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 4, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireExtraShotsAuto1:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, (56), "RLBulletPuff", "None")
+    Goto FireFinishAuto
+	TNT1 A 0 A_FireBullets (5.5, 2, 2, 7, "RLBulletPuff", "None")
+    Goto FireFinishAuto
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/gcb", CHAN_WEAPON)
+	TNT1 A 0 A_AlertMonsters
+    GCBP C 1 Bright A_GunFlash
+    GCBP D 2 Bright
+    GCBP E 3 Bright
+    GCBP F 1
+    GCBP G 2
+    GCBP H 3
+    GCBP G 2
+    GCBP F 2
+    GCBP A 2
+    GCBP AAAAAAAAAA 1 A_WeaponReady (WRF_NOBOB | WRF_NOSECONDARY | WRF_ALLOWRELOAD)
+    Goto Ready
+  FireFinishBurst:
+    TNT1 A 0 A_PlaySound("weapons/gcb", CHAN_WEAPON)
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBurst",2,"FireFinishBurst3")
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBurst",1,"FireFinishBurst2")
+    GCBP C 1 Bright A_GunFlash ("FlashBurst")
+    GCBP D 1 Bright
+    GCBP E 1 Bright
+	TNT1 A 0 A_GiveInventory("RLGrammatonClericBerettaBurst",1)
+    Goto Fire
+  FireFinishBurst2:
+    GCBP D 1 Bright A_GunFlash ("FlashBurst2")
+    GCBP E 1 Bright
+	TNT1 A 0 A_GiveInventory("RLGrammatonClericBerettaBurst",1)
+    Goto Fire
+  FireFinishBurst3:
+    GCBP D 1 Bright A_GunFlash ("FlashBurst2")
+    GCBP E 1 Bright
+    GCBP F 1
+    GCBP G 2
+    GCBP H 3
+    GCBP G 2
+    GCBP F 2
+    GCBP A 2
+	TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaBurst",3)
+    GCBP AAAAAAAAAA 1 A_WeaponReady (WRF_NOBOB | WRF_NOSECONDARY | WRF_ALLOWRELOAD)
+    Goto Ready
+  FireFinishAuto:
+    TNT1 A 0 A_PlaySound("weapons/gcb", CHAN_WEAPON)
+	TNT1 A 0 A_AlertMonsters
+    GCBP C 1 Bright A_GunFlash
+    GCBP D 1 Bright
+    GCBP E 1 Bright
+    GCBP G 1
+    GCBP A 1
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaAmmochain",0,2)
+	TNT1 A 0 A_GiveInventory("RLGrammatonClericBerettaAmmochain",1)
+    Goto FireFinishAuto+10
+	TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaAmmochain",3)
+    GCBP F 1 A_Refire
+    GCBP G 2
+    GCBP H 3
+    GCBP G 2
+    GCBP F 2
+    Goto Ready
+  Reload:
+	GCBP A 2 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaBurst",3)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip", 18, "Ready")
+	Goto Reload+5
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip", 23, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+    TNT1 A 0 A_PlaySound("weapons/gcbunload", 5)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaTechnicalMod",1,"Reload1")
+    GCBP I 2
+    GCBP J 2
+    GCBP K 2
+    GCBP L 2
+    GCBP M 2
+    GCBP N 2
+    GCBP O 2
+    GCBP P 2
+    GCBP Q 2
+    GCBP R 2
+	Goto ReloadNanoStart
+  Reload1:
+    GCBP I 1
+    GCBP J 1
+    GCBP K 1
+    GCBP L 2
+    GCBP M 2
+    GCBP N 2
+    GCBP O 2
+    GCBP P 2
+    GCBP Q 2
+    GCBP R 2
+	Goto ReloadNanoStart
+  ReloadNanoStart:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaNanoMod",1,1)
+	Goto ReloadWorking
+	TNT1 A 0 A_Jump(96,"ReloadNanoWorking")
+	Goto ReloadWorking
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLGrammatonClericBerettaClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",18,"ReloadFinish")
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",23,"ReloadFinish")
+	TNT1 A 0 A_JumpIfInventory("Clip",1,1)
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadNanoWorking:
+	TNT1 A 0 A_GiveInventory("RLGrammatonClericBerettaClip", 3)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaClip",54,1)
+	Goto ReloadNanoWorking+3
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadNanoWorking
+  ReloadFinish:
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaTechnicalMod",1,"ReloadFinish1")
+    TNT1 A 0 A_PlaySound("weapons/gcbload", 6)
+	GCBP S 2
+	GCBP T 2
+	GCBP U 2
+	TNT1 A 0 A_PlaySound("weapons/gcbcock", 7)
+	GCBP V 2
+	GCBP W 2
+	GCBP Y 2
+	Goto Ready
+  ReloadFinish1:
+    TNT1 A 0 A_PlaySound("weapons/gcbload", 6)
+	GCBP S 2
+	GCBP T 2
+	GCBP U 2
+	TNT1 A 0 A_PlaySound("weapons/gcbcock", 7)
+	GCBP V 1
+	GCBP W 1
+	GCBP Y 1
+	Goto Ready
+  Flash:
+    TNT1 A 3 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  FlashBurst:
+    TNT1 A 1 A_Light1
+    TNT1 A 2 A_Light2
+    Goto LightDone
+  FlashBurst2:
+    TNT1 A 1 A_Light1
+    TNT1 A 1 A_Light2
+    Goto LightDone
+  Spawn:
+    GCBP X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	TNT1 A 0 A_PlaySound("weapons/gcbmode", CHAN_WEAPON)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",2,6)
+	TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBerettaMode",1,3)
+	TNT1 A 0 A_Print("Burst-fire Mode.", 2)
+	GCBP F 20 A_GiveInventory("RLGrammatonClericBerettaMode",1)
+	Goto Ready
+	TNT1 A 0 A_Print("Full-auto Mode.", 2)
+	GCBP F 20 A_GiveInventory("RLGrammatonClericBerettaMode",1)
+	Goto Ready
+	TNT1 A 0 A_Print("Semi-auto Mode.", 2)
+	GCBP F 20 A_TakeInventory("RLGrammatonClericBerettaMode",2)
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLGrammatonClericBerettaSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLOnyxMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLGrammatonClericBeretta",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLGrammatonClericBerettaSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaMode : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLGrammatonClericBerettaBurst : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLGrammatonClericBerettaAmmochain : Inventory
+{
+inventory.maxamount 3
+}
+
+Actor RLGrammatonClericBerettaModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLGrammatonClericBerettaSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLGrammatonClericBerettaClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 54
+   Inventory.Icon ""
+}
+
+ACTOR RLGrammatonClericBerettaPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		GCBP X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLGrammatonClericBeretta",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/gcbpickup")
+		TNT1 A 0 A_GiveInventory("RLGrammatonClericBeretta",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cdGrammaton Cleric Beretta.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Grammaton Cleric Beretta =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLGrammatonClericBeretta
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		GCBP X 1
+		Loop
+	Death:
+		TNT1 A 0
+		GCBP X 1 A_SpawnItem("RLGrammatonClericBerettaPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,838 @@
+
+ACTOR RLHighPowerPlasmaRifle : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was burnt to ashes by %k's plasma rifle."
+  Inventory.Pickupmessage "You picked up a High Power Plasma Rifle."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "High Power Plasma Rifle"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 20
+  Weapon.SlotNumber 6
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLHighPowerPlasmaRifleClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleState",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleNanoMod",1,2)
+    QPLS A 1 A_WeaponReady (48)
+    Goto Ready+3
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip",1,2)
+    QPLS A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    QPLS A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip", 26, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip", 34, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip", 42, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLHighPowerPlasmaRifleClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleNanoMod",2,2)
+    QPLS A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    QPLS A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRiflePowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLHighPowerPlasmaRifle",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLHighPowerPlasmaRifle",1)
+	Stop
+  AfterModDrop:
+    QPLS A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    QPLS A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    QPLS A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerPlasmaRifleSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    QPLS A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_GiveInventory("RLHighPowerPlasmaRifleAmmochain",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRiflePowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFire")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBall", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBall", frandom(1,-1), 0)
+    Goto FireFinish
+  XaserFire:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBall", frandom(1,-1), 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBall", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBall", frandom(29,31), 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBall", frandom(1,-1), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBall", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBall", frandom(29,31), 0)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRiflePowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFireP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallP", frandom(1,-1), 0)
+    Goto FireFinish
+  XaserFireP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallP", frandom(1,-1), 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallP", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallP", frandom(29,31), 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallP", frandom(1,-1), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallP", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallP", frandom(29,31), 0)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRiflePowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFireA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallA", frandom(1,-1), 0)
+    Goto FireFinish
+  XaserFireA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallA", frandom(1,-1), 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallA", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallA", frandom(29,31), 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallA", frandom(1,-1), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallA", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallA", frandom(29,31), 0)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFirePP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPP", frandom(1,-1), 0)
+    Goto FireFinish
+  XaserFirePP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallPP", frandom(1,-1), 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPP", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPP", frandom(29,31), 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallPP", frandom(1,-1), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPP", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPP", frandom(29,31), 0)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFirePA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPA", frandom(1,-1), 0)
+    Goto FireFinish
+  XaserFirePA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallPA", frandom(1,-1), 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPA", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPA", frandom(29,31), 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallPA", frandom(1,-1), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPA", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallPA", frandom(29,31), 0)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFireAA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallAA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallAA", frandom(1,-1), 0)
+    Goto FireFinish
+  XaserFireAA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallAA", frandom(1,-1), 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallAA", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallAA", frandom(29,31), 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallAA", frandom(1,-1), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallAA", frandom(-29,-31), 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallAA", frandom(29,31), 0)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRiflePowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFireS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallS", 0, 0)
+    Goto FireFinish
+  XaserFireS:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallS", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallS", 30, 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallS", 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallS", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallS", 30, 0)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFireSS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSS", 0, 0)
+    Goto FireFinish
+  XaserFireSS:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallSS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSS", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSS", 30, 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallSS", 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSS", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSS", 30, 0)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFireSP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSP", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSP", 0, 0)
+    Goto FireFinish
+  XaserFireSP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallSP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSP", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSP", 30, 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallSP", 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSP", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSP", 30, 0)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLXaserPowerArmorToken",1,"XaserFireSA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSA", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSA", 0, 0)
+    Goto FireFinish
+  XaserFireSA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,4)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallSA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSA", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSA", 30, 0)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLXaserHighPowerPlasmaBallSA", 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSA", -30, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLXaserSHighPowerPlasmaBallSA", 30, 0)
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleState",1,"FireState")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleFirestormMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleFirestormMod",1,2)
+    Goto FireFinish+6
+    QPLS C 1 Bright A_GunFlash
+    Goto FireFinish+8
+    QPLS B 1 Bright A_GunFlash
+    QPLS C 1 Bright
+    Goto FireFinish+8
+    QPLS B 1 Bright A_GunFlash
+    QPLS C 2 Bright
+	TNT1 A 0 A_GiveInventory("RLHighPowerPlasmaRifleState",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleAmmochain",4)
+    QPLS A 2 A_Refire
+    QPLS FGHIJ 1
+    QPLS KLK 2
+    QPLS JIHGF 1
+    QPLS A 2 A_Refire
+    Goto Ready
+  FireState:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleFirestormMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleFirestormMod",1,2)
+    Goto FireState+5
+    QPLS E 1 Bright A_GunFlash
+    Goto FireState+7
+    QPLS D 2 Bright A_GunFlash
+    QPLS E 1 Bright
+    Goto FireState+7
+    QPLS D 1 Bright A_GunFlash
+    QPLS E 2 Bright
+	TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleState",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleAmmochain",4,2)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleAmmochain",4)
+    QPLS A 2 A_Refire
+    QPLS FGHIJ 1
+    QPLS KLK 2
+    QPLS JIHGF 1
+    QPLS A 2 A_Refire
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleNanoMod",1,"Ready")
+	QPLS A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip", 26, "Ready")
+	Goto Reload+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip", 34, "Ready")
+	Goto Reload+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip", 42, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleTechnicalMod",1,"Reload1")
+    QPLS M 3
+    QPLS N 3
+    QPLS O 3
+    QPLS P 3
+    QPLS Q 3
+    QPLS R 3
+    QPLS S 3 A_PlaySound("weapons/hpplasmarifleunload", 5)
+    TNT1 A 11
+	Goto ReloadWorking
+  Reload1:
+    QPLS M 2
+    QPLS N 2
+    QPLS O 2
+    QPLS P 3
+    QPLS Q 3
+    QPLS R 3
+    QPLS S 3 A_PlaySound("weapons/hpplasmarifleunload", 5)
+    TNT1 A 11
+	Goto ReloadWorking
+  Reload2:
+    QPLS M 2
+    QPLS N 2
+    QPLS O 2
+    QPLS P 2
+    QPLS Q 2
+    QPLS R 2
+    QPLS S 3 A_PlaySound("weapons/hpplasmarifleunload", 5)
+    TNT1 A 11
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerPlasmaRifleClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip",26,5)
+	Goto ReloadWorking+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip",34,3)
+	Goto ReloadWorking+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleClip",42,2)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/hpplasmarifleload", 6)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleTechnicalMod",1,"ReloadFinish1")
+    QPLS S 3
+	QPLS R 3
+	QPLS Q 3
+	QPLS P 3
+	QPLS O 3
+	QPLS N 3
+	QPLS M 3
+	Goto Ready
+  ReloadFinish1:
+    QPLS S 2
+	QPLS R 2
+	QPLS Q 2
+	QPLS P 3
+	QPLS O 3
+	QPLS N 3
+	QPLS M 3
+	Goto Ready
+  ReloadFinish2:
+    QPLS S 2
+	QPLS R 2
+	QPLS Q 2
+	QPLS P 2
+	QPLS O 2
+	QPLS N 2
+	QPLS M 3
+	Goto Ready
+  Flash:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleFirestormMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifleFirestormMod",1,2)
+    Goto Flash+4
+    TNT1 A 1 Bright A_Light2
+    Goto LightDone
+    TNT1 A 2 Bright A_Light2
+    Goto LightDone
+    TNT1 A 3 Bright A_Light2
+    Goto LightDone
+  Spawn:
+    QPLS X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRiflePowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerPlasmaRifleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLHighPowerPlasmaRifle",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLHighPowerPlasmaBall : PlasmaBall
+{
+  Damage (random(1,10)*7)
+  Damagetype "Plasma"
+  Alpha 0.85
+  Scale 0.25
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Decal "BlueBFGLightning"
+  SeeSound "weapons/highpowerplasma"
+  DeathSound "weapons/hpplasmaimpact"
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright
+    Loop
+  Death:
+    BBB1 ABCDE 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerPlasmaBallP : RLHighPowerPlasmaBall
+{
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLHighPowerPlasmaBallA : RLHighPowerPlasmaBall
+{
+  Speed 35
+}
+
+ACTOR RLHighPowerPlasmaBallPP : RLHighPowerPlasmaBall
+{
+  Damage (random(1,10)*9)
+}
+
+ACTOR RLHighPowerPlasmaBallPA : RLHighPowerPlasmaBall
+{
+  Speed 35
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLHighPowerPlasmaBallAA : RLHighPowerPlasmaBall
+{
+  Speed 45
+}
+
+ACTOR RLHighPowerPlasmaBallS : RLHighPowerPlasmaBall
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.02)
+    Loop
+  }
+}
+
+ACTOR RLHighPowerPlasmaBallSS : RLHighPowerPlasmaBall
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLHighPowerPlasmaBallSP : RLHighPowerPlasmaBallS
+{
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLHighPowerPlasmaBallSA : RLHighPowerPlasmaBallS
+{
+  Speed 35
+}
+
+//-------------------------------------------------------------------
+//		XASER PROJECTILES
+
+ACTOR RLXaserHighPowerPlasmaBall : RLHighPowerPlasmaBall
+{
+  Scale 0.2
+  SeeSound "weapons/xaserhpplasma"
+}
+
+ACTOR RLXaserHighPowerPlasmaBallP : RLXaserHighPowerPlasmaBall
+{
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLXaserHighPowerPlasmaBallA : RLXaserHighPowerPlasmaBall
+{
+  Speed 35
+}
+
+ACTOR RLXaserHighPowerPlasmaBallPP : RLXaserHighPowerPlasmaBall
+{
+  Damage (random(1,10)*9)
+}
+
+ACTOR RLXaserHighPowerPlasmaBallPA : RLXaserHighPowerPlasmaBall
+{
+  Speed 35
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLXaserHighPowerPlasmaBallAA : RLXaserHighPowerPlasmaBall
+{
+  Speed 45
+}
+
+ACTOR RLXaserHighPowerPlasmaBallS : RLXaserHighPowerPlasmaBall
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.02)
+    Loop
+  }
+}
+
+ACTOR RLXaserHighPowerPlasmaBallSS : RLXaserHighPowerPlasmaBall
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLXaserHighPowerPlasmaBallSP : RLXaserHighPowerPlasmaBallS
+{
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLXaserHighPowerPlasmaBallSA : RLXaserHighPowerPlasmaBallS
+{
+  Speed 35
+}
+
+//-------------------------------------------------------------------
+//		XASER SILENT PROJECTILES
+
+ACTOR RLXaserSHighPowerPlasmaBall : RLXaserHighPowerPlasmaBall
+{
+  Scale 0.2
+  SeeSound ""
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallP : RLXaserSHighPowerPlasmaBall
+{
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallA : RLXaserSHighPowerPlasmaBall
+{
+  Speed 35
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallPP : RLXaserSHighPowerPlasmaBall
+{
+  Damage (random(1,10)*9)
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallPA : RLXaserSHighPowerPlasmaBall
+{
+  Speed 35
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallAA : RLXaserSHighPowerPlasmaBall
+{
+  Speed 45
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallS : RLXaserSHighPowerPlasmaBall
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.02)
+    Loop
+  }
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallSS : RLXaserSHighPowerPlasmaBall
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallSP : RLXaserSHighPowerPlasmaBallS
+{
+  Damage (random(1,10)*8)
+}
+
+ACTOR RLXaserSHighPowerPlasmaBallSA : RLXaserSHighPowerPlasmaBallS
+{
+  Speed 35
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLHighPowerPlasmaRifleSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLHighPowerPlasmaRifleState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLHighPowerPlasmaRifleAmmochain : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLHighPowerPlasmaRifleModLimit : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerPlasmaRiflePowerMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerPlasmaRifleBulkMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerPlasmaRifleAgilityMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerPlasmaRifleTechnicalMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerPlasmaRifleFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerPlasmaRifleNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerPlasmaRifleSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLHighPowerPlasmaRifleClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 42
+   Inventory.Icon ""
+}
+
+ACTOR RLHighPowerPlasmaRiflePickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		QPLS X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLHighPowerPlasmaRifle",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/hpplasmariflepickup")
+		TNT1 A 0 A_GiveInventory("RLHighPowerPlasmaRifle",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvHigh Power Plasma Rifle.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Cell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= High Power Plasma Rifle =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Cell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Cell",26)
+		Stop
+	AmmoFull:
+		QPLS X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLHighPowerPlasmaRifle
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		QPLS X 1
+		Loop
+	Death:
+		TNT1 A 0
+		QPLS X 1 A_SpawnItem("RLHighPowerPlasmaRiflePickup",0,0,0,0)
+		Stop
+	}
+}

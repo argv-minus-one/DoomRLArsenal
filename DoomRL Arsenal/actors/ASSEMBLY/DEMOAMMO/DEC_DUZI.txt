@@ -1,0 +1,289 @@
+
+ACTOR RLDemolitionAmmoUzi : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was exploded a lot by %k's uzi."
+  Inventory.Pickupmessage "You picked up a demolition ammo uzi."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Demolition Ammo Uzi"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 25
+  Weapon.SlotNumber 4
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLDemolitionAmmoUziClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    DUZI A 1 A_WeaponReady (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLDemolitionAmmoUzi",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLDemolitionAmmoUzi",1)
+	Stop
+  AfterModDrop:
+    DUZI A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    DUZI A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    DUZI A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLDemolitionAmmoUziSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    DUZI A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_GiveInventory("RLDemolitionAmmoUziAmmochain",1)
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoUziAmmochain",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2, -1, 4, "RLDemoUziPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, 4, "RLDemoUziPuff", "None")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2, -1, (32), "RLDemoUziPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/demouzi", CHAN_WEAPON)
+    DUZI B 1 Bright A_GunFlash
+    DUZI C 1 Bright
+    DUZI D 1
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoUziAmmochain",4,1)
+    Goto Ready
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziAmmochain",4)
+    Goto Ready
+  Reload:
+	DUZI A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoUziClip", 32, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+    DUZI E 2
+    DUZI F 3
+    DUZI G 2
+    DUZI HIJKLMNO 1
+    TNT1 A 0 A_PlaySound("weapons/demouziunload", 5)
+    TNT1 A 30
+	Goto ReloadWorking
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLDemolitionAmmoUziClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoUziClip",32,2)
+	TNT1 A 0 A_JumpIfInventory("Clip",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/demouziload", 6)
+    DUZI ONMLKJIH 1
+    DUZI G 2
+    DUZI F 3
+    DUZI E 2
+	Goto Ready
+  Flash:
+    TNT1 A 1 A_Light2
+    TNT1 A 1 A_Light1
+    Goto LightDone
+  Spawn:
+    DUZI X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoUziSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_Jump(256,1,2,3,4)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLDemolitionAmmoUzi",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLDemoUziPuff
+{ 
+   +NOGRAVITY
+   +NOBLOCKMAP
+   +PUFFONACTORS
+   +PUFFGETSOWNER
+   +RANDOMIZE
+   +THRUGHOST
+   RenderStyle Add
+   Alpha 0.9
+   Mass 5
+   Scale 0.75
+   Decal "RevenantScorch"
+   Damagetype "Fire"
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_PlaySound("weapons/bulletexp", 7, 0.5, 0, 0.5)
+      TNT1 A 0 A_Explode (64,25, 0, 1)
+      MICX ABCDEFG 2 Bright
+      Stop
+   }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLDemolitionAmmoUziSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLDemolitionAmmoUziAmmochain : Inventory
+{
+inventory.maxamount 4
+}
+
+ACTOR RLDemolitionAmmoUziClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 32
+   Inventory.Icon ""
+}
+
+ACTOR RLDemolitionAmmoUziPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Scale 0.5
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		DUZI X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoUzi",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/demouzipickup")
+		TNT1 A 0 A_GiveInventory("RLDemolitionAmmoUzi",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvDemolition Ammo Uzi.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Clip",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv=M= Demolition Ammo Uzi =M=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Clip",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Clip",32)
+		Stop
+	AmmoFull:
+		DUZI X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLDemolitionAmmoUzi
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	Scale 0.5
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		DUZI X 1
+		Loop
+	Death:
+		TNT1 A 0
+		DUZI X 1 A_SpawnItem("RLDemolitionAmmoUziPickup",0,0,0,0)
+		Stop
+	}
+}

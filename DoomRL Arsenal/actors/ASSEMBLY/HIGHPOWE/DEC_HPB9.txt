@@ -1,0 +1,646 @@
+
+ACTOR RLHighPowerBFG9000 : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was erased from reality by %k's BFG."
+  Inventory.Pickupmessage "You picked up a High Power BFG9000. Oh yes."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "High Power BFG9000"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 3900
+  Weapon.SlotNumber 7
+  Weapon.AmmoUse1 40
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLHighPowerBFG9000Clip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000NanoMod",1,2)
+    QBFG A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip",1,2)
+    QBFG A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    QBFG A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000BulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip", 65, "ReadyBeep")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000BulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip", 85, "ReadyBeep")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip", 105, "ReadyBeep")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000Charged",1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerBFG9000Clip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000NanoMod",2,2)
+    QBFG A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    QBFG A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ReadyBeep:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Charged",1,"Ready")
+	TNT1 A 0 A_GiveInventory("RLHighPowerBFG9000Charged",1)
+	TNT1 A 0 A_PlaySound("weapons/chargebeep", CHAN_AUTO)
+    QBFG A 2 A_GunFlash ("Beep", GFF_NOEXTCHANGE)
+    Goto Ready
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000ModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000PowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000BulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000AgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000TechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000FirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000SniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000NanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000Selected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLHighPowerBFG9000",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLHighPowerBFG9000",1)
+	Stop
+  AfterModDrop:
+    QBFG A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    QBFG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000Selected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    QBFG A 2 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerBFG9000Selected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    QBFG A 2 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000Charged",1)
+    QBFG A 20 A_PlaySound("weapons/bfgf", CHAN_WEAPON)
+    QBFG A 10 A_GunFlash
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000FirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000SniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000PowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000AgilityMod",1,"FireA")
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBall", frandom(1,-1), 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000PowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000AgilityMod",1,"FirePA")
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000PowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000AgilityMod",2,"FireAA")
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000SniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000FirestormMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000PowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000AgilityMod",1,"FireSA")
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallS", 0, 1)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallSS", 0, 1)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallSP", 0, 1)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallSA", 0, 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000FirestormMod",2,"FireFF")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000SniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000PowerMod",1,"FireFP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000AgilityMod",1,"FireFA")
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallF", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFF:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallFF", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFP:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallFP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFA:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallFA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFS:
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerBFGBallFS", 0, 1)
+    Goto FireFinish
+  FireFinish:
+    QBFG A 7 Bright
+    QBFG A 3
+    QBFG A 20 A_Refire
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000NanoMod",1,"Ready")
+	QBFG A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000BulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip", 65, "Ready")
+	Goto Reload+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000BulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip", 85, "Ready")
+	Goto Reload+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip", 105, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000TechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000TechnicalMod",1,"Reload1")
+    QBFG C 4
+    QBFG D 4
+    QBFG E 4
+    QBFG F 4
+    QBFG G 4
+    QBFG H 4
+    QBFG I 4
+    QBFG J 4
+    QBFG K 4
+	TNT1 A 0 A_PlaySound("weapons/hpbfgunload", 5)
+    TNT1 A 39
+	Goto ReloadWorking
+  Reload1:
+    QBFG C 3
+    QBFG D 3
+    QBFG E 3
+    QBFG F 4
+    QBFG G 4
+    QBFG H 4
+    QBFG I 4
+    QBFG J 4
+    QBFG K 4
+	TNT1 A 0 A_PlaySound("weapons/hpbfgunload", 5)
+    TNT1 A 39
+	Goto ReloadWorking
+  Reload2:
+    QBFG C 3
+    QBFG D 3
+    QBFG E 3
+    QBFG F 3
+    QBFG G 3
+    QBFG H 3
+    QBFG I 4
+    QBFG J 4
+    QBFG K 4
+	TNT1 A 0 A_PlaySound("weapons/hpbfgunload", 5)
+    TNT1 A 39
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerBFG9000Clip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000BulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip",65,5)
+	Goto ReloadWorking+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000BulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip",85,3)
+	Goto ReloadWorking+7
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000Clip",105,2)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_PlaySound("weapons/hpbfgload", 6)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000TechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000TechnicalMod",1,"ReloadFinish1")
+    QBFG K 3
+    QBFG J 3
+    QBFG I 2
+    QBFG H 2
+    QBFG G 2
+    QBFG F 2
+    QBFG E 2
+    QBFG D 2
+    QBFG C 2
+    QBFG A 7 A_ReFire
+	Goto Ready
+  ReloadFinish1:
+    QBFG K 1
+    QBFG J 2
+    QBFG I 2
+    QBFG H 2
+    QBFG G 2
+    QBFG F 2
+    QBFG E 2
+    QBFG D 2
+    QBFG C 2
+    QBFG A 7 A_ReFire
+	Goto Ready
+  ReloadFinish2:
+    QBFG K 1
+    QBFG J 1
+    QBFG I 1
+    QBFG H 1
+    QBFG G 2
+    QBFG F 2
+    QBFG E 2
+    QBFG D 2
+    QBFG C 2
+    QBFG A 7 A_ReFire
+	Goto Ready
+  Flash:
+    HBFG A 11 Bright A_Light1
+    HBFG B 6 Bright A_Light2
+    Goto LightDone
+  Beep:
+    QBFG B 4 Bright
+    Goto LightDone
+  Spawn:
+    BFUG A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000ModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000PowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000BulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000AgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000TechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000SniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000FirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000NanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerBFG9000Selected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLHighPowerBFG9000",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLHighPowerBFGBall : BFGBall
+{
+  Damage 200
+  Damagetype "Plasma"
+  Alpha 0.85
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Decal "BlueBFGLightning"
+  Translation "112:127=192:207"
+  DeathSound "weapons/hpbfgimpact"
+  States
+  {
+  Death:
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 40, 15)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallP : RLHighPowerBFGBall
+{
+  States
+  {
+  Death:
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 40, 17)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallA : RLHighPowerBFGBall
+{
+  Speed 35
+}
+
+ACTOR RLHighPowerBFGBallPP : RLHighPowerBFGBall
+{
+  States
+  {
+  Death:
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 40, 19)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallPA : RLHighPowerBFGBall
+{
+  Speed 35
+  States
+  {
+  Death:
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 40, 17)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallAA : RLHighPowerBFGBall
+{
+  Speed 45
+}
+
+ACTOR RLHighPowerBFGBallS : RLHighPowerBFGBall
+{
+  States
+  {
+  Spawn:
+    BFS1 AB 4 Bright A_ScaleVelocity(1.10)
+    Loop
+  }
+}
+
+ACTOR RLHighPowerBFGBallSS : RLHighPowerBFGBallS
+{
+  States
+  {
+  Spawn:
+	BFS1 AB 4 Bright A_ScaleVelocity(1.25)
+    Loop
+  }
+}
+
+
+ACTOR RLHighPowerBFGBallSP : RLHighPowerBFGBallS
+{
+  States
+  {
+  Death:
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 40, 17)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallSA : RLHighPowerBFGBallS
+{
+  Speed 35
+}
+
+ACTOR RLHighPowerBFGBallF : RLHighPowerBFGBall
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.25)
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 45, 15)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallFF : RLHighPowerBFGBall
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.50)
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 50, 15)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallFP : RLHighPowerBFGBall
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.25)
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 45, 17)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLHighPowerBFGBallFA : RLHighPowerBFGBallF
+{
+  Speed 35
+}
+
+ACTOR RLHighPowerBFGBallFS : RLHighPowerBFGBallS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.25)
+    BFE1 AB 8 Bright
+    BFE1 C 8 Bright A_BFGSpray ("RLBFGExtra2", 45, 15)
+    BFE1 DEF 8 Bright
+    Stop
+  }
+}
+
+ACTOR RLBFGExtra2 : BFGExtra
+{
+  Damagetype "Plasma"
+  +THRUGHOST
+  States
+  {
+  Spawn:
+    HBFE ABCD 8 Bright
+    Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLHighPowerBFG9000Selected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLHighPowerBFG9000Charged : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLHighPowerBFG9000ModLimit : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerBFG9000PowerMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerBFG9000BulkMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerBFG9000AgilityMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerBFG9000TechnicalMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerBFG9000FirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerBFG9000NanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerBFG9000SniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLHighPowerBFG9000Clip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 105
+   Inventory.Icon ""
+}
+
+ACTOR RLHighPowerBFG9000Pickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		BFUG A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLHighPowerBFG9000",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/hpbfg9000pickup")
+		TNT1 A 0 A_GiveInventory("RLHighPowerBFG9000",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvHigh Power BFG 9000.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Cell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= High Power BFG 9000 =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Cell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Cell",65)
+		Stop
+	AmmoFull:
+		BFUG A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLHighPowerBFG9000
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		BFUG A 1
+		Loop
+	Death:
+		TNT1 A 0
+		BFUG A 1 A_SpawnItem("RLHighPowerBFG9000Pickup",0,0,0,0)
+		Stop
+	}
+}

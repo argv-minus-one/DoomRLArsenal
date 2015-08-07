@@ -1,0 +1,921 @@
+
+ACTOR RLDesertEagle : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was shot dead by %k's handcannon."
+  Inventory.Pickupmessage "You picked up a Handcannon."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Handcannon"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 1899
+  Weapon.SlotNumber 2
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLDesertEagleClip"
+  Weapon.AmmoType2 "Clip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleNanoMod",1,2)
+    DEAG A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip",1,2)
+    DEAG A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    DEAG A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 7, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 9, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 11, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 13, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 15, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLDesertEagleClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleNanoMod",2,2)
+    DEAG A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    DEAG A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLStormDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLMiniMissilePistolConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLDesertEagle",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  AfterModDrop:
+    DEAG A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    DEAG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    DEAG A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLDesertEagleSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    DEAG A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerDesertEagleConfirm",1, "AssembleHighPowerDesertEagle")
+	TNT1 A 0 A_JumpIfInventory("RLStormDesertEagleConfirm",1, "AssembleStormDesertEagle")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaDesertEagleConfirm",1, "AssemblePlasmaDesertEagle")
+	TNT1 A 0 A_JumpIfInventory("RLMiniMissilePistolConfirm",1, "AssembleMiniMissilePistol")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoDesertEagleConfirm",1, "AssembleNanoManufactureAmmoDesertEagle")
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoDesertEagleConfirm",1, "AssembleDemolitionAmmoDesertEagle")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    DEAG B 2
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 0, -1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 0, -1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 0, -1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 0, -1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 0, -1, 20, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 0, -1, (160), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",2,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",3,"FireAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, -1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, -1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 0, -1, 22, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 0, -1, (176), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, 20, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, (160), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",3,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, -1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, -1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",4,"FireAAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, -1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, -1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPPP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5, 0, -1, 24, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5, 0, -1, (192), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPPA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, 22, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 0, -1, (176), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePPAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0, -1, 20, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0, -1, (160), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePAAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3.5, 0, -1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3.5, 0, -1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireAAAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, -1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, -1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleSniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleSniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",2,"FireSAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleSniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",1,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 20, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, (160), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleSniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",2,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleSniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEaglePowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleAgilityMod",3,"FireSAAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 0, 1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 0, 1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSPP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 20, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (160), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSSPA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPPP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (3, 0, 1, 22, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (3, 0, 1, (176), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPPA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, 20, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2.5, 0, 1, (160), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSPAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (2, 0, 1, 18, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (2, 0, 1, (144), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSAAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (1.5, 0, 1, 16, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (1.5, 0, 1, (128), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/deserteagle", CHAN_WEAPON)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleFirestormMod",2,"FireFinishF2")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleFirestormMod",1,"FireFinishF1")
+    TNT1 A 0 A_GunFlash
+    DEAG CD 3 Bright
+    DEAG EFE 2
+    DEAG A 2
+    DEAG A 3 A_ReFire
+    Goto Ready
+  FireFinishF1:
+    TNT1 A 0 A_GunFlash
+    DEAG CD 2 Bright
+    DEAG EFE 2
+    DEAG A 1
+    DEAG A 3 A_ReFire
+    Goto Ready
+  FireFinishF2:
+    TNT1 A 0 A_GunFlash
+    DEAG CD 2 Bright
+    DEAG EFE 1
+    DEAG A 1
+    DEAG A 3 A_ReFire
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleNanoMod",1,"Ready")
+	DEAG A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 7, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 9, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 11, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 13, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip", 15, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Clip", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",4,"Reload4")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",3,"Reload3")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",1,"Reload1")
+    DEAG G 1
+    DEAG H 1
+    DEAG I 1
+    DEAG J 1
+    DEAG K 1
+    DEAG L 1
+	TNT1 A 0 A_PlaySound("weapons/handcannonunload", 7)
+    DEAG M 1
+    DEAG N 1
+    DEAG O 15
+    DEAG P 1
+    DEAG Q 1
+    TNT1 A 0 A_PlaySound("weapons/handcannonload", 5)
+    DEAG R 1
+    DEAG S 1
+    DEAG T 1
+    DEAG U 1
+	Goto ReloadWorking
+  Reload1:
+    DEAG G 1
+    DEAG H 1
+    DEAG I 1
+    DEAG J 1
+    DEAG K 1
+    DEAG L 1
+	TNT1 A 0 A_PlaySound("weapons/handcannonunload", 7)
+    DEAG M 1
+    DEAG N 1
+    DEAG O 12
+    DEAG P 1
+    DEAG Q 1
+    TNT1 A 0 A_PlaySound("weapons/handcannonload", 5)
+    DEAG R 1
+    DEAG S 1
+    DEAG T 1
+    DEAG U 1
+	Goto ReloadWorking
+  Reload2:
+    DEAG G 1
+    DEAG H 1
+    DEAG I 1
+    DEAG J 1
+    DEAG K 1
+    DEAG L 1
+	TNT1 A 0 A_PlaySound("weapons/handcannonunload", 7)
+    DEAG M 1
+    DEAG N 1
+    DEAG O 9
+    DEAG P 1
+    DEAG Q 1
+    TNT1 A 0 A_PlaySound("weapons/handcannonload", 5)
+    DEAG R 1
+    DEAG S 1
+    DEAG T 1
+    DEAG U 1
+	Goto ReloadWorking
+  Reload3:
+    DEAG G 1
+    DEAG H 1
+    DEAG I 1
+    DEAG J 1
+    DEAG K 1
+    DEAG L 1
+	TNT1 A 0 A_PlaySound("weapons/handcannonunload", 7)
+    DEAG M 1
+    DEAG N 1
+    DEAG O 6
+    DEAG P 1
+    DEAG Q 1
+    TNT1 A 0 A_PlaySound("weapons/handcannonload", 5)
+    DEAG R 1
+    DEAG S 1
+    DEAG T 1
+    DEAG U 1
+	Goto ReloadWorking
+  Reload4:
+    DEAG G 1
+    DEAG H 1
+    DEAG I 1
+    DEAG J 1
+    DEAG K 1
+    DEAG L 1
+	TNT1 A 0 A_PlaySound("weapons/handcannonunload", 7)
+    DEAG M 1
+    DEAG N 1
+    DEAG O 3
+    DEAG P 1
+    DEAG Q 1
+    TNT1 A 0 A_PlaySound("weapons/handcannonload", 5)
+    DEAG R 1
+    DEAG S 1
+    DEAG T 1
+    DEAG U 1
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Clip", 1)
+	TNT1 A 0 A_GiveInventory("RLDesertEagleClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip",7,9)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip",9,7)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip",11,5)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip",13,3)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleClip",15,2)
+	TNT1 A 0 A_JumpIfInventory("Clip",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/handcannoncock", 6)
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",4,"ReloadFinish4")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",3,"ReloadFinish3")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLDesertEagleTechnicalMod",1,"ReloadFinish1")
+    DEAG V 2
+    DEAG W 2
+    DEAG X 2
+    DEAG Y 2
+    DEAG Z 2
+    DEAG A 6
+	Goto Ready
+  ReloadFinish1:
+    DEAG V 2
+    DEAG W 2
+    DEAG X 2
+    DEAG Y 2
+    DEAG Z 2
+    DEAG A 3
+	Goto Ready
+  ReloadFinish2:
+    DEAG V 2
+    DEAG W 2
+    DEAG X 2
+    DEAG Y 2
+    DEAG Z 2
+	Goto Ready
+  ReloadFinish3:
+    DEAG V 1
+    DEAG W 1
+    DEAG X 1
+    DEAG Y 2
+    DEAG Z 2
+	Goto Ready
+  ReloadFinish4:
+    DEAG V 1
+    DEAG W 1
+    DEAG X 1
+    DEAG Z 1
+	Goto Ready
+  Flash:
+    TNT1 A 3 A_Light2
+    TNT1 A 3 A_Light1
+    Goto LightDone
+  Spawn:
+    DEAP X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerDesertEagleConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLStormDesertEagleConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaDesertEagleConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLMiniMissilePistolConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoDesertEagleConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoDesertEagleConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLHighPowerDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLStormDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLMiniMissilePistolConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoDesertEagleConfirm",1)
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLStormDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLMiniMissilePistolConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoDesertEagleConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(32,2,3)
+	TNT1 A 0 A_Jump(256,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAgilityMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  AssembleHighPowerDesertEagle:
+	TNT1 A 0 A_Print("\cvHigh Power Handcannon \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerDesertEagleConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerDesertEagle",1)
+	TNT1 A 0 A_SelectWeapon("RLHighPowerDesertEagle")
+	TNT1 A 0 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  AssembleStormDesertEagle:
+	TNT1 A 0 A_Print("\cvStorm Handcannon \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLStormDesertEagleConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLStormDesertEagle",1)
+	TNT1 A 0 A_SelectWeapon("RLStormDesertEagle")
+	TNT1 A 0 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  AssemblePlasmaDesertEagle:
+	TNT1 A 0 A_Print("\cvPlasma Handcannon \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaDesertEagleConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaDesertEagle",1)
+	TNT1 A 0 A_SelectWeapon("RLPlasmaDesertEagle")
+	TNT1 A 0 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  AssembleMiniMissilePistol:
+	TNT1 A 0 A_Print("\cvMini-missile Pistol \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLMiniMissilePistolConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLMiniMissilePistol",1)
+	TNT1 A 0 A_SelectWeapon("RLMiniMissilePistol")
+	TNT1 A 0 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  AssembleNanoManufactureAmmoDesertEagle:
+	TNT1 A 0 A_Print("\cvNanomachic Handcannon \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoDesertEagleConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLNanoManufactureAmmoDesertEagle",1)
+	TNT1 A 0 A_SelectWeapon("RLNanoManufactureAmmoDesertEagle")
+	TNT1 A 0 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  AssembleDemolitionAmmoDesertEagle:
+	TNT1 A 0 A_Print("\cvDemolition Ammo Handcannon \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLDesertEagleSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEaglePowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLDesertEagleNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLDemolitionAmmoDesertEagleConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLDemolitionAmmoDesertEagle",1)
+	TNT1 A 0 A_SelectWeapon("RLDemolitionAmmoDesertEagle")
+	TNT1 A 0 A_TakeInventory("RLDesertEagle",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLDesertEagleSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLDesertEagleModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLDesertEaglePowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLDesertEagleBulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLDesertEagleAgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLDesertEagleTechnicalMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLDesertEagleNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLDesertEagleFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLDesertEagleSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLDesertEagleClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 15
+   Inventory.Icon ""
+}
+
+ACTOR RLDesertEaglePickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		DEAP X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLDesertEagle",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/handcannonpickup")
+		TNT1 A 0 A_GiveInventory("RLDesertEagle",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \ctHandcannon.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Clip",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Handcannon =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Clip",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Clip",7)
+		Stop
+	AmmoFull:
+		DEAP X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLDesertEagle
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		DEAP X 1
+		Loop
+	Death:
+		TNT1 A 0
+		DEAP X 1 A_SpawnItem("RLDesertEaglePickup",0,0,0,0)
+		Stop
+	}
+}

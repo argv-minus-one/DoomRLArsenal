@@ -1,0 +1,3885 @@
+
+Actor RLBootsWorn : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBootsInInventory : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLEquippingBoots : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLUnequippingBoots : Inventory
+{
+inventory.maxamount 1
+}
+
+//-------------------------------------------------------------------
+//		BOOT SPAWNERS
+
+actor RLStandardBootsSpawner : RandomSpawner
+{
+    DropItem "RLSteelBootsPickup" 255 4
+    DropItem "RLProtectiveBootsPickup" 255 3
+    DropItem "RLPlasteelBootsPickup" 255 3
+    DropItem "RLExoticBootsSpawner" 255 2
+    DropItem "RLAssembledBootsSpawner" 255 2
+}
+
+actor RLExoticBootsSpawner : RandomSpawner
+{
+    DropItem "RLCerberusBootsPickup" 255 2
+    DropItem "RLTacticalBootsPickup" 255 2
+    DropItem "RLAcidProofBootsPickup" 255 2
+    DropItem "RLGothicBootsPickup" 255 2
+    DropItem "RLPhaseshiftBootsPickup" 255 2
+    DropItem "RLShockwaveBootsPickup" 255 2
+    DropItem "RLUniqueBootsSpawner" 255 1
+}
+
+actor RLAssembledBootsSpawner : RandomSpawner
+{
+    DropItem "RLAntigravSteelBootsPickup" 255 2
+    DropItem "RLAntigravProtectiveBootsPickup" 255 2
+    DropItem "RLAntigravPlasteelBootsPickup" 255 2
+    DropItem "RLEnviromentalSteelBootsPickup" 255 3
+    DropItem "RLEnviromentalProtectiveBootsPickup" 255 3
+    DropItem "RLEnviromentalPlasteelBootsPickup" 255 3
+    DropItem "RLFireproofSteelBootsPickup" 255 4
+    DropItem "RLFireproofProtectiveBootsPickup" 255 4
+    DropItem "RLFireproofPlasteelBootsPickup" 255 4
+    DropItem "RLGrapplingSteelBootsPickup" 255 3
+    DropItem "RLGrapplingProtectiveBootsPickup" 255 3
+    DropItem "RLGrapplingPlasteelBootsPickup" 255 3
+}
+
+actor RLUniqueBootsSpawner : RandomSpawner
+{
+    DropItem "RLEnviroBootsPickup" 255 3
+    DropItem "RLNyarlaptotepsBootsPickup" 255 1
+    DropItem "RLLavaBootsPickup" 255 1
+    DropItem "RLLeonidasBootsPickup" 255 3
+    DropItem "RLDemonicBootsPickup" 255 3
+    DropItem "RLRoystensCombatBootsPickup" 255 2
+    DropItem "RLSoloOperativeBootsPickup" 255 2
+    DropItem "RLTorgueBlastBootsPickup" 255 1
+    DropItem "RLFrontlineEngineerBootsPickup" 255 2
+    DropItem "RLTacticalAssemblerBootsPickup" 255 2
+    DropItem "RLNuclearPowerBootsPickup" 255 1
+    DropItem "RLLegendaryBootsSpawner" 255 1
+}
+
+actor RLLegendaryBootsSpawner : RandomSpawner
+{
+    DropItem "RLAngelicBootsPickup" 255 1
+}
+
+//-------------------------------------------------------------------
+//		BOOTS REMOVER
+
+ACTOR RLBootsRemover : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.UNTOSSABLE
+    +INVENTORY.UNDROPPABLE
+	+INVENTORY.KEEPDEPLETED
+    Tag "Unequip Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "REMOB0"
+    Inventory.Pickupmessage "how did you even... you know what, fuck you I don't care."
+	Inventory.PickupSound "misc/armor_pkup"
+	Inventory.UseSound "misc/armor_pkup"
+	States
+	{
+	Spawn:
+		BOOT S -1
+		Loop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLUnequippingBoots",1,"BootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoArmorEquipped
+	BootsEquipped:
+		TNT1 A 0 A_GiveInventory("RLUnequippingBoots", 1)
+		TNT1 A 0 A_Print("Use this again to drop your currently equipped boots, or switch weapons to cancel.", 10)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("You aren't wearing any boots.", 5)
+		Fail
+	BootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLUnequippingBoots",1)
+		TNT1 A 0 A_GiveInventory("RLBootsRemover", 1)
+		TNT1 A 0 A_JumpIfInventory("RLSteelBootsToken",1,"SteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLProtectiveBootsToken",1,"ProtectiveBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLPlasteelBootsToken",1,"PlasteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLAntigravSteelBootsToken",1,"AntigravSteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLAntigravProtectiveBootsToken",1,"AntigravProtectiveBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLAntigravPlasteelBootsToken",1,"AntigravPlasteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLEnviromentalSteelBootsToken",1,"EnviromentalSteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLEnviromentalProtectiveBootsToken",1,"EnviromentalProtectiveBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLEnviromentalPlasteelBootsToken",1,"EnviromentalPlasteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLFireproofSteelBootsToken",1,"FireproofSteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLFireproofProtectiveBootsToken",1,"FireproofProtectiveBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLFireproofPlasteelBootsToken",1,"FireproofPlasteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLGrapplingSteelBootsToken",1,"GrapplingSteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLGrapplingProtectiveBootsToken",1,"GrapplingProtectiveBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLGrapplingPlasteelBootsToken",1,"GrapplingPlasteelBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLCerberusBootsToken",1,"CerberusBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLTacticalBootsToken",1,"TacticalBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLLavaBootsToken",1,"LavaBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLAcidProofBootsToken",1,"AcidProofBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLGothicBootsToken",1,"GothicBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLPhaseshiftBootsToken",1,"PhaseshiftBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLEnviroBootsToken",1,"EnviroBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLNyarlaptotepsBootsToken",1,"NyarlaptotepsBootsUnequip")
+		// ohgod i need to pee brb
+		TNT1 A 0 A_JumpIfInventory("RLShockwaveBootsToken",1,"ShockwaveBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLLeonidasBootsToken",1,"LeonidasBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLDemonicBootsToken",1,"DemonicBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLRoystensCombatBootsToken",1,"RoystensCombatBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLSoloOperativeBootsToken",1,"SoloOperativeBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLTorgueBlastBootsToken",1,"TorgueBlastBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLFrontlineEngineerBootsToken",1,"FrontlineEngineerBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLTacticalAssemblerBootsToken",1,"TacticalAssemblerBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLNuclearPowerBootsToken",1,"NuclearPowerBootsUnequip")
+		TNT1 A 0 A_JumpIfInventory("RLAngelicBootsToken",1,"AngelicBootsUnequip")
+		TNT1 A 0 A_Print("Oh god what did you do?", 5)
+		Fail
+	SteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLSteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLSteelBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLSteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLSteelBoots",0,0,0)
+		Fail
+	ProtectiveBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLProtectiveBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLProtectiveBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLProtectiveBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLProtectiveBoots",0,0,0)
+		Fail
+	PlasteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLPlasteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLPlasteelBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLPlasteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLPlasteelBoots",0,0,0)
+		Fail
+	AntigravSteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLAntigravSteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLSteelBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAntigravBootsJump",1)
+		TNT1 A 0 A_TakeInventory("RLDeathFromAboveSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLDeathFromAboveSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLAntigravSteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLAntigravSteelBoots",0,0,0)
+		Fail
+	AntigravProtectiveBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLAntigravProtectiveBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLProtectiveBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAntigravBootsJump",1)
+		TNT1 A 0 A_TakeInventory("RLDeathFromAboveSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLDeathFromAboveSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLAntigravProtectiveBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLAntigravProtectiveBoots",0,0,0)
+		Fail
+	AntigravPlasteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLAntigravPlasteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLPlasteelBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAntigravBootsJump",1)
+		TNT1 A 0 A_TakeInventory("RLDeathFromAboveSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLDeathFromAboveSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLAntigravPlasteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLAntigravPlasteelBoots",0,0,0)
+		Fail
+	EnviromentalSteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLEnviromentalSteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLEnviromentalSteelBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLEnviromentalSteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLEnviromentalSteelBoots",0,0,0)
+		Fail
+	EnviromentalProtectiveBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLEnviromentalProtectiveBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLEnviromentalProtectiveBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLEnviromentalProtectiveBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLEnviromentalProtectiveBoots",0,0,0)
+		Fail
+	EnviromentalPlasteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLEnviromentalPlasteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLEnviromentalPlasteelBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLEnviromentalPlasteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLEnviromentalPlasteelBoots",0,0,0)
+		Fail
+	FireproofSteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLFireproofSteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLFireproofSteelBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLFireproofSteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLFireproofSteelBoots",0,0,0)
+		Fail
+	FireproofProtectiveBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLFireproofProtectiveBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLFireproofProtectiveBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLFireproofProtectiveBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLFireproofProtectiveBoots",0,0,0)
+		Fail
+	FireproofPlasteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLFireproofPlasteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLFireproofPlasteelBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLFireproofPlasteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLFireproofPlasteelBoots",0,0,0)
+		Fail
+	GrapplingSteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLGrapplingSteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLGrapplingSteelBootsProtection",1)
+		TNT1 A 0 A_SetMass(Mass - 10000)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLGrapplingSteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLGrapplingSteelBoots",0,0,0)
+		Fail
+	GrapplingProtectiveBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLGrapplingProtectiveBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLGrapplingProtectiveBootsProtection",1)
+		TNT1 A 0 A_SetMass(Mass - 10000)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLGrapplingProtectiveBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLGrapplingProtectiveBoots",0,0,0)
+		Fail
+	GrapplingPlasteelBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLGrapplingPlasteelBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLGrapplingPlasteelBootsProtection",1)
+		TNT1 A 0 A_SetMass(Mass - 10000)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLGrapplingPlasteelBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLGrapplingPlasteelBoots",0,0,0)
+		Fail
+	CerberusBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLCerberusBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLCerberusSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLCerberusSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLCerberusBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLCerberusBoots",0,0,0)
+		Fail
+	TacticalBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLTacticalBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLTacticalBootsSpeed",1)
+		TNT1 A 0 A_TakeInventory("RLTacticalSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLTacticalSetBonusActive",1)
+		TNT1 A 0 A_TakeInventory("PowerRLTacticalSetBonusProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLTacticalBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLTacticalBoots",0,0,0)
+		Fail
+	LavaBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLLavaBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLLavaSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLLavaSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLLavaBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLLavaBoots",0,0,0)
+		Fail
+	AcidProofBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLAcidProofBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLAcidProofBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLAcidProofBoots",0,0,0)
+		Fail
+	GothicBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLGothicBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLGothicBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLGothicSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLGothicSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLGothicBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLGothicBoots",0,0,0)
+		Fail
+	PhaseshiftBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLPhaseshiftBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLPhaseshiftBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLPhaseshiftSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLPhaseshiftSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLPhaseshiftBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLPhaseshiftBoots",0,0,0)
+		Fail
+	EnviroBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLEnviroBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLEnviroBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLEnviroBoots",0,0,0)
+		Fail
+	NyarlaptotepsBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLNyarlaptotepsBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLNyarlaptotepsBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLInquisitorsSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLInquisitorsSetBonusActive",1)
+		TNT1 A 0 A_TakeInventory("PowerRLInquisitorsSetBonusProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLNyarlaptotepsBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLNyarlaptotepsBoots",0,0,0)
+		Fail
+	ShockwaveBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLShockwaveBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLShockwaveBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLShockwaveBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLShockwaveBoots",0,0,0)
+		Fail
+	LeonidasBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLLeonidasBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLLeonidasBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLLeonidasBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLLeonidasBoots",0,0,0)
+		Fail
+	DemonicBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLDemonicBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLDemonicBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLDemonicSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLDemonicSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLDemonicBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLDemonicBoots",0,0,0)
+		Fail
+	RoystensCombatBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLRoystensCombatBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLRoystensCombatBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLRoystenSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLRoystenSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLRoystensCombatBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLRoystensCombatBoots",0,0,0)
+		Fail
+	SoloOperativeBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLSoloOperativeBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLSoloOperativeBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLArchitectSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLArchitectSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLSoloOperativeBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLSoloOperativeBoots",0,0,0)
+		Fail
+	TorgueBlastBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLTorgueBlastBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLTorgueBlastBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLTorgueSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLTorgueSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLTorgueBlastBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLTorgueBlastBoots",0,0,0)
+		Fail
+	FrontlineEngineerBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLFrontlineEngineerBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLFrontlineEngineerBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLSentrySentinelSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLSentrySentinelSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLFrontlineEngineerBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLFrontlineEngineerBoots",0,0,0)
+		Fail
+	TacticalAssemblerBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLTacticalAssemblerBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLTacticalAssemblerBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLSensibleStrategistSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLSensibleStrategistSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLTacticalAssemblerBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLTacticalAssemblerBoots",0,0,0)
+		Fail
+	NuclearPowerBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLNuclearPowerBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLNuclearPowerBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLEnclaveSetBonusActive",1,1)
+		Goto NuclearPowerBootsUnequipContinue
+		TNT1 A 0 A_TakeInventory("BasicArmor",99999)
+		TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,2)
+		TNT1 A 0 A_GiveInventory("RLNuclearPowerArmor",1)
+		Goto NuclearPowerBootsUnequipContinue
+		TNT1 A 0 A_GiveInventory("RLNuclearPowerArmorRenegade",1)
+		Goto NuclearPowerBootsUnequipContinue
+	NuclearPowerBootsUnequipContinue:
+		TNT1 A 0 A_TakeInventory("RLEnclaveSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLEnclaveSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLNuclearPowerBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLNuclearPowerBoots",0,0,0)
+		Fail
+	AngelicBootsUnequip:
+		TNT1 A 0 A_TakeInventory("RLBootsWorn",1)
+		TNT1 A 0 A_TakeInventory("RLAngelicBootsToken",1)
+		TNT1 A 0 A_TakeInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_TakeInventory("RLAngelicAttireSetBonusBoots",1)
+		TNT1 A 0 A_TakeInventory("RLAngelicAttireSetBonusActive",1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,2)
+		TNT1 A 0 A_GiveInventory("RLAngelicBootsPickup",1)
+		Fail
+		TNT1 A 0 A_FireCustomMissile("DroppedRLAngelicBoots",0,0,0)
+		Fail
+	}
+}
+
+//-------------------------------------------------------------------
+//		STANDARD BOOTS
+
+actor PowerRLSteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.9
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLSteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Steel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "BOOIS0"
+    Inventory.Pickupmessage "Picked up the steel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		BOOT S 6
+		BOOT S 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cjSteel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLSteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLSteelBootsToken",1)
+		TNT1 A 0 A_Print("\cjSteel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cj= Steel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLSteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLSteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		BOOT S 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLSteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLProtectiveBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.8
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLProtectiveBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Protective Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "BOOIG0"
+    Inventory.Pickupmessage "Picked up the protective boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		BOOT G 6
+		BOOT G 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cjProtective Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLProtectiveBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLProtectiveBootsToken",1)
+		TNT1 A 0 A_Print("\cjProtective Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cj= Protective Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLProtectiveBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLProtectiveBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		BOOT G 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLProtectiveBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLPlasteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.55
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLPlasteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Plasteel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "BOOIB0"
+    Inventory.Pickupmessage "Picked up the plasteel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		BOOT B 6
+		BOOT B 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cjPlasteel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLPlasteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLPlasteelBootsToken",1)
+		TNT1 A 0 A_Print("\cjPlasteel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cj= Plasteel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLPlasteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLPlasteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		BOOT B 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLPlasteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		ASSEMBLED BOOTS
+
+actor PowerRLAbsoluteBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLCerberusBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Cerberus Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "CERBI0"
+    Inventory.Pickupmessage "Picked up the cerberus boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		CERB A 6
+		CERB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvCerberus Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLCerberusBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLCerberusSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusArmor",1,"SetBonusCheck")
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusTristarBlaster",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cvCerberus Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Cerberus Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusTristarBlaster",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLCerberusSetBonusActive",1)
+		TNT1 A 0 A_Print("\cvCerberus Boots \c-equipped.\n\cf= TRINITY GUARDIAN =\n\cgTristar Blaster fires three times faster", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLCerberusBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLCerberusBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		CERB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLCerberusBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+ACTOR PowerRLTacticalBootsSpeed : PowerSpeed
+{
+   speed 1.15
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+   +POWERSPEED.NOTRAIL
+}
+
+ACTOR RLTacticalBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Tactical Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "TACBI0"
+    Inventory.Pickupmessage "Picked up the tactical boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		TACB A 6
+		TACB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvTactical Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLTacticalBootsSpeed",1)
+		TNT1 A 0 A_GiveInventory("RLTacticalBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLTacticalSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLTacticalSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cvTactical Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Tactical Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLTacticalSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLTacticalSetBonusActive",1)
+		TNT1 A 0 A_GiveInventory("PowerRLTacticalSetBonusProtection",1)
+		TNT1 A 0 A_Print("\cvTactical Boots \c-equipped.\n\cf= TACTICAL READINESS =\n\cgImmunity to splash damage", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLTacticalBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLTacticalBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		TACB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLTacticalBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+ACTOR RLLavaBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Lava Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "LAVBI0"
+    Inventory.Pickupmessage "Picked up the lava boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		LAVB ABCD 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cdLava Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLLavaBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLLavaSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLLavaSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdLava Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Lava Boots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLLavaSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLLavaSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdLava Boots \c-equipped.\n\cf= UNSTABLE ELEMENTAL =\n\cgChance of temporary invincibility when taking damage", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLLavaBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLLavaBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		LAVB ABCD 6 Bright
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLLavaBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		ANTIGRAV BOOTS
+
+actor PowerRLAntigravBootsJump : PowerHighJump
+{
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLAntigravSteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Antigrav Steel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "AGSBI0"
+    Inventory.Pickupmessage "Picked up the antigrav steel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		AGSB AB 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvAntigrav Steel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLSteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAntigravBootsJump",1)
+		TNT1 A 0 A_GiveInventory("RLAntigravSteelBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLDeathFromAboveSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLDeathFromAboveSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cvAntigrav Steel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Antigrav Steel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLDeathFromAboveSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLDeathFromAboveSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdAntigrav Steel Boots \c-equipped.\n\cf= DEATH FROM ABOVE =\n\cgJetpack can fly indefinitely", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLAntigravSteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLAntigravSteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		AGSB AB 3 Bright
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLAntigravSteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+ACTOR RLAntigravProtectiveBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Antigrav Protective Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "AGGBI0"
+    Inventory.Pickupmessage "Picked up the antigrav protective boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		AGGB AB 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvAntigrav Protective Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLProtectiveBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAntigravBootsJump",1)
+		TNT1 A 0 A_GiveInventory("RLAntigravProtectiveBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLDeathFromAboveSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLDeathFromAboveSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cvAntigrav Protective Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Antigrav Protective Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLDeathFromAboveSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLDeathFromAboveSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdAntigrav Protective Boots \c-equipped.\n\cf= DEATH FROM ABOVE =\n\cgJetpack can fly indefinitely", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLAntigravProtectiveBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLAntigravProtectiveBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		AGGB AB 3 Bright
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLAntigravProtectiveBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+ACTOR RLAntigravPlasteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Antigrav Plasteel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "AGBBI0"
+    Inventory.Pickupmessage "Picked up the antigrav plasteel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		AGBB AB 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvAntigrav Plasteel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLPlasteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAntigravBootsJump",1)
+		TNT1 A 0 A_GiveInventory("RLAntigravPlasteelBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLDeathFromAboveSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLDeathFromAboveSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cvAntigrav Plasteel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Antigrav Plasteel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLDeathFromAboveSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLDeathFromAboveSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdAntigrav Plasteel Boots \c-equipped.\n\cf= DEATH FROM ABOVE =\n\cgJetpack can fly indefinitely", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLAntigravPlasteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLAntigravPlasteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		AGBB AB 3 Bright
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLAntigravPlasteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		ENVIROMENTAL BOOTS
+
+actor PowerRLEnviromentalSteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.15
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLEnviromentalSteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Environmental Steel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ENVIS0"
+    Inventory.Pickupmessage "Picked up the environmental steel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ENVO S 6
+		ENVO S 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvEnvironmental Steel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLEnviromentalSteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLEnviromentalSteelBootsToken",1)
+		TNT1 A 0 A_Print("\cvEnvironmental Steel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Environmental Steel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLEnviromentalSteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLEnviromentalSteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ENVO S 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLEnviromentalSteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLEnviromentalProtectiveBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.1
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLEnviromentalProtectiveBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Environmental Protective Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ENVIG0"
+    Inventory.Pickupmessage "Picked up the environmental protective boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ENVO G 6
+		ENVO G 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvEnvironmental Protective Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLEnviromentalProtectiveBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLEnviromentalProtectiveBootsToken",1)
+		TNT1 A 0 A_Print("\cvEnvironmental Protective Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Environmental Protective Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLEnviromentalProtectiveBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLEnviromentalProtectiveBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ENVO G 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLEnviromentalProtectiveBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLEnviromentalPlasteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.1
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLEnviromentalPlasteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Enviromental Plasteel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ENVIB0"
+    Inventory.Pickupmessage "Picked up the environmental plasteel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ENVO B 6
+		ENVO B 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvEnvironmental Plasteel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLEnviromentalPlasteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLEnviromentalPlasteelBootsToken",1)
+		TNT1 A 0 A_Print("\cvEnvironmental Plasteel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Environmental Plasteel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLEnviromentalPlasteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLEnviromentalPlasteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ENVO B 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLEnviromentalPlasteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		FIREPROOF BOOTS
+
+actor PowerRLFireproofSteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.6
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLFireproofSteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Fireproof Steel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "FIRIS0"
+    Inventory.Pickupmessage "Picked up the fireproof steel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		FIRB S 6
+		FIRB S 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvFireproof Steel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLFireproofSteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLFireproofSteelBootsToken",1)
+		TNT1 A 0 A_Print("\cvFireproof Steel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Fireproof Steel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLFireproofSteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLFireproofSteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		FIRB S 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLFireproofSteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLFireproofProtectiveBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.5
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLFireproofProtectiveBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Fireproof Protective Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "FIRIG0"
+    Inventory.Pickupmessage "Picked up the fireproof protective boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		FIRB G 6
+		FIRB G 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvFireproof Protective Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLFireproofProtectiveBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLFireproofProtectiveBootsToken",1)
+		TNT1 A 0 A_Print("\cvFireproof Protective Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Fireproof Protective Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLFireproofProtectiveBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLFireproofProtectiveBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		FIRB G 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLFireproofProtectiveBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLFireproofPlasteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.25
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLFireproofPlasteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Fireproof Plasteel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "FIRIB0"
+    Inventory.Pickupmessage "Picked up the fireproof plasteel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		FIRB B 6
+		FIRB B 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvFireproof Plasteel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLFireproofPlasteelBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLFireproofPlasteelBootsToken",1)
+		TNT1 A 0 A_Print("\cvFireproof Plasteel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Fireproof Plasteel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLFireproofPlasteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLFireproofPlasteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		FIRB B 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLFireproofPlasteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		GRAPPLING BOOTS
+
+actor PowerRLGrapplingSteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.8
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLGrapplingSteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Grappling Steel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "GRAIS0"
+    Inventory.Pickupmessage "Picked up the grappling steel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		GRAP S 6
+		GRAP S 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvGrappling Steel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLGrapplingSteelBootsProtection",1)
+		TNT1 A 0 A_SetMass(Mass + 10000)
+		TNT1 A 0 A_GiveInventory("RLGrapplingSteelBootsToken",1)
+		TNT1 A 0 A_Print("\cvGrappling Steel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Grappling Steel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLGrapplingSteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLGrapplingSteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		GRAP S 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLGrapplingSteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLGrapplingProtectiveBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.7
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLGrapplingProtectiveBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Grappling Protective Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "GRAIG0"
+    Inventory.Pickupmessage "Picked up the grappling protective boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		GRAP G 6
+		GRAP G 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvGrappling Protective Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLGrapplingProtectiveBootsProtection",1)
+		TNT1 A 0 A_SetMass(Mass + 10000)
+		TNT1 A 0 A_GiveInventory("RLGrapplingProtectiveBootsToken",1)
+		TNT1 A 0 A_Print("\cvGrappling Protective Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Grappling Protective Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLGrapplingProtectiveBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLGrapplingProtectiveBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		GRAP G 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLGrapplingProtectiveBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLGrapplingPlasteelBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.45
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLGrapplingPlasteelBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Grappling Plasteel Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "GRAIB0"
+    Inventory.Pickupmessage "Picked up the grappling plasteel boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		GRAP B 6
+		GRAP B 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cvGrappling Plasteel Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLGrapplingPlasteelBootsProtection",1)
+		TNT1 A 0 A_SetMass(Mass + 10000)
+		TNT1 A 0 A_GiveInventory("RLGrapplingPlasteelBootsToken",1)
+		TNT1 A 0 A_Print("\cvGrappling Plasteel Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Grappling Plasteel Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLGrapplingPlasteelBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLGrapplingPlasteelBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		GRAP B 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLGrapplingPlasteelBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		EXOTIC BOOTS
+
+ACTOR RLAcidProofBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Acid-proof Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ACPBI0"
+    Inventory.Pickupmessage "Picked up the acid-proof boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ACPB A 6
+		ACPB B 6 Bright
+		ACPB A 6
+		ACPB C 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \ctAcid-proof Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLAcidProofBootsToken",1)
+		TNT1 A 0 A_Print("\ctAcid-proof Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Acid-proof Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLAcidProofBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLAcidProofBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ACPB A 6
+		ACPB B 6 Bright
+		ACPB A 6
+		ACPB C 6 Bright
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLAcidProofBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLGothicBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.5
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLGothicBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Gothic Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "GOTBI0"
+    Inventory.Pickupmessage "Picked up the gothic boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		GOTB A 6
+		GOTB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \ctGothic Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLGothicBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLGothicBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLGothicSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\ctGothic Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Gothic Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLGothicSetBonusActive",1)
+		TNT1 A 0 A_Print("\ctGothic Boots \c-equipped.\n\cf= GOTHIC ARMS =\n\cgMassively increases unarmed melee damage", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLGothicBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLGothicBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		GOTB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLGothicBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLPhaseshiftBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.5
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLPhaseshiftBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Phaseshift Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "PSHBI0"
+    Inventory.Pickupmessage "Picked up the Phaseshift boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		PSHB A 6
+		PSHB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \ctPhaseshift Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLPhaseshiftBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLPhaseshiftBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLPhaseshiftSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLPhaseshiftSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\ctPhaseshift Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Phaseshift Boots =", 5, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLPhaseshiftSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLPhaseshiftSetBonusActive",1)
+		TNT1 A 0 A_Print("\ctPhaseshift Boots \c-equipped.\n\cf= PHASESHIFT SUIT =\n\cgYou phase out for a short time after being hit", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLPhaseshiftBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLPhaseshiftBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		PSHB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLPhaseshiftBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		UNIQUE BOOTS
+
+ACTOR RLEnviroBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Enviroboots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ENVBI0"
+    Inventory.Pickupmessage "Picked up the enviroboots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ENVB A 6
+		ENVB B 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cdEnviroboots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLEnviroBootsToken",1)
+		TNT1 A 0 A_Print("\cdEnviroboots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Enviroboots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLEnviroBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLEnviroBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ENVB A 6
+		ENVB B 6 Bright
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLEnviroBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLNyarlaptotepsBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.1
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLNyarlaptotepsBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Nyarlaptotep's Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "NYABI0"
+    Inventory.Pickupmessage "Picked up Nyarlaptotep's boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		NYAB A 6
+		NYAB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up \cdNyarlaptotep's Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLNyarlaptotepsBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLNyarlaptotepsBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLInquisitorsSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLInquisitorsSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdNyarlaptotep's Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd= Nyarlaptotep's Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLInquisitorsSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLInquisitorsSetBonusActive",1)
+		TNT1 A 0 A_GiveInventory("PowerRLInquisitorsSetBonusProtection",1)
+		TNT1 A 0 A_Print("\cdNyarlaptotep's Boots \c-equipped.\n\cf= INQUISITOR'S JUDGEMENT =\n\cgImmunity to fire damage", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLNyarlaptotepsBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLNyarlaptotepsBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		NYAB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLNyarlaptotepsBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		BETA 1.7 BOOTS
+
+//-------------------------------------------------------------------
+//		EXOTIC BOOTS
+
+actor PowerRLShockwaveBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.65
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLShockwaveBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Shockwave Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "SHKBI0"
+    Inventory.Pickupmessage "Picked up the shockwave boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		SHKB ABCDEFGHIJKL 1 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \ctShockwave Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLShockwaveBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLShockwaveBootsToken",1)
+		TNT1 A 0 A_Print("\ctShockwave Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Shockwave Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLShockwaveBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLShockwaveBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		SHKB A 6
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLShockwaveBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		UNIQUE BOOTS
+
+actor PowerRLLeonidasBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.7
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLLeonidasBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Leonidas' Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "SPARI0"
+    Inventory.Pickupmessage "Picked up Leonidas' boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		SPAR A 6
+		SPAR A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up \cdLeonidas' Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLLeonidasBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLLeonidasBootsToken",1)
+		TNT1 A 0 A_Print("\cdLeonidas' Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Leonidas' Boots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor RLLeonidasBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLLeonidasBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		SPAR A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLLeonidasBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLDemonicBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.2
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLDemonicBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Demonic Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "DEMBI0"
+    Inventory.Pickupmessage "Picked up the demonic boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		DEMB A 6
+		DEMB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cdDemonic Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLDemonicBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLDemonicBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLDemonicSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLDemonicSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdDemonic Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Demonic Boots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLDemonicSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLDemonicSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdDemonic Boots \c-equipped.\n\cf= DEMONIC VENGEANCE =\n\cgCan fire homing plasmatic doom from your armor", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLDemonicBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLDemonicBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		DEMB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLDemonicBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLRoystensCombatBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.5
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLRoystensCombatBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Roysten's Combat Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ROYBI0"
+    Inventory.Pickupmessage "Picked up Roysten's combat boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ROYB A 6
+		ROYB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up \cdRoysten's Combat Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLRoystensCombatBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLRoystensCombatBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLRoystenSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLRoystenSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdRoysten's Combat Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Roysten's Combat Boots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLRoystenSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLRoystenSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdRoysten's Combat Boots \c-equipped.\n\cf= ROYSTEN'S REVENGE =\n\cgYou can call in Supply Crates\n\cgonce per level", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLRoystensCombatBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLRoystensCombatBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ROYB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLRoystensCombatBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLSoloOperativeBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.5
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLSoloOperativeBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Solo Operative Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "SSOBI0"
+    Inventory.Pickupmessage "Picked up the solo operative boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		SSOB A 6
+		SSOB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \cdSolo Operative Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLSoloOperativeBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLSoloOperativeBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLArchitectSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLArchitectSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdSolo Operative Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Solo Operative Boots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLArchitectSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLArchitectSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdSolo Operative Boots \c-equipped.\n\cf= ARCHITECT OF DEATH =\n\cgYou can turn invisible, confuse monsters and\n\cgdeal additional damage for a few seconds", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLSoloOperativeBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLSoloOperativeBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		SSOB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLSoloOperativeBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLTorgueBlastBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.4
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLTorgueBlastBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Torgue Blastboots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "TORBI0"
+    Inventory.Pickupmessage "Picked up the Torgue blastboots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		TORB A 6
+		TORB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up \cdTorgue Blastboots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLTorgueBlastBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLTorgueBlastBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLTorgueSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLTorgueSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdTorgue Blastboots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Torgue Blastboots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLTorgueSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLTorgueSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdTorgue Blastboots \c-equipped.\n\cf= EXPLOOOOOSSSIONS =\n\cgAdvanced Torgue explosion technology is activated in\n\cgboth the armor and boots", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLTorgueBlastBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLTorgueBlastBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		TORB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLTorgueBlastBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLFrontlineEngineerBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.2
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLFrontlineEngineerBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Frontline Engineer Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "BLUBI0"
+    Inventory.Pickupmessage "Picked up the frontline engineer boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		FLEB A 6 //Renamed them due to HTC2
+		FLEB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up \cdFrontline Engineer Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLFrontlineEngineerBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLFrontlineEngineerBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLSentrySentinelSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLSentrySentinelSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdFrontline Engineer Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Frontline Engineer Boots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLSentrySentinelSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLSentrySentinelSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdFrontline Engineer Boots \c-equipped.\n\cf= SENTRY SENTINEL =\n\cgAllows you to deploy two Sentries at once", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLFrontlineEngineerBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLFrontlineEngineerBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		FLEB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLFrontlineEngineerBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLTacticalAssemblerBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.2
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLTacticalAssemblerBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Tactical Assembler Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "REDBI0"
+    Inventory.Pickupmessage "Picked up the tactical assembler boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		TCAB A 6
+		TCAB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up \cdTactical Assembler Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLTacticalAssemblerBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLTacticalAssemblerBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLSensibleStrategistSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLSensibleStrategistSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdTactical Assembler Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Tactical Assembler Boots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLSensibleStrategistSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLSensibleStrategistSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdTactical Assembler Boots \c-equipped.\n\cf= SENSIBLE STRATEGIST =\n\cgRestorer heals more health and repairs armor", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLTacticalAssemblerBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLTacticalAssemblerBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		TCAB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLTacticalAssemblerBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+actor PowerRLNuclearPowerBootsProtection : PowerProtection
+{
+   damagefactor "Slime", 0.25
+   inventory.icon ""
+   Powerup.Duration -0x7FFFFFFF
+   +INVENTORY.PERSISTENTPOWER
+}
+
+ACTOR RLNuclearPowerBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Nuclear Powerboots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ENUKJ0"
+    Inventory.Pickupmessage "Picked up the nuclear powerboots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ENUK C 6
+		ENUK C 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up \cdNuclear Powerboots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLNuclearPowerBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLNuclearPowerBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLEnclaveSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLEnclaveSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\cdNuclear Powerboots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Nuclear Powerboots =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLEnclaveSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLEnclaveSetBonusActive",1)
+		TNT1 A 0 A_Print("\cdNuclear Powerboots \c-equipped.\n\cf= ENCLAVE ENFORCER =\n\cgImproved stats for Nuclear Powerarmor", 8, "CONFONT")
+		TNT1 A 0 A_TakeInventory("BasicArmor",99999)
+		TNT1 A 0 A_TakeInventory("PowerRLNuclearPowerBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,2)
+		TNT1 A 0 A_GiveInventory("RLNuclearPowerArmorComplete",1)
+		Stop
+		TNT1 A 0 A_GiveInventory("RLNuclearPowerArmorCompleteRenegade",1)
+		Stop
+	}
+}
+
+Actor RLNuclearPowerBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLNuclearPowerBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ENUK C 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLNuclearPowerBootsPickup",0,0,0,0)
+		Stop
+	}
+}
+
+//-------------------------------------------------------------------
+//		LEGENDARY BOOTS
+
+ACTOR RLAngelicBootsPickup : CustomInventory
+{
+	Radius 20
+	Height 16
+    -COUNTITEM
+    +INVENTORY.INVBAR
+    +INVENTORY.UNTOSSABLE
+    Tag "Angelic Boots"
+    Inventory.InterHubAmount 1
+    Inventory.MaxAmount 1
+    Inventory.Icon "ANGBI0"
+    Inventory.Pickupmessage "Picked up the angelic boots."
+	Inventory.PickupSound "misc/bootspickup"
+	Inventory.UseSound "misc/bootspickup"
+	States
+	{
+	Spawn:
+		ANGB A 6
+		ANGB A 6 Bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBootsInInventory",1,"NotPickup") // If the player is carrying boots, they cannot pick it up
+		TNT1 A 0 A_GiveInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_Print("Picked up the \ckAngelic Boots.")
+		Stop
+	Use:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsEquip")
+		TNT1 A 0 A_GiveInventory("RLEquippingBoots", 1)
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"BootsEquipped")
+		Goto NoBootsEquipped
+	BootsEquipped:
+		TNT1 A 0 A_Print("Press Drop Weapon to drop the selected boots, or switch weapons to cancel.", 5)
+		Fail
+	NoBootsEquipped:
+		TNT1 A 0 A_Print("Use the boots again to wear them. Press Drop Weapon to drop it, or switch weapons to cancel.", 5)
+		Fail
+	BootsEquip:
+		TNT1 A 0 A_JumpIfInventory("RLBootsWorn",1,"NotEquip") // If the player is already wearing boots, they cannot equip it
+		TNT1 A 0 A_TakeInventory("RLEquippingBoots",1)
+		TNT1 A 0 A_TakeInventory("RLBootsInInventory",1)
+		TNT1 A 0 A_GiveInventory("RLBootsWorn",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAbsoluteBootsProtection",1)
+		TNT1 A 0 A_GiveInventory("RLAngelicBootsToken",1)
+		TNT1 A 0 A_GiveInventory("RLAngelicAttireSetBonusBoots",1)
+		TNT1 A 0 A_JumpIfInventory("RLAngelicAttireSetBonusArmor",1,"SetBonusCheck")
+	BootsFinish:
+		TNT1 A 0 A_Print("\ckAngelic Boots \c-equipped.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_BootsAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_BootsAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ck= Angelic Boots =", 2, "CONFONT")
+	 NotPickup_NoPrint:
+		TNT1 A 0
+		Fail
+	NotEquip:
+		TNT1 A 0 A_Print("You are already wearing boots.", 1, "CONFONT")
+		TNT1 A 0
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLAngelicAttireSetBonusArmor",1,1)
+		Goto BootsFinish
+		TNT1 A 0 A_GiveInventory("RLAngelicAttireSetBonusActive",1)
+		TNT1 A 0 A_GiveInventory("PowerRLAngelicAttireSetBonusProtection",1)
+		TNT1 A 0 A_Print("\ckAngelic Boots \c-equipped.\n\cf= ANGELIC ATTIRE =\n\cgImmunity to corruption\n\cgGetting hit causes an AOE heal on players\n\cgGetting hit causes AOE damage to monsters", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor RLAngelicBootsToken : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR DroppedRLAngelicBoots
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity (frandom(0.5, 1.5))
+	FallingLoop:
+		ANGB A 1
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnItem("RLAngelicBootsPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,730 @@
+
+actor RLFistRedux : RLWeapon replaces Fist
+{
+  Weapon.SelectionOrder 1900
+  Weapon.Kickback 100
+  Weapon.SlotNumber 1
+  Inventory.PickupMessage "Punchy punchy."
+  Weapon.BobRangeX 0.1
+  Weapon.BobRangeY 0.6
+  Weapon.BobStyle "Smooth"
+  +MELEEWEAPON
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  +INVENTORY.UNDROPPABLE
+  Weapon.AmmoType "RLStamina"
+  Weapon.AmmoGive 100
+  Tag "Unarmed"
+  +AMMO_OPTIONAL
+  Obituary "%o was belted by %k."
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"ReadyNonCombat")
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1, "ReadyGeo")
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,"ReadyGothic")
+    TNT1 A 0 A_JumpIfInventory("RLStamGen",5,3)
+    TNT1 A 0 A_GiveInventory("RLStamGen",2)
+    PUCH A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+    TNT1 A 0 A_TakeInventory("RLStamGen",5)
+    TNT1 A 0 A_JumpIfInventory("RLStamina",100,2)
+    TNT1 A 0 A_GiveInventory("RLStamina",1)
+    PUCH A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+  ReadyGothic:
+    TNT1 A 0 A_JumpIfInventory("RLStamGen",5,3)
+    TNT1 A 0 A_GiveInventory("RLStamGen",2)
+    GFIS A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+    TNT1 A 0 A_TakeInventory("RLStamGen",5)
+    TNT1 A 0 A_JumpIfInventory("RLStamina",100,2)
+    TNT1 A 0 A_GiveInventory("RLStamina",1)
+    GFIS A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+  ReadyGeo:
+    TNT1 A 0 A_JumpIfInventory("RLStamGen",5,3)
+    TNT1 A 0 A_GiveInventory("RLStamGen",2)
+    GEOF A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+    TNT1 A 0 A_TakeInventory("RLStamGen",5)
+    TNT1 A 0 A_JumpIfInventory("RLStamina",100,2)
+    TNT1 A 0 A_GiveInventory("RLStamina",1)
+    GEOF A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+  ReadyNonCombat:
+    TNT1 A 0 A_JumpIfInventory("RLStamGen",5,3)
+    TNT1 A 0 A_GiveInventory("RLStamGen",3)
+    TNT1 A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+    TNT1 A 0 A_TakeInventory("RLStamGen",5)
+    TNT1 A 0 A_JumpIfInventory("RLStamina",100,2)
+    TNT1 A 0 A_GiveInventory("RLStamina",1)
+    TNT1 A 1 A_Weaponready (WRF_ALLOWZOOM | WRF_ALLOWRELOAD)
+    Goto Ready
+  Spawn:
+    TNT1 A -1
+    Loop
+  Zoom:
+  WeaponDrop:
+	TNT1 A 0
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModDrop")
+	TNT1 A 0 A_JumpIfInventory("RLEquippingBoots",1,"BootsDrop")
+	TNT1 A 0 A_JumpIfInventory("RLEquippingArmor",1,"ArmorDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUseOnyxMod",1,"OnyxDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUseBulkMod",1,"BulkDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUsePowerMod",1,"PowerDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUseAgilityMod",1,"AgilityDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUseTechnicalMod",1,"TechnicalDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUseNanoMod",1,"NanoDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUseFirestormMod",1,"FirestormDrop")
+	TNT1 A 0 A_JumpIfInventory("RLUseSniperMod",1,"SniperDrop")
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21)
+	TNT1 A 0 A_Print("Cannot drop your fists, you lunatic.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Zharkov says hi, by the way.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Excuse me sir, WTF are you doing?.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Biology does not work this way.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Stop that.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Why are you trying this? WHY?")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("What's wrong with you?")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Stop trying to abuse your anatomy.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("You aren't even people.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("This will only lead to death by blood loss, moron.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("This bug was fixed long ago.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Mmmmmmmmmmno.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Not happening.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("No. Nonononono.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("When will you people get tired of doing this?")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("STOP! YOU VIOLATED THE LAW!\nPAY THE COURT A FINE OR SERVE YOUR SENTENCE!\nYOUR STOLEN MODPACKS ARE NOW FORFEIT!")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("This is illegal, you know.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Mah boi, these fists are what all true warriors strive for.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("I know this way is quicker, but you really should\njust buy some red paint for the walls.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Y U DO DIS.")
+	Goto AfterModDrop
+	TNT1 A 0 A_Print("Insufficient Xaser particles in current atmosphere\nto allow for detachment and weaponization of fists.")
+	Goto AfterModDrop
+  AfterModDrop:
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"AfterModDropNonCombat")
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,6)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,3)
+    PUCH AA 4 A_WeaponReady (WRF_NOSECONDARY)
+    Goto Ready
+    GFIS AA 4 A_WeaponReady (WRF_NOSECONDARY)
+    Goto Ready
+    GEOF AA 4 A_WeaponReady (WRF_NOSECONDARY)
+    Goto Ready
+  AfterModDropNonCombat:
+    TNT1 AA 4 A_WeaponReady (WRF_NOSECONDARY)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"RenegadeAssemblyNoFireNonCombat")
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,6)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,3)
+    PUCH A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+    GFIS A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+    GEOF A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  RenegadeAssemblyNoFireNonCombat:
+    TNT1 A 9 A_WeaponReady (WRF_NOSECONDARY)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLFistSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"DeselectRenegade")
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1, "DeselectGeo")
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,"DeselectGothic")
+    TNT1 AA 0 A_Lower
+    PUCH A 1 A_Lower
+    loop
+  DeselectGothic:
+    TNT1 AA 0 A_Lower
+    GFIS A 1 A_Lower
+    loop
+  DeselectGeo:
+    TNT1 AA 0 A_Lower
+    GEOF A 1 A_Lower
+    loop
+  DeselectRenegade:
+    TNT1 A 0 A_TakeInventory("RLFistNoncombat",1)
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLFistSelected", 1)
+    Goto SelectLoop
+  SelectLoop: 
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"SelectRenegade")
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1, "SelectGeo")
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,"SelectGothic")
+    TNT1 AA 0 A_Raise
+    PUCH A 1 A_Raise
+    loop
+  SelectGothic: 
+    TNT1 AA 0 A_Raise
+    GFIS A 1 A_Raise
+    loop
+  SelectGeo: 
+    TNT1 AA 0 A_Raise
+    GEOF A 1 A_Raise
+    loop
+  Fire:
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"Reload2")
+    TNT1 A 0 A_JumpIfInventory("RLStamina",5,1)
+    goto Ready
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1, "FireGeo")
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,"FireGothic")
+    TNT1 A 0 A_JumpIfInventory("RLFistToken", 1, "LeftPunch")
+    PUCH A 3 A_Playsound ("weapons/fistswing")
+    PUCH B 2
+    TNT1 A 0 A_TakeInventory("RLStamina",1)
+    TNT1 A 0 A_GiveInventory("RLFistToken",1)
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "BerserkedRight")
+  NormalRight:
+    PUCH L 2 A_CustomPunch(2*random(1, 6), TRUE, "none", "RLNoGibMeleePuff", 64, 0)
+    TNT1 A 0 A_CustomPunch(2*random(1, 6), TRUE, "none", "RLNoGibMeleePuff", 64, 0)
+    TNT1 A 0 A_CustomPunch(2*random(1, 6), TRUE, "none", "RLNoGibMeleePuff", 64, 0)
+    goto RightFinish
+  BerserkedRight:
+    PUCH L 2 A_CustomPunch(10*random(1, 6), TRUE, "none", "RLMeleePuff", 64, 0.05)
+    TNT1 A 0 A_CustomPunch(10*random(1, 6), TRUE, "none", "RLMeleePuff", 64, 0.05)
+    TNT1 A 0 A_CustomPunch(10*random(1, 6), TRUE, "none", "RLMeleePuff", 64, 0.05)
+  RightFinish:
+    PUCH C 2
+    PUCH M 2
+    PUCH D 2
+    PUCH N 2
+    PUCH E 2
+    PUCH R 2
+    PUCH K 3 A_ReFire  	
+    goto Ready
+    LeftPunch:
+    PUCH F 3 A_Playsound ("weapons/fistswing")
+    PUCH G 2
+    TNT1 A 0 A_TakeInventory("RLStamina",1)
+    TNT1 A 0 A_TakeInventory("RLFistToken",1) 
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "BerserkedLeft")
+  NormalLeft:
+    PUCH O 2 A_CustomPunch(2*random(1, 6), TRUE, "none", "RLNoGibMeleePuff", 64, 0)
+    TNT1 A 0 A_CustomPunch(2*random(1, 6), TRUE, "none", "RLNoGibMeleePuff", 64, 0)
+    TNT1 A 0 A_CustomPunch(2*random(1, 6), TRUE, "none", "RLNoGibMeleePuff", 64, 0)
+    goto LeftFinish
+  BerserkedLeft:
+    PUCH O 2 A_CustomPunch(10*random(1, 6), TRUE, "none", "RLMeleePuff", 64, 0.05)
+    TNT1 A 0 A_CustomPunch(10*random(1, 6), TRUE, "none", "RLMeleePuff", 64, 0.05)
+    TNT1 A 0 A_CustomPunch(10*random(1, 6), TRUE, "none", "RLMeleePuff", 64, 0.05)
+  LeftFinish:
+    PUCH H 2
+    PUCH P 2
+    PUCH I 2
+    PUCH Q 2
+    PUCH J 2
+    PUCH K 3 A_ReFire  	
+    goto Ready
+  FireGothic:
+    GFIS ABC 2
+  ContinueGothic:
+    TNT1 A 0 A_JumpIfInventory("RLFistToken", 1, "LeftPunchGothic")
+    GFIS D 1 A_Playsound ("weapons/gothicfistswing")
+    GFIS FH 1
+    TNT1 A 0 A_TakeInventory("RLStamina",1)
+    TNT1 A 0 A_GiveInventory("RLFistToken",1)
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "BerserkedRightGothic")
+  NormalRightGothic:
+    GFIS J 1 A_CustomPunch(2*random(25, 50), TRUE, "none", "RLGothicMeleePuff", 64, 0)
+    goto RightFinishGothic
+  BerserkedRightGothic:
+    GFIS J 1 A_CustomPunch(10*random(25, 50), TRUE, "none", "RLGothicMeleePuff", 64, 0.01)
+  RightFinishGothic:
+    GFIS K 3
+    GFIS J 2
+    GFIS IHGFED 1
+    TNT1 A 3 A_ReFire ("ContinueGothic")
+    GFIS CBA 2
+    goto Ready
+    LeftPunchGothic:
+    GFIS L 1 A_Playsound ("weapons/gothicfistswing")
+    GFIS NP 1
+    TNT1 A 0 A_TakeInventory("RLStamina",1)
+    TNT1 A 0 A_TakeInventory("RLFistToken",1) 
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "BerserkedLeftGothic")
+  NormalLeftGothic:
+    GFIS R 1 A_CustomPunch(2*random(25, 50), TRUE, "none", "RLGothicMeleePuff", 64, 0)
+    goto LeftFinishGothic
+  BerserkedLeftGothic:
+    GFIS R 1 A_CustomPunch(10*random(25, 50), TRUE, "none", "RLGothicMeleePuff", 64, 0.01)
+  LeftFinishGothic:
+    GFIS S 3
+    GFIS R 2
+    GFIS QPONML 1
+    TNT1 A 3 A_ReFire ("ContinueGothic")
+    GFIS CBA 2
+    goto Ready 
+  FireGeo:
+    GEOF ABC 2
+  ContinueGeo:
+    GEOF D 1 A_Playsound ("weapons/gothicfistswing")
+    GEOF FH 1
+    TNT1 A 0 A_TakeInventory("RLStamina",1)
+    GEOF J 1 A_CustomPunch((25000), TRUE, "none", "RLGeoMeleePuff", 64, 0)
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1, 1)
+    goto GeoBroken
+    GEOF K 3
+    GEOF J 2
+    GEOF IHGFED 1
+    TNT1 A 3 A_ReFire ("ContinueGeo")
+    GEOF CBA 2
+    goto Ready
+  GeoBroken:
+    GEOF LMNNOOPPP 2
+    GEOF QQRSTUV 1
+    TNT1 A 25
+    PUCH UTS 2
+    goto Ready
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"Reload2")
+    TNT1 A 0 A_JumpIfInventory("RLStamina",10,1)
+    goto Ready
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,5)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,2)
+    PUCH K 2 A_Playsound ("weapons/fistswing")
+    goto AltFire+10
+    GFIS B 1 A_Playsound ("weapons/fistswing")
+    GFIS C 1
+    goto AltFire+10
+    GEOF B 1 A_Playsound ("weapons/fistswing")
+    GEOF C 1
+	TNT1 A 0 A_JumpIfInventory("RLShockwaveBootsToken",1, "ShockwaveKick")
+	TNT1 A 0 A_JumpIfInventory("RLLeonidasBootsToken",1, "SpartaKick")
+    TNT1 A 0 A_CheckFloor("RegularKick")
+    MLEG A 2
+    MLEG B 2 
+    TNT1 A 0 A_TakeInventory("RLStamina",10)
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "BerserkedKick")
+  NormalKick:
+    MLEG C 2 A_CustomPunch(2*random(3, 6), TRUE, "none", "RLNoGibMeleePuff", 72, 0)
+    TNT1 A 0 A_CustomPunch(2*random(3, 6), TRUE, "none", "RLNoGibMeleePuff", 72, 0)
+    MLEG D 3 A_CustomPunch(2*random(3, 6), TRUE, "none", "RLNoGibMeleePuff", 72, 0)
+    TNT1 A 0 A_CustomPunch(2*random(3, 6), TRUE, "none", "RLNoGibMeleePuff", 72, 0)
+    goto KickFinish
+  BerserkedKick:
+    MLEG C 2 A_CustomPunch(10*random(3, 6), TRUE, "none", "RLMeleePuff", 72, 0.01)
+    TNT1 A 0 A_CustomPunch(10*random(3, 6), TRUE, "none", "RLMeleePuff", 72, 0.01)
+    MLEG D 2 A_CustomPunch(10*random(3, 6), TRUE, "none", "RLMeleePuff", 72, 0.01)
+    TNT1 A 0 A_CustomPunch(10*random(3, 6), TRUE, "none", "RLMeleePuff", 72, 0.01)
+  KickFinish:
+    MLEG D 2
+    MLEG E 2
+    MLEG F 2
+    MLEG G 2
+    MLEG H 2
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,6)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,2)
+    PUCH K 4 A_ReFire
+    goto Ready
+    GFIS CB 1 A_ReFire
+    GFIS A 2 A_ReFire
+    goto Ready
+    GEOF CB 1 A_ReFire
+    GEOF A 2 A_ReFire
+    goto Ready
+  RegularKick:
+    LEG2 A 2
+    LEG2 B 2
+    LEG2 CD 1 
+    TNT1 A 0 A_TakeInventory("RLStamina",10)
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "RegularBerserkedKick")
+  RegularNormalKick:
+    LEG2 E 2 A_CustomPunch(2*random(12, 24), TRUE, "none", "RLNoGibKickPuff", 96, 0)
+	TNT1 A 0 A_JumpIfInventory("RLTorgueSetBonusActive",1, 1)
+    goto KickFinishRegular
+    TNT1 A 0 A_SpawnItemEx ("RLTorgueBootsExplosion", 32, 4, 48, 0, 0, 0, 0, SXF_NOCHECKPOSITION) 
+    goto KickFinishRegular
+  RegularBerserkedKick:
+    LEG2 E 2 A_CustomPunch(10*random(12, 24), TRUE, "none", "RLKickPuff", 96, 0.01)
+	TNT1 A 0 A_JumpIfInventory("RLTorgueSetBonusActive",1, 1)
+    goto KickFinishRegular
+    TNT1 A 0 A_SpawnItemEx ("RLTorgueBootsExplosion", 32, 4, 48, 0, 0, 0, 0, SXF_NOCHECKPOSITION) 
+    goto KickFinishRegular
+  KickFinishRegular:
+    LEG2 F 5
+    LEG2 E 2
+    LEG2 DCBA 1
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,6)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,2)
+    PUCH K 4 A_ReFire
+    goto Ready
+    GFIS CB 1 A_ReFire
+    GFIS A 2 A_ReFire
+    goto Ready
+    GEOF CB 1 A_ReFire
+    GEOF A 2 A_ReFire
+    goto Ready
+  ShockwaveKick:
+    LEG2 A 2
+    LEG2 B 2
+    LEG2 CD 1 
+    TNT1 A 0 A_PlaySound("misc/shockwaveboots", 5)
+    TNT1 A 0 A_TakeInventory("RLStamina",10)
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "ShockwaveBerserkedKick")
+  ShockwaveNormalKick:
+    LEG2 E 2 A_CustomPunch(2*random(12, 24), TRUE, "none", "RLNoGibKickPuff", 96, 0)
+    TNT1 A 0 A_FireCustomMissile ("RLShockwaveBootsWave", 0, 0, 4, 8)
+    goto KickFinishShockwave
+  ShockwaveBerserkedKick:
+    LEG2 E 2 A_CustomPunch(10*random(12, 24), TRUE, "none", "RLKickPuff", 96, 0.01)
+    TNT1 A 0 A_FireCustomMissile ("RLShockwaveBootsWave", 0, 0, 4, 8)
+  KickFinishShockwave:
+    LEG2 F 2 A_FireCustomMissile ("RLShockwaveBootsWave", 0, 0, 4, 8)
+    LEG2 F 2 A_FireCustomMissile ("RLShockwaveBootsWave", 0, 0, 4, 8)
+    LEG2 F 1 A_FireCustomMissile ("RLShockwaveBootsWave", 0, 0, 4, 8)
+    LEG2 E 2 A_FireCustomMissile ("RLShockwaveBootsWave", 0, 0, 4, 8)
+    LEG2 DCBA 1
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,6)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,2)
+    PUCH K 4 A_ReFire
+    goto Ready
+    GFIS CB 1 A_ReFire
+    GFIS A 2 A_ReFire
+    goto Ready
+    GEOF CB 1 A_ReFire
+    GEOF A 2 A_ReFire
+    goto Ready
+  SpartaKick:
+    LEG2 A 2
+    LEG2 B 2
+    LEG2 CD 1
+    TNT1 A 0 A_TakeInventory("RLStamina",10)
+    TNT1 A 0 A_JumpIfInventory("PowerStrength", 1, "SpartaBerserkedKick")
+  SpartaNormalKick:
+    TNT1 A 0 A_Jump(32, 2)
+    LEG2 E 2 A_CustomPunch(4*random(12, 24), TRUE, "none", "RLKickPuff", 96, 0)
+    goto KickFinishSparta
+    LEG2 E 2 A_CustomPunch(500, TRUE, "none", "RLSpartaKickPuff", 96, 0.01)
+	Goto KickFinishSparta
+  SpartaBerserkedKick:
+    TNT1 A 0 A_Jump(32, 2)
+    LEG2 E 2 A_CustomPunch(20*random(12, 24), TRUE, "none", "RLKickPuff", 96, 0.01)
+	Goto KickFinishSparta
+    LEG2 E 2 A_CustomPunch(1000, TRUE, "none", "RLSpartaKickPuff", 96, 0.01)
+	Goto KickFinishSparta
+  KickFinishSparta:
+    LEG2 F 5
+    LEG2 E 2
+    LEG2 DCBA 1
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,6)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,2)
+    PUCH K 4 A_ReFire
+    goto Ready
+    GFIS CB 1 A_ReFire
+    GFIS A 2 A_ReFire
+    goto Ready
+    GEOF CB 1 A_ReFire
+    GEOF A 2 A_ReFire
+    goto Ready
+  Reload:
+    TNT1 A 0 A_JumpIfInventory("RLFistNoncombat",1,"Reload2")
+    TNT1 A 0 A_GiveInventory("RLFistNoncombat",1)
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,8)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,4)
+    PUCH STU 2
+    goto Ready
+    GFIS ABC 2
+    goto Ready
+    GEOF ABC 2
+    goto Ready
+  Reload2:
+    TNT1 A 0 A_TakeInventory("RLFistNoncombat",1)
+	TNT1 A 0 A_JumpIfInventory("RLGeosGoldenGauntletArmorToken",1,8)
+	TNT1 A 0 A_JumpIfInventory("RLGothicSetBonusActive",1,4)
+    PUCH UTS 2
+    goto Ready
+    GFIS CBA 2
+    goto Ready
+    GEOF CBA 2
+    goto Ready
+  } 
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLMeleePuff
+{ 
+   ActiveSound ""
+   PainSound "weapons/fistwall"
+   AttackSound "weapons/fisthit"
+   DamageType "Melee"
+   +NOGRAVITY
+   +PUFFONACTORS
+   +NOBLOCKMAP
+   +ALLOWPARTICLES
+   +RANDOMIZE
+   +THRUGHOST
+   States
+   {
+   Spawn:
+      TNT1 A 1
+      Stop
+	  Melee:
+      TNT1 A 1
+      Stop
+	  Crash:
+      PUFF CD 4
+      Stop
+   }
+}
+
+ACTOR RLNoGibMeleePuff : RLMeleePuff
+{ 
+   +NOEXTREMEDEATH
+}
+
+ACTOR RLKickPuff : RLMeleePuff
+{ 
+   ProjectileKickBack 500
+   +FORCEPAIN
+}
+
+ACTOR RLNoGibKickPuff : RLMeleePuff
+{ 
+   ProjectileKickBack 500
+   +NOEXTREMEDEATH
+   +FORCEPAIN
+}
+
+ACTOR RLSpartaKickPuff : RLMeleePuff
+{ 
+   ProjectileKickBack 2500
+   +FORCEPAIN
+   +PUFFONACTORS
+   +PUFFGETSOWNER
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_GivetoTarget ("RLSpartaHit", 1)
+      Stop
+	  Melee:
+      TNT1 A 0
+	  Goto Spawn
+	  Crash:
+      TNT1 A 0
+	  Goto Spawn
+   }
+}
+
+ACTOR RLSpartaHit : CustomInventory
+{
+  -COUNTITEM
+  +INVENTORY.ALWAYSPICKUP
+  Inventory.PickupMessage ""
+  Inventory.PickupSound ""
+  States
+  {
+  Spawn:
+    TNT1 A 1
+    Stop
+  Pickup:
+    TNT1 A 0 
+    TNT1 A 0 A_PlaySound("misc/sparta", 5, 1, 0, 0.75)
+    Stop
+  }
+}
+
+ACTOR RLGothicMeleePuff : RLMeleePuff
+{ 
+   PainSound "weapons/gothicfisthit"
+   AttackSound "weapons/gothicfisthit"
+   Translation "112:127=80:95"
+   Scale 0.2
+   RenderStyle "Translucent"
+   Alpha 0.05
+   ProjectileKickBack 60
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      SHOK EIMQ 1
+      Stop
+	  Melee:
+      TNT1 A 0
+	  Goto Spawn
+	  Crash:
+      TNT1 A 0
+	  Goto Spawn
+   }
+}
+
+ACTOR RLGeoMeleePuff : RLGothicMeleePuff
+{ 
+   PainSound "weapons/geofisthit"
+   AttackSound "weapons/geofisthit"
+   Translation "112:127=80:95"
+   Scale 2.5
+   RenderStyle "Translucent"
+   Alpha 0.85
+   ProjectileKickBack 100000
+   +PUFFONACTORS
+   +PUFFGETSOWNER
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_GivetoTarget ("RLGeoHit", 1)
+      SHOK EIMQ 1
+      Stop
+	  Melee:
+      TNT1 A 0
+	  Goto Spawn
+	  Crash:
+      TNT1 A 0
+	  Goto Spawn
+   }
+}
+
+ACTOR RLGeoHit : CustomInventory
+{
+  -COUNTITEM
+  +INVENTORY.ALWAYSPICKUP
+  Inventory.PickupMessage ""
+  Inventory.PickupSound ""
+  States
+  {
+  Spawn:
+    TNT1 A 1
+    Stop
+  Pickup:
+    TNT1 A 0 
+    TNT1 A 0 A_PlaySound("weapons/largeexp", 5, 1, 0, 0.05)
+    TNT1 A 0 A_TakeInventory("BasicArmor", 99999)
+    TNT1 A 0 A_TakeInventory("RLGeosGoldenGauntletArmorToken", 1)
+    TNT1 A 0 A_TakeInventory("RLIndestructibleArmorWorn", 1)
+    TNT1 A 0 A_SetBlend("White", 1, 70)
+    Stop
+  }
+}
+
+ACTOR RLShockwaveBootsWave : PlasmaBall
+{
+  +THRUGHOST
+  +RIPPER
+  +BLOODLESSIMPACT
+  +NOBOSSRIP
+  Translation "112:127=80:95"
+  Damage (1)
+  Speed 30
+  Alpha 0.25
+  Scale 0.78
+  Damagetype "Melee"
+  SeeSound ""
+  DeathSound ""
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      SHOK ABCDEFGHIJKLMNOPQR 1 Bright A_FadeTo (0, 0.01, 1)
+      Stop
+   Death:
+      TNT1 A 1
+      Stop
+   }
+}
+
+ACTOR RLTorgueBootsExplosion : Rocket
+{
+   Radius 1
+   Height 1
+   +THRUGHOST
+   -RANDOMIZE
+   -DEHEXPLOSION
+   -ROCKETTRAIL
+   DamageType "Fire"
+   Speed 0
+   Damage 0
+   SeeSound ""
+   DeathSound ""
+   Obituary "$OB_BARREL" // "%o went boom."
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_Explode (128, 128, "None")
+    MISL B 8 Bright A_PlaySound ("weapons/mediumexp", CHAN_BODY)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+actor RLStamina : Ammo
+{
+  +INVENTORY.UNTOSSABLE
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 100
+   Inventory.Icon STTPRCNT
+}
+
+actor RLStamGen: Ammo 
+{
+	Inventory.MaxAmount 5
+}
+
+actor RLFistToken: Ammo 
+{
+	Inventory.MaxAmount 1
+}
+
+Actor RLFistSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLFistNoncombat : Inventory
+{
+inventory.maxamount 1
+}

@@ -1,0 +1,970 @@
+
+ACTOR RLPlasmaShotgun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was terrified by %k's plasma shotgun."
+  Inventory.Pickupmessage "You picked up a Plasma Shotgun."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Plasma Shotgun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 20
+  Weapon.SlotNumber 6
+  Weapon.AmmoUse1 3
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLPlasmaShotgunClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunNanoMod",1,2)
+    PSHO A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip",3,2)
+    PSHO A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    PSHO A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 30, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 39, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 48, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 57, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 66, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLPlasmaShotgunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunNanoMod",2,2)
+    PSHO A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    PSHO A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLPlasmaticShrapnelPlasmaShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelPlasmaShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPlasmaShotgun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLPlasmaShotgun",1)
+	Stop
+  AfterModDrop:
+    PSHO A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    PSHO A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    PSHO A 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaShotgunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    PSHO A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaticShrapnelPlasmaShotgunConfirm",1, "AssemblePlasmaticShrapnelPlasmaShotgun")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelPlasmaShotgunConfirm",1, "AssembleNanoShrapnelPlasmaShotgun")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FireA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegade")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FireRenegade:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FirePA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FireRenegadeP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",2,"FireAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(4.5,-4.5), 0, 0, 0, 0, random(1.5,-1.5))
+    Goto FireFinish
+  FireRenegadeA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(4.5,-4.5), 0, 0, 0, 0, random(1.5,-1.5))
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FirePPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegade")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FireRenegadePP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",2,"FirePAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+    Goto FireFinish
+  FireRenegadePA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",3,"FireAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4,-4), 1, 0, 0, 0, frandom(1,-1))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+    Goto FireFinish
+  FireRenegadeAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4,-4), 1, 0, 0, 0, frandom(1,-1))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FirePPPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FireRenegadePPP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",2,"FirePPAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+    Goto FireFinish
+  FireRenegadePPA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",3,"FirePAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4,-4), 1, 0, 0, 0, frandom(1,-1))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+    Goto FireFinish
+  FireRenegadePAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4,-4), 1, 0, 0, 0, frandom(1,-1))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",4,"FireAAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3.5,-3.5), 1, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+    Goto FireFinish
+  FireRenegadeAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3.5,-3.5), 1, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+    Goto FireFinish
+  FirePPPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPPP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FireRenegadePPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPP", frandom(5,-5), 1, 0, 0, 0, frandom(2,-2))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPP", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPPSilent", frandom(5,-5), 0, 0, 0, 0, frandom(2,-2))
+    Goto FireFinish
+  FirePPPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPSilent", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+    Goto FireFinish
+  FireRenegadePPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(4.5,-4.5), 1, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPSilent", frandom(4.5,-4.5), 0, 0, 0, 0, frandom(1.5,-1.5))
+    Goto FireFinish
+  FirePPAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4,-4), 1, 0, 0, 0, frandom(1,-1))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+    Goto FireFinish
+  FireRenegadePPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4,-4), 1, 0, 0, 0, frandom(1,-1))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(4,-4), 0, 0, 0, 0, frandom(1,-1))
+    Goto FireFinish
+  FirePAAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadePAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(3.5,-3.5), 1, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+    Goto FireFinish
+  FireRenegadePAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(3.5,-3.5), 1, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(3.5,-3.5), 0, 0, 0, 0, frandom(0.5,-0.5))
+    Goto FireFinish
+  FireAAAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeAAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeAAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FireSA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeS")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeS:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FireSSA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSS")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(1,-1), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(1,-1), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSS:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(1,-1), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(1,-1), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunSniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FireSPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunSniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",2,"FireSAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FireSSPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(1,-1), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(1,-1), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSSP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(1,-1), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(1,-1), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",2,"FireSSAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSSA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunSniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",1,"FireSPPA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSPP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunSniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",2,"FireSPAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSPA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunSniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunPowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunAgilityMod",3,"FireSAAA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 AA 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(2,-2), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(2,-2), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 AA 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(2,-2), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(2,-2), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSSPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSPP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(1,-1), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(1,-1), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSSPP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(1,-1), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(1,-1), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSSAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", 0, 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSSAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", 0, 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSSPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSSPA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(0.5,-0.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSPPP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPPP")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPP", frandom(3,-3), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPPSilent", frandom(3,-3), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSPPA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallPP", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPPSilent", frandom(2.5,-2.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSPAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(2,-2), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(2,-2), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBallP", frandom(2,-2), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallPSilent", frandom(2,-2), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireSAAA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeSAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(1.5,-1.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(1.5,-1.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireRenegadeSAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", 0, 1, 0, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLPlasmaShotgunBall", frandom(1.5,-1.5), 0, 0, 0, 0, 0)
+	TNT1 AAAAAAAAA 0 A_FireCustomMissile ("RLPlasmaShotgunBallSilent", frandom(1.5,-1.5), 0, 0, 0, 0, 0)
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunFirestormMod",2,"FireFinishF2")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunFirestormMod",1,"FireFinishF1")
+    PSHO B 5 Bright A_GunFlash
+    PSHO CD 5 Bright
+    PSHO A 5
+    PSHO A 5 A_Refire
+    Goto Ready
+  FireFinishF1:
+    PSHO B 4 Bright A_GunFlash
+    PSHO CD 4 Bright
+    PSHO A 4
+    PSHO A 4 A_Refire
+    Goto Ready
+  FireFinishF2:
+    PSHO B 3 Bright A_GunFlash
+    PSHO CD 3 Bright
+    PSHO A 3
+    PSHO A 3 A_Refire
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunNanoMod",1,"Ready")
+	PSHO A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 30, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 39, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 48, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 57, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip", 66, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",4,"Reload4")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",3,"Reload3")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",1,"Reload1")
+    PSHO A 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgununload", 7)
+    PSHO J 2
+    PSHO K 24
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunload", 5)
+    PSHO J 2
+    PSHO A 2
+	Goto ReloadWorking
+  Reload1:
+    PSHO A 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgununload", 7)
+    PSHO J 2
+    PSHO K 21
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunload", 5)
+    PSHO J 2
+    PSHO A 2
+	Goto ReloadWorking
+  Reload2:
+    PSHO A 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgununload", 7)
+    PSHO J 2
+    PSHO K 18
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunload", 5)
+    PSHO J 2
+    PSHO A 2
+	Goto ReloadWorking
+  Reload3:
+    PSHO A 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgununload", 7)
+    PSHO J 2
+    PSHO K 15
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunload", 5)
+    PSHO J 2
+    PSHO A 2
+	Goto ReloadWorking
+  Reload4:
+    PSHO A 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgununload", 7)
+    PSHO J 2
+    PSHO K 12
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunload", 5)
+    PSHO J 2
+    PSHO A 2
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaShotgunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip",30,9)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip",39,7)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip",48,5)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip",57,3)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunClip",66,2)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunpump", 6)
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",4,"ReloadFinish4")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",3,"ReloadFinish3")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgunTechnicalMod",1,"ReloadFinish1")
+    PSHO E 4
+    PSHO F 3
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunspark", 7)
+    PSHO F 6 A_GunFlash ("ReloadFlash", GFF_NOEXTCHANGE)
+    PSHO F 3
+	PSHO E 4
+	PSHO A 5
+	Goto Ready
+  ReloadFinish1:
+    PSHO E 3
+    PSHO F 3
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunspark", 7)
+    PSHO F 6 A_GunFlash ("ReloadFlash", GFF_NOEXTCHANGE)
+    PSHO F 3
+	PSHO E 3
+	PSHO A 4
+	Goto Ready
+  ReloadFinish2:
+    PSHO E 2
+    PSHO F 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunspark", 7)
+    PSHO F 6 A_GunFlash ("ReloadFlash", GFF_NOEXTCHANGE)
+    PSHO F 2
+	PSHO E 3
+	PSHO A 4
+	Goto Ready
+  ReloadFinish3:
+    PSHO E 2
+    PSHO F 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunspark", 7)
+    PSHO F 6 A_GunFlash ("ReloadFlash", GFF_NOEXTCHANGE)
+    PSHO F 2
+	PSHO E 3
+	PSHO A 4
+	Goto Ready
+  ReloadFinish4:
+    PSHO E 2
+    PSHO F 2
+    TNT1 A 0 A_PlaySound("weapons/plasmashotgunspark", 7)
+    PSHO F 6 A_GunFlash ("ReloadFlash", GFF_NOEXTCHANGE)
+    PSHO F 2
+	PSHO E 2
+	PSHO A 2
+	Goto Ready
+  Flash:
+    TNT1 A 4 A_Light2
+    TNT1 A 1 A_Light1
+    Goto LightDone
+  ReloadFlash:
+    PSHO G 2 Bright A_Light (3)
+    PSHO H 2 Bright A_Light2
+    PSHO I 2 Bright A_Light1
+    Goto LightDone
+  Spawn:
+    PSHO X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	TNT1 A 0 A_JumpIfInventory("RLPlasmaticShrapnelPlasmaShotgunConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNanoShrapnelPlasmaShotgunConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLPlasmaticShrapnelPlasmaShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelPlasmaShotgunConfirm",1)
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaticShrapnelPlasmaShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelPlasmaShotgunConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(32,2,3)
+	TNT1 A 0 A_Jump(256,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAgilityMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLPlasmaShotgun",1)
+	Stop
+  AssemblePlasmaticShrapnelPlasmaShotgun:
+	TNT1 A 0 A_Print("\cvOvercharged Plasma Shotgun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLPlasmaticShrapnelPlasmaShotgunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLPlasmaticShrapnelPlasmaShotgun",1)
+	TNT1 A 0 A_SelectWeapon("RLPlasmaticShrapnelPlasmaShotgun")
+	TNT1 A 0 A_TakeInventory("RLPlasmaShotgun",1)
+	Stop
+  AssembleNanoShrapnelPlasmaShotgun:
+	TNT1 A 0 A_Print("\cvNano Plasma Shotgun \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLPlasmaShotgunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoShrapnelPlasmaShotgunConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLNanoShrapnelPlasmaShotgun",1)
+	TNT1 A 0 A_SelectWeapon("RLNanoShrapnelPlasmaShotgun")
+	TNT1 A 0 A_TakeInventory("RLPlasmaShotgun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLPlasmaShotgunBall : PlasmaBall
+{
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Radius 4
+  Height 2
+  Alpha 0.85
+  Scale 0.25
+  Speed 50
+  Damage (5 * random(1,5))
+  Decal "RailScorch"
+  Damagetype "Plasma"
+  SeeSound "weapons/plasmashotgun"
+  DeathSound "weapons/plasmashotgunimpact"
+}
+
+ACTOR RLPlasmaShotgunBallSilent : RLPlasmaShotgunBall
+{
+  SeeSound ""
+  DeathSound ""
+}
+
+ACTOR RLPlasmaShotgunBallP : RLPlasmaShotgunBall
+{
+  Damage (6 * random(1,5))
+}
+
+ACTOR RLPlasmaShotgunBallPSilent : RLPlasmaShotgunBallP
+{
+  SeeSound ""
+  DeathSound ""
+}
+
+ACTOR RLPlasmaShotgunBallPP : RLPlasmaShotgunBall
+{
+  Damage (7 * random(1,5))
+}
+
+ACTOR RLPlasmaShotgunBallPPSilent : RLPlasmaShotgunBallPP
+{
+  SeeSound ""
+  DeathSound ""
+}
+
+ACTOR RLPlasmaShotgunBallPPP : RLPlasmaShotgunBall
+{
+  Damage (8 * random(1,5))
+}
+
+ACTOR RLPlasmaShotgunBallPPPSilent : RLPlasmaShotgunBallPPP
+{
+  SeeSound ""
+  DeathSound ""
+}
+
+ACTOR RLPlasmaShotgunBallPPPP : RLPlasmaShotgunBall
+{
+  Damage (9 * random(1,5))
+}
+
+ACTOR RLPlasmaShotgunBallPPPPSilent : RLPlasmaShotgunBallPPPP
+{
+  SeeSound ""
+  DeathSound ""
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLPlasmaShotgunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLPlasmaShotgunModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLPlasmaShotgunPowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLPlasmaShotgunBulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLPlasmaShotgunAgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLPlasmaShotgunTechnicalMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLPlasmaShotgunNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLPlasmaShotgunFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLPlasmaShotgunSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLPlasmaShotgunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 66
+   Inventory.Icon ""
+}
+
+ACTOR RLPlasmaShotgunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		PSHO X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLPlasmaShotgun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/plasmashotgunpickup")
+		TNT1 A 0 A_GiveInventory("RLPlasmaShotgun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \ctPlasma Shotgun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Cell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Plasma Shotgun =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Cell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Cell",30)
+		Stop
+	AmmoFull:
+		PSHO X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLPlasmaShotgun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		PSHO X 1
+		Loop
+	Death:
+		TNT1 A 0
+		PSHO X 1 A_SpawnItem("RLPlasmaShotgunPickup",0,0,0,0)
+		Stop
+	}
+}

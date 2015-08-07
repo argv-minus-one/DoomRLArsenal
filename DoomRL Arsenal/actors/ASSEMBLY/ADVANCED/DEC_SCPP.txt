@@ -1,0 +1,1859 @@
+
+ACTOR RLSuperchargedNuclearPlasmaPistol : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was blasted apart by %k."
+  Inventory.Pickupmessage "You picked up a Supercharged Nuclear Plasma Pistol."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Supercharged Nuclear Plasma Pistol"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 3900
+  Weapon.SlotNumber 6
+  Weapon.AmmoUse1 1
+  Weapon.AmmoUse2 0
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLSuperchargedNuclearPlasmaPistolClip"
+  Weapon.AmmoType2 "RLSuperchargedNuclearPlasmaPistolClip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolidle", 6, 1, 1)
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, "ReadyCanFire")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyCanAltFire")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyCanAltFire")
+    NUPP A 70 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharging
+  ReadyCanAltFire:
+    NUPP A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharging
+  ReadyCanFire:
+    NUPP A 5 A_WeaponReady (WRF_ALLOWZOOM)
+	Goto ReadyCycleCharged
+//=================================================================================
+  ReadyCycleCharging:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, "ReadyCycleCharged")
+	Goto ReadyChargingAmmo
+  ReadyChargingAmmo:
+	TNT1 A 0 A_GiveInventory("RLSuperchargedNuclearPlasmaPistolClip", 1)
+    TNT1 A 0 A_GunFlash ("FlashRecharge", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    NUPP A 12 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+    NUPP A 6 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+//=================================================================================
+  ReadyCycleCharged:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolClip", 8, "Ready")
+	Goto ReadyChargedAmmo
+  ReadyChargedAmmo:
+	TNT1 A 0 A_GiveInventory("RLSuperchargedNuclearPlasmaPistolClip", 1)
+    TNT1 A 0 A_GunFlash ("FlashRecharge", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    NUPP A 12 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+    NUPP A 6 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+//=================================================================================
+  ReadyDepleted:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyDepletedCanAltFire")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyDepletedCanAltFire")
+    NUPP A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    NUPP A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+	Goto Ready
+  ReadyDepletedCanAltFire:
+    NUPP A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    NUPP A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto Ready
+//=================================================================================
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLStormNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGun",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusWeapon", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusActive", 1)
+  WeaponDropConfirmContinue:
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolPowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolSniperMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSuperchargedNuclearPlasmaPistol",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLSuperchargedNuclearPlasmaPistol",1)
+	Stop
+  AfterModDrop:
+    NUPP A 5 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    NUPP A 5 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    NUPP A 5 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    NUPP A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLSuperchargedNuclearPlasmaPistolSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    NUPP A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("ReadyDepleted")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolBulkMod",1,"FireB")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBall", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSharpshooter", frandom(1,-1), 1)
+    Goto FireFinish
+  FireB:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallB", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBSharpshooter", frandom(1,-1), 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPSharpshooter", frandom(1,-1), 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallASharpshooter", frandom(1,-1), 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSSharpshooter", 0, 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallF", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFSharpshooter", 0, 1)
+    Goto FireFinish
+  FireFinish:
+    NUPP E 4 Bright A_GunFlash
+    NUPP F 4 Bright
+    NUPP D 4
+    NUPP A 5 A_Refire
+    Goto Ready
+  FlashRecharge:
+    NU1Y A 2 Bright
+    Goto LightDone
+  Flash:
+    TNT1 A 3 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  FlashCharge:
+    TNT1 A 3 A_Light1
+    TNT1 A 3 A_Light (4)
+    Goto LightDone
+  FlashSupercharge:
+    TNT1 A 2 A_Light1
+    TNT1 A 2 A_Light (4)
+    TNT1 A 2 A_Light (8)
+    TNT1 A 2 A_Light1
+    Goto LightDone
+  FlashCharging:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+    TNT1 A 2
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+    NU1Y A 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+    NU1Y B 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+    NU1Y C 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+    NU1Y D 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+    NU3Y A 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+    NU3Y B 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+    NU3Y C 2 Bright
+    Goto LightDone
+    NU3Y D 2 Bright
+    Goto LightDone
+  FlashChargingB:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+    TNT1 A 2
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+    NU1Y E 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+    NU1Y F 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+    NU1Y G 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+    NU1Y H 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+    NU3Y E 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+    NU3Y F 2 Bright
+    Goto LightDone
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+    NU3Y G 2 Bright
+    Goto LightDone
+    NU3Y H 3 Bright
+    Goto LightDone
+  FlashError:
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolalarm", 7)
+    NU4Y D 5 Bright
+	TNT1 A 3
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolalarm", 7)
+    NU4Y D 5 Bright
+	TNT1 A 3
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolalarm", 7)
+    NU4Y D 5 Bright
+	TNT1 A 3
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolalarm", 7)
+    NU4Y D 5 Bright
+    Goto LightDone
+  FlashReset:
+    NU4Y D 5 Bright
+    Goto LightDone
+  FlashDrop:
+    TNT1 A 0
+    Goto LightDone
+  Spawn:
+    NUPP X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, "ChargingStart")
+	Goto ReadyDepleted
+  ChargingStart:
+	TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolcharge", CHAN_WEAPON)
+	Goto Charging
+  Charging:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315, "ChargeLevelohgod")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, "ChargeLevel8")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, "ChargeLevel7")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, "ChargeLevel6")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, "ChargeLevel5")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, "ChargeLevel4")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, "ChargeLevel3")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, "ChargeLevel2")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, "ChargeLevel1")
+	Goto ChargeLevel0
+  ChargeLevel0:
+	TNT1 A 0 A_Jump(256, "ChargingA")
+	Goto ChargingB
+  ChargeLevel1:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 37, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(240, "ChargingA")
+	Goto ChargingB
+  ChargeLevel2:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 72, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(224, "ChargingA")
+	Goto ChargingB
+  ChargeLevel3:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 107, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(208, "ChargingA")
+	Goto ChargingB
+  ChargeLevel4:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 142, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(192, "ChargingA")
+	Goto ChargingB
+  ChargeLevel5:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 177, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(176, "ChargingA")
+	Goto ChargingB
+  ChargeLevel6:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 212, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(160, "ChargingA")
+	Goto ChargingB
+  ChargeLevel7:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 247, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(144, "ChargingA")
+	Goto ChargingB
+  ChargeLevel8:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 282, 3)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, TIF_NOTAKEINFINITE)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+	TNT1 A 0 A_Jump(128, "ChargingA")
+	Goto ChargingB
+  ChargeLevelohgod:
+	TNT1 A 0 A_GunFlash ("FlashError", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+    NUPP A 29
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolvent", 6)
+    NUPP ABABABABABABABAB 1 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolVenting", frandom(4,-4), 0, 0, 5)
+    NUPP A 35
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolbeep", 7)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolidle", 6, 1, 1)
+	Goto ReadyDepleted
+  ChargingA:
+	TNT1 A 0 A_GiveInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 1)
+	NUPP A 1 A_GunFlash ("FlashCharging", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, 1)
+	Goto ChargingPreFire
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+    TNT1 A 0 A_Refire("Charging")
+	Goto ChargingReset
+    TNT1 A 0 A_Refire("Charging")
+	Goto ChargingPreFire
+  ChargingB:
+	TNT1 A 0 A_GiveInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 1)
+	NUPP D 1 A_GunFlash ("FlashChargingB", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolClip", 1, 1)
+	Goto ChargingPreFire
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+    TNT1 A 0 A_Refire("Charging")
+	Goto ChargingReset
+    TNT1 A 0 A_Refire("Charging")
+	Goto ChargingPreFire
+  ChargingReset:
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+    TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolalarm", 7)
+	NUPP A 5 A_GunFlash ("FlashReset", GFF_NOEXTCHANGE)
+    Goto Ready
+  ChargingPreFire:
+	TNT1 A 0 A_JumpIfNoAmmo("ReadyDepleted")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolFirestormMod",1,"ChargingPreFireF")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolSniperMod",1,"ChargingPreFireS")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolPowerMod",1,"ChargingPreFireP")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolAgilityMod",1,"ChargingPreFireA")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolBulkMod",1,"ChargingPreFireB")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,"ChargingPreFireSharpshooter")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBall", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallCharge8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireSharpshooter:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSharpshooter", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireB:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,"ChargingPreFireSharpshooterB")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallB", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBCharge8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireSharpshooterB:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBSharpshooter", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,"ChargingPreFireSharpshooterP")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallP", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPCharge8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireSharpshooterP:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPSharpshooter", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireA:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallA", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallACharge8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireSharpshooterA:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallASharpshooter", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireS:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallS", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSCharge8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireSharpshooterS:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSSharpshooter", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireF:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallF", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge7", frandom(1,-1), 1)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFCharge8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  ChargingPreFireSharpshooterF:
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 36, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFSharpshooter", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 71, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter1", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 106, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter2", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 141, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter3", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 176, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter4", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 211, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter5", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 246, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter6", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 281, 2)
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter7", frandom(1,-1), 0)
+    Goto FireFinishCharge
+	TNT1 A 0 A_FireCustomMissile ("RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter8", frandom(1,-1), 0)
+    Goto FireFinishSupercharge
+  FireFinishCharge:
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+	TNT1 A 0 A_AlertMonsters
+    NUPP E 5 Bright A_GunFlash
+    NUPP G 5 Bright
+    NUPP D 5
+    NUPP A 5 A_Refire
+    Goto Ready
+  FireFinishSupercharge:
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+	TNT1 A 0 A_AlertMonsters
+    NUPP E 4 Bright A_GunFlash
+    NUPP G 4 Bright
+    NUPP H 4 Bright
+    NUPP F 4 Bright
+    NUPP D 4
+    NUPP A 5 A_Refire
+    Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolChargeLevel", 315)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolFirestormMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLSuperchargedNuclearPlasmaPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+    TNT1 A 0 A_GunFlash ("FlashDrop", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLStormNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGun",1,"ScavengerContinue")
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusWeapon", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusActive", 1)
+  ScavengerContinue:
+	TNT1 A 0 A_Jump(256,1,2)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLSuperchargedNuclearPlasmaPistol",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBall : PlasmaBall
+{
+  Damage 30
+  Damagetype "Plasma"
+  Alpha 0.85
+  Scale 0.55
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Decal "BlueBFGLightning"
+  SeeSound "weapons/superchargednukeplasmapistol"
+  DeathSound "weapons/superchargednukeplasmapistolimpact"
+  States
+  {
+  Spawn:
+    NPPS AB 2 Bright
+    Loop
+  Death:
+	TNT1 A 1 A_Explode(10, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge1 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.6
+  Damage 70
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(20, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge2 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.65
+  Damage 120
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(30, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge3 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.7
+  Damage 180
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(40, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge4 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.75
+  Damage 250
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(50, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge5 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.8
+  Damage 330
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(60, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge6 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.85
+  Damage 420
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(70, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge7 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.9
+  Damage 520
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(80, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallCharge8 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 1.3
+  Damage 750
+  SeeSound "weapons/superchargednukeplasmapistolsuper"
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(160, 192, "", 0, 192)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallB : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Damage 40
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(10, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge1 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.6
+  Damage 90
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(20, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge2 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.65
+  Damage 150
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(30, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge3 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.7
+  Damage 220
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(40, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge4 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.75
+  Damage 300
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(50, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge5 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.8
+  Damage 390
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(60, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge6 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.85
+  Damage 490
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(70, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge7 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 0.9
+  Damage 600
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(80, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBCharge8 : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Scale 1.3
+  Damage 1000
+  SeeSound "weapons/superchargednukeplasmapistolsuper"
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(160, 192, "", 0, 192)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallP : RLSuperchargedNuclearPlasmaPistolBall
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(15, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge1 : RLSuperchargedNuclearPlasmaPistolBallCharge1
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(30, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge2 : RLSuperchargedNuclearPlasmaPistolBallCharge2
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(45, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge3 : RLSuperchargedNuclearPlasmaPistolBallCharge3
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(60, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge4 : RLSuperchargedNuclearPlasmaPistolBallCharge4
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(75, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge5 : RLSuperchargedNuclearPlasmaPistolBallCharge5
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(90, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge6 : RLSuperchargedNuclearPlasmaPistolBallCharge6
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(105, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge7 : RLSuperchargedNuclearPlasmaPistolBallCharge7
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(120, 96, "", 0, 96)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPCharge8 : RLSuperchargedNuclearPlasmaPistolBallCharge8
+{
+  SeeSound "weapons/superchargednukeplasmapistolsuper"
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(240, 192, "", 0, 192)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallA : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge1 : RLSuperchargedNuclearPlasmaPistolBallCharge1
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge2 : RLSuperchargedNuclearPlasmaPistolBallCharge2
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge3 : RLSuperchargedNuclearPlasmaPistolBallCharge3
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge4 : RLSuperchargedNuclearPlasmaPistolBallCharge4
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge5 : RLSuperchargedNuclearPlasmaPistolBallCharge5
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge6 : RLSuperchargedNuclearPlasmaPistolBallCharge6
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge7 : RLSuperchargedNuclearPlasmaPistolBallCharge7
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallACharge8 : RLSuperchargedNuclearPlasmaPistolBallCharge8
+{
+  Speed 35
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallS : RLSuperchargedNuclearPlasmaPistolBall
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge1 : RLSuperchargedNuclearPlasmaPistolBallCharge1
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge2 : RLSuperchargedNuclearPlasmaPistolBallCharge2
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge3 : RLSuperchargedNuclearPlasmaPistolBallCharge3
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge4 : RLSuperchargedNuclearPlasmaPistolBallCharge4
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge5 : RLSuperchargedNuclearPlasmaPistolBallCharge5
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge6 : RLSuperchargedNuclearPlasmaPistolBallCharge6
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge7 : RLSuperchargedNuclearPlasmaPistolBallCharge7
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSCharge8 : RLSuperchargedNuclearPlasmaPistolBallCharge8
+{
+  States
+  {
+  Spawn:
+    PPCS AB 1 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallF : RLSuperchargedNuclearPlasmaPistolBall
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(10, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge1 : RLSuperchargedNuclearPlasmaPistolBallCharge1
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(20, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge2 : RLSuperchargedNuclearPlasmaPistolBallCharge2
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(30, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge3 : RLSuperchargedNuclearPlasmaPistolBallCharge3
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(40, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge4 : RLSuperchargedNuclearPlasmaPistolBallCharge4
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(50, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge5 : RLSuperchargedNuclearPlasmaPistolBallCharge5
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(60, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge6 : RLSuperchargedNuclearPlasmaPistolBallCharge6
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(70, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge7 : RLSuperchargedNuclearPlasmaPistolBallCharge7
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(80, 128, "", 0, 128)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFCharge8 : RLSuperchargedNuclearPlasmaPistolBallCharge8
+{
+  States
+  {
+  Death:
+	TNT1 A 1 A_Explode(160, 256, "", 0, 256)
+	TNT1 A 1 A_SpawnItemEx("RLSuperchargedNuclearPlasmaPistolBallShockwave")
+    NPPS CDE 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallShockwave : PlasmaBall
+{
+  -SOLID
+  +NOCLIP
+  Translation "112:127=192:207"
+  Speed 0
+  Damage 0
+  Alpha 0.25
+  Scale 0.6
+  VSpeed 0
+  SeeSound ""
+  DeathSound ""
+  States
+  {
+  Spawn:
+    SHOK ACEGIKMOQ 1 Bright A_FadeTo (0.1, 0.1, 0)
+	Stop
+  Death:
+    TNT1 A 0
+	Goto Spawn
+  }
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolVenting : PlasmaBall
+{
+  +THRUACTORS
+  +NODAMAGETHRUST
+  Speed 6
+  Damage 0
+  Alpha 0.55
+  Scale 0.4
+  SeeSound ""
+  DeathSound ""
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_Jump (200, 2)
+    TNT1 A 0 A_Explode (15, 64, XF_HURTSOURCE)
+    NPPX ABCDE 1 Bright
+    TNT1 A 0 A_Jump (200, 2)
+    TNT1 A 0 A_Explode (10, 64, XF_HURTSOURCE)
+    NPPX FGHIJ 1 Bright
+    TNT1 A 0 A_Jump (200, 2)
+    TNT1 A 0 A_Explode (5, 64, XF_HURTSOURCE)
+    NPPX KLMNO 1 Bright
+	Stop
+  Death:
+    TNT1 A 0
+	Goto Spawn
+  }
+}
+
+//-------------------------------------------------------------------
+//		SHARPSHOOTER PROJECTILES
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSharpshooter : RLSuperchargedNuclearPlasmaPistolBall
+{
+  Damage (240)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter1 : RLSuperchargedNuclearPlasmaPistolBallCharge1
+{
+  Damage (560)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter2 : RLSuperchargedNuclearPlasmaPistolBallCharge2
+{
+  Damage (960)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter3 : RLSuperchargedNuclearPlasmaPistolBallCharge3
+{
+  Damage (1440)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter4 : RLSuperchargedNuclearPlasmaPistolBallCharge4
+{
+  Damage (2000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter5 : RLSuperchargedNuclearPlasmaPistolBallCharge5
+{
+  Damage (2640)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter6 : RLSuperchargedNuclearPlasmaPistolBallCharge6
+{
+  Damage (3360)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter7 : RLSuperchargedNuclearPlasmaPistolBallCharge7
+{
+  Damage (4160)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallChargeSharpshooter8 : RLSuperchargedNuclearPlasmaPistolBallCharge8
+{
+  Damage (6000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBSharpshooter : RLSuperchargedNuclearPlasmaPistolBallB
+{
+  Damage (320)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter1 : RLSuperchargedNuclearPlasmaPistolBallBCharge1
+{
+  Damage (720)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter2 : RLSuperchargedNuclearPlasmaPistolBallBCharge2
+{
+  Damage (1200)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter3 : RLSuperchargedNuclearPlasmaPistolBallBCharge3
+{
+  Damage (1760)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter4 : RLSuperchargedNuclearPlasmaPistolBallBCharge4
+{
+  Damage (2400)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter5 : RLSuperchargedNuclearPlasmaPistolBallBCharge5
+{
+  Damage (3120)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter6 : RLSuperchargedNuclearPlasmaPistolBallBCharge6
+{
+  Damage (3920)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter7 : RLSuperchargedNuclearPlasmaPistolBallBCharge7
+{
+  Damage (4800)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallBChargeSharpshooter8 : RLSuperchargedNuclearPlasmaPistolBallBCharge8
+{
+  Damage (8000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPSharpshooter : RLSuperchargedNuclearPlasmaPistolBallP
+{
+  Damage (240)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter1 : RLSuperchargedNuclearPlasmaPistolBallPCharge1
+{
+  Damage (560)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter2 : RLSuperchargedNuclearPlasmaPistolBallPCharge2
+{
+  Damage (960)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter3 : RLSuperchargedNuclearPlasmaPistolBallPCharge3
+{
+  Damage (1440)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter4 : RLSuperchargedNuclearPlasmaPistolBallPCharge4
+{
+  Damage (2000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter5 : RLSuperchargedNuclearPlasmaPistolBallPCharge5
+{
+  Damage (2640)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter6 : RLSuperchargedNuclearPlasmaPistolBallPCharge6
+{
+  Damage (3360)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter7 : RLSuperchargedNuclearPlasmaPistolBallPCharge7
+{
+  Damage (4160)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallPChargeSharpshooter8 : RLSuperchargedNuclearPlasmaPistolBallPCharge8
+{
+  Damage (6000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallASharpshooter : RLSuperchargedNuclearPlasmaPistolBallA
+{
+  Damage (240)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter1 : RLSuperchargedNuclearPlasmaPistolBallACharge1
+{
+  Damage (560)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter2 : RLSuperchargedNuclearPlasmaPistolBallACharge2
+{
+  Damage (960)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter3 : RLSuperchargedNuclearPlasmaPistolBallACharge3
+{
+  Damage (1440)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter4 : RLSuperchargedNuclearPlasmaPistolBallACharge4
+{
+  Damage (2000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter5 : RLSuperchargedNuclearPlasmaPistolBallACharge5
+{
+  Damage (2640)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter6 : RLSuperchargedNuclearPlasmaPistolBallACharge6
+{
+  Damage (3360)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter7 : RLSuperchargedNuclearPlasmaPistolBallACharge7
+{
+  Damage (4160)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallAChargeSharpshooter8 : RLSuperchargedNuclearPlasmaPistolBallACharge8
+{
+  Damage (6000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSSharpshooter : RLSuperchargedNuclearPlasmaPistolBallS
+{
+  Damage (240)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter1 : RLSuperchargedNuclearPlasmaPistolBallSCharge1
+{
+  Damage (560)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter2 : RLSuperchargedNuclearPlasmaPistolBallSCharge2
+{
+  Damage (960)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter3 : RLSuperchargedNuclearPlasmaPistolBallSCharge3
+{
+  Damage (1440)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter4 : RLSuperchargedNuclearPlasmaPistolBallSCharge4
+{
+  Damage (2000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter5 : RLSuperchargedNuclearPlasmaPistolBallSCharge5
+{
+  Damage (2640)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter6 : RLSuperchargedNuclearPlasmaPistolBallSCharge6
+{
+  Damage (3360)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter7 : RLSuperchargedNuclearPlasmaPistolBallSCharge7
+{
+  Damage (4160)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallSChargeSharpshooter8 : RLSuperchargedNuclearPlasmaPistolBallSCharge8
+{
+  Damage (6000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFSharpshooter : RLSuperchargedNuclearPlasmaPistolBallF
+{
+  Damage (240)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter1 : RLSuperchargedNuclearPlasmaPistolBallFCharge1
+{
+  Damage (560)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter2 : RLSuperchargedNuclearPlasmaPistolBallFCharge2
+{
+  Damage (960)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter3 : RLSuperchargedNuclearPlasmaPistolBallFCharge3
+{
+  Damage (1440)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter4 : RLSuperchargedNuclearPlasmaPistolBallFCharge4
+{
+  Damage (2000)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter5 : RLSuperchargedNuclearPlasmaPistolBallFCharge5
+{
+  Damage (2640)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter6 : RLSuperchargedNuclearPlasmaPistolBallFCharge6
+{
+  Damage (3360)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter7 : RLSuperchargedNuclearPlasmaPistolBallFCharge7
+{
+  Damage (4160)
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolBallFChargeSharpshooter8 : RLSuperchargedNuclearPlasmaPistolBallFCharge8
+{
+  Damage (6000)
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLSuperchargedNuclearPlasmaPistolSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSuperchargedNuclearPlasmaPistolChargeLevel : Inventory
+{
+inventory.maxamount 315
+}
+
+Actor RLSuperchargedNuclearPlasmaPistolModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSuperchargedNuclearPlasmaPistolPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSuperchargedNuclearPlasmaPistolBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSuperchargedNuclearPlasmaPistolAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSuperchargedNuclearPlasmaPistolFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSuperchargedNuclearPlasmaPistolSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 8
+   Inventory.Icon ""
+}
+
+ACTOR RLSuperchargedNuclearPlasmaPistolPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		NUPP X 5
+		Loop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistol",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/superchargednukeplasmapistolpickup")
+		TNT1 A 0 A_GiveInventory("RLSuperchargedNuclearPlasmaPistol",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_GiveInventory("RLNuclearWeaponSetBonusWeapon",1)
+		TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusArmor",1,2)
+		TNT1 A 0 A_Print("Picked up a \cvSupercharged Nuclear Plasma Pistol.")
+		Stop
+		TNT1 A 0 A_GiveInventory("RLNuclearWeaponSetBonusActive",1)
+		TNT1 A 0 A_Print("Picked up a \cvSupercharged Nuclear Plasma Pistol.\n\c-= FURIOUS FUSION =\n\cgNuclear weaponry recharges twice as fast", 8, "CONFONT")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Supercharged Nuclear Plasma Pistol =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLSuperchargedNuclearPlasmaPistol
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		NUPP X 1
+		Loop
+	Death:
+		TNT1 A 0
+		NUPP X 1 A_SpawnItem("RLSuperchargedNuclearPlasmaPistolPickup",0,0,0,0)
+		Stop
+	}
+}

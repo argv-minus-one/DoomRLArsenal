@@ -1,0 +1,621 @@
+
+ACTOR RLBaronBlaster : RLWeapon
+{
+  Inventory.Pickupsound "weapons/legendary"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o stood still in the way of %k's Baron blast."
+  Inventory.Pickupmessage "You picked up the Baron Blaster."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Baron Blaster"
+  Weapon.Kickback 200
+  Weapon.SelectionOrder 11
+  Weapon.SlotNumber 7
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLBaronBlasterClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_PlaySound("weapons/baronblasterup", 6, 1, 0, 1.8)
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    BABL A 8 A_WeaponReady (48)
+  ReadyLoop:
+	TNT1 A 0 A_PlaySound("weapons/baronblasteridle", 6, 1, 1, 1.8)
+    BABL A 1 A_WeaponReady (48)
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBaronBlasterSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBaronBlaster",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLBaronBlaster",1)
+	Stop
+  AfterModDrop:
+    BABL A 8 A_WeaponReady (16)
+    Goto ReadyLoop
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    BABL A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLBaronBlasterSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    BABL A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLBaronBlasterSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    BABL A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    BABL BCD 2
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterNanoMod",1,"FireN")
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBall",0,1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallSharpshooter",0,1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallP",0,1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallPSharpshooter",0,1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallA",0,1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallASharpshooter",0,1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallF",0,1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallFSharpshooter",0,1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallS",0,1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallSSharpshooter",0,1)
+    Goto FireFinish
+  FireN:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallN",0,1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile("RLBaronBlasterBallNSharpshooter",0,1)
+    Goto FireFinish
+  FireFinish:
+    BABL E 3 Bright A_GunFlash
+    BABL F 3 Bright
+    BABL GHIJK 1
+    Goto Ready
+  Reload:
+	BABL A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterClip", 1, "Ready")
+	Goto Reload+4
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterClip", 2, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Cell", 100, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterTechnicalMod",1,"Reload1")
+    BABL K 4
+    BABL A 2
+    BABL L 2
+    BABL M 2
+    BABL N 2
+    BABL O 2
+    BABL P 2
+    TNT1 A 0 A_PlaySound("weapons/baronblasterunload", 7)
+    TNT1 A 25
+	Goto ReloadWorking
+  Reload1:
+    BABL K 4
+    BABL A 2
+    BABL L 2
+    BABL M 2
+    BABL N 2
+    BABL O 2
+    BABL P 2
+    TNT1 A 0 A_PlaySound("weapons/baronblasterunload", 7)
+    TNT1 A 22
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 100)
+	TNT1 A 0 A_GiveInventory("RLBaronBlasterClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterClip",1,"ReloadFinish")
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterClip",2,"ReloadFinish")
+	TNT1 A 0 A_JumpIfInventory("Cell",100,1)
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/baronblasterload", 5)
+    TNT1 A 0 A_PlaySound("weapons/baronblasterup", 6, 1, 0, 1.8)
+	TNT1 A 0 A_JumpIfInventory("RLBaronBlasterTechnicalMod",1,"ReloadFinish1")
+    BABL P 2
+    BABL O 2
+    BABL N 2
+    BABL M 2
+    BABL L 2
+    BABL A 2
+    BABL K 4
+	Goto ReadyLoop
+  ReloadFinish1:
+    BABL P 2
+    BABL O 2
+    BABL N 2
+    BABL M 2
+    BABL L 2
+    BABL A 2
+    BABL K 4
+	Goto ReadyLoop
+  Flash:
+    TNT1 A 3 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  Spawn:
+    BABL X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLBaronBlasterNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLBaronBlasterSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLOnyxMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLBaronBlaster",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLBaronBlasterBall : ArachnotronPlasma
+{
+  Speed 1
+  Damage (50)
+  Species "Player"
+  +THRUSPECIES
+  +RIPPER
+  +FORCEPAIN
+  +NODAMAGETHRUST
+  Alpha 0.95
+  SeeSound "weapons/baronblaster"
+  DeathSound "weapons/baronblasterimpact"
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 1, 1, 0.8)
+    APLS AB 5 Bright
+    Loop
+  Death:
+    APBX ABCDE 5 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterBallP : RLBaronBlasterBall
+{
+  Damage (75)
+}
+
+ACTOR RLBaronBlasterBallA : RLBaronBlasterBall
+{
+  Speed 2
+}
+
+ACTOR RLBaronBlasterBallF : RLBaronBlasterBall
+{
+  States
+  {
+  Death:
+    TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("RLBaronBlasterMiniBall", random(-2,2), random(-12,12), random(0,359), CMF_TRACKOWNER | CMF_AIMDIRECTION, random(-45,45))
+    APBX ABCDE 5 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterMiniBall : RLBaronBlasterBall
+{
+  -FORCEPAIN
+  Damage (10)
+  Scale 0.4
+  SeeSound ""
+  DeathSound "weapons/baronblasterminiimpact"
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.3, 1, 2.1)
+    APLS AB 5 Bright
+    Loop
+  Death:
+    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("RLBaronBlasterMiniMiniBall", random(-2,2), random(-12,12), random(0,359), CMF_TRACKOWNER | CMF_AIMDIRECTION, random(-45,45))
+    APBX ABCDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterMiniMiniBall : RLBaronBlasterBall
+{
+  -FORCEPAIN
+  Damage (5)
+  Scale 0.1
+  SeeSound ""
+  DeathSound "weapons/baronblasterminiimpact"
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.1, 1, 3.4)
+    APLS AB 5 Bright
+    Loop
+  Death:
+    APBX ABCDE 1 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterBallN : RLBaronBlasterBall
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.3, 1, 2.1)
+    APLS AABB 3 Bright A_CustomMissile ("RLBaronBlasterMiniBallN", random(-2,2), random(-12,12), random(0,359), CMF_TRACKOWNER | CMF_AIMDIRECTION, random(-45,45))
+    Loop
+  Death:
+    APBX ABCDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterMiniBallN : RLBaronBlasterBall
+{
+  -RIPPER
+  -FORCEPAIN
+  Damage (5)
+  Scale 0.4
+  SeeSound "weapons/baronblastermini"
+  DeathSound "weapons/baronblasterminiimpact"
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.3, 1, 2.1)
+    APLS AB 5 Bright
+    Loop
+  Death:
+    APBX ABCDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterBallS : RLBaronBlasterBall
+{
+  +SEEKERMISSILE
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 1, 1, 0.8)
+    APLS AAAAABBBBB 1 Bright A_SeekerMissile (90, 90, SMF_LOOK | SMF_PRECISE, 256) 
+    Loop
+  }
+}
+
+//-------------------------------------------------------------------
+//		SHARPSHOOTER PROJECTILES
+
+ACTOR RLBaronBlasterBallSharpshooter : RLBaronBlasterBall
+{
+  Damage (400)
+}
+
+ACTOR RLBaronBlasterBallPSharpshooter : RLBaronBlasterBallSharpshooter
+{
+  Damage (600)
+}
+
+ACTOR RLBaronBlasterBallASharpshooter : RLBaronBlasterBallSharpshooter
+{
+  Speed 2
+}
+
+ACTOR RLBaronBlasterBallFSharpshooter : RLBaronBlasterBallSharpshooter
+{
+  States
+  {
+  Death:
+    TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("RLBaronBlasterMiniBallSharpshooter", random(-2,2), random(-12,12), random(0,359), CMF_TRACKOWNER | CMF_AIMDIRECTION, random(-45,45))
+    APBX ABCDE 5 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterMiniBallSharpshooter : RLBaronBlasterBallSharpshooter
+{
+  -FORCEPAIN
+  Damage (80)
+  Scale 0.4
+  SeeSound ""
+  DeathSound "weapons/baronblasterminiimpact"
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.3, 1, 2.1)
+    APLS AB 5 Bright
+    Loop
+  Death:
+    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("RLBaronBlasterMiniMiniBallSharpshooter", random(-2,2), random(-12,12), random(0,359), CMF_TRACKOWNER | CMF_AIMDIRECTION, random(-45,45))
+    APBX ABCDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterMiniMiniBallSharpshooter : RLBaronBlasterBallSharpshooter
+{
+  -FORCEPAIN
+  Damage (40)
+  Scale 0.1
+  SeeSound ""
+  DeathSound "weapons/baronblasterminiimpact"
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.1, 1, 3.4)
+    APLS AB 5 Bright
+    Loop
+  Death:
+    APBX ABCDE 1 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterBallNSharpshooter : RLBaronBlasterBallSharpshooter
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.3, 1, 2.1)
+    APLS AABB 3 Bright A_CustomMissile ("RLBaronBlasterMiniBallNSharpshooter", random(-2,2), random(-12,12), random(0,359), CMF_TRACKOWNER | CMF_AIMDIRECTION, random(-45,45))
+    Loop
+  Death:
+    APBX ABCDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterMiniBallNSharpshooter : RLBaronBlasterBallSharpshooter
+{
+  -RIPPER
+  -FORCEPAIN
+  Damage (40)
+  Scale 0.4
+  SeeSound "weapons/baronblastermini"
+  DeathSound "weapons/baronblasterminiimpact"
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 0.3, 1, 2.1)
+    APLS AB 5 Bright
+    Loop
+  Death:
+    APBX ABCDE 2 Bright
+    Stop
+  }
+}
+
+ACTOR RLBaronBlasterBallSSharpshooter : RLBaronBlasterBallSharpshooter
+{
+  +SEEKERMISSILE
+  States
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_PlaySound("weapons/baronblasterfly", 6, 1, 1, 0.8)
+    APLS AAAAABBBBB 1 Bright A_SeekerMissile (90, 90, SMF_LOOK | SMF_PRECISE, 256) 
+    Loop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLBaronBlasterSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLBaronBlasterSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLBaronBlasterClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 2
+   Inventory.Icon ""
+}
+
+ACTOR RLBaronBlasterPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Scale 0.7
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		BABL X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLBaronBlaster",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/baronblasterpickup")
+		TNT1 A 0 A_GiveInventory("RLBaronBlaster",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up the \ckBaron Blaster. \c-Slow, but deadly.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ck=L= Baron Blaster =L=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLBaronBlaster
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	Scale 0.7
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		BABL X 1
+		Loop
+	Death:
+		TNT1 A 0
+		BABL X 1 A_SpawnItem("RLBaronBlasterPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,753 @@
+
+ACTOR RLHighPowerNuclearPlasmaRifle : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was exposed to nuclear energy by %k."
+  Inventory.Pickupmessage "You picked up a High Power Nuclear Plasma Rifle."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "High Power Nuclear Plasma Rifle"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 5000
+  Weapon.SlotNumber 6
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLHighPowerNuclearPlasmaRifleClip"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    TNT1 A 0 A_PlaySound("weapons/hpnukeplasmarifleidle", 6, 1, 1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 1, "ReadyCantAltFire")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyCanAltFire")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyCanAltFire")
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharging
+  ReadyCanAltFire:
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharging
+  ReadyCantAltFire:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyCanFire")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyCanFire")
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+	Goto ReadyCycleCharged
+  ReadyCanFire:
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_ALLOWZOOM)
+	Goto ReadyCycleCharged
+//=================================================================================
+  ReadyCycleCharging:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 1, "ReadyCycleCharged")
+	Goto ReadyChargingAmmo
+  ReadyChargingAmmo:
+	TNT1 A 0 A_GiveInventory("RLHighPowerNuclearPlasmaRifleClip", 1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyChargingAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyChargingAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    QNPL A 6 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+    QNPL A 3 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+  ReadyChargingAmmo2:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    QNPL A 6 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+    QNPL A 3 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharging
+//=================================================================================
+  ReadyCycleCharged:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 16, "Ready")
+	Goto ReadyChargedAmmo
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 21, "Ready")
+	Goto ReadyChargedAmmo
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 26, "Ready")
+	Goto ReadyChargedAmmo
+  ReadyChargedAmmo:
+	TNT1 A 0 A_GiveInventory("RLHighPowerNuclearPlasmaRifleClip", 1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyChargedAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyChargedAmmo2")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    QNPL A 6 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+    QNPL A 3 A_WeaponReady (WRF_NOSECONDARY | WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+  ReadyChargedAmmo2:
+	TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusActive", 1, 2)
+    QNPL A 6 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+    QNPL A 3 A_WeaponReady (WRF_ALLOWZOOM)
+    Goto ReadyCycleCharged
+//=================================================================================
+  ReadyDepleted:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop", 1, "ReadyDepletedCanAltFire")
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate", 1, "ReadyDepletedCanAltFire")
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+	Goto Ready
+  ReadyDepletedCanAltFire:
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto Ready
+//=================================================================================
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLStormNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistol",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonNuclearPlasmaRifle",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGun",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusWeapon", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusActive", 1)
+  WeaponDropConfirmContinue:
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRiflePowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleSniperMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLHighPowerNuclearPlasmaRifle",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLHighPowerNuclearPlasmaRifle",1)
+	Stop
+  AfterModDrop:
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (16)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+    QNPL A 5 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    QNPL D 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerNuclearPlasmaRifleSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    QNPL D 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("ReadyDepleted")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRiflePowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBall", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBall", frandom(1,-1), 0)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRiflePowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallP", frandom(1,-1), 0)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRiflePowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallA", frandom(1,-1), 0)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPP", frandom(1,-1), 0)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallPA", frandom(1,-1), 0)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallAA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallAA", frandom(1,-1), 0)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRiflePowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallS", 0, 0)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSS", 0, 0)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSP", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSP", 0, 0)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSA", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLHighPowerPlasmaBallSA", 0, 0)
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleState",1,"FireState")
+	TNT1 A 0 A_GiveInventory("RLHighPowerNuclearPlasmaRifleState",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleFirestormMod",2,4)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleFirestormMod",1,2)
+    QNPL B 3 Bright A_GunFlash ("FlashB")
+    Goto FireFinishAmmochain
+    QNPL B 2 Bright A_GunFlash ("FlashB")
+    Goto FireFinishAmmochain
+    QNPL B 1 Bright A_GunFlash ("FlashB")
+    Goto FireFinishAmmochain
+  FireState:
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleState",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleFirestormMod",2,4)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleFirestormMod",1,2)
+    QNPL C 3 Bright A_GunFlash ("FlashC")
+    Goto FireFinishAmmochain
+    QNPL C 2 Bright A_GunFlash ("FlashC")
+    Goto FireFinishAmmochain
+    QNPL C 1 Bright A_GunFlash ("FlashC")
+    Goto FireFinishAmmochain
+  FireFinishAmmochain:
+	TNT1 A 0 A_GunFlash ("Flash", GFF_NOEXTCHANGE)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleAmmochain",0,3)
+	TNT1 A 0 A_GiveInventory("RLHighPowerNuclearPlasmaRifleAmmochain",1)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleAmmochain",3)
+    QNPL A 5 A_ReFire
+    Goto Ready
+  Flash:
+	TNT1 A 0 A_Light0
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 1, 2)
+    TNT1 A 6
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 2, 2)
+    QNP1 X 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 3, 2)
+    QNP1 W 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 4, 2)
+    QNP1 V 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 5, 2)
+    QNP1 U 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 6, 2)
+    QNP1 T 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 7, 2)
+    QNP1 S 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 8, 2)
+    QNP1 R 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 9, 2)
+    QNP1 Q 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 10, 2)
+    QNP1 P 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 11, 2)
+    QNP1 O 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 12, 2)
+    QNP1 N 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 13, 2)
+    QNP1 M 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 14, 2)
+    QNP1 L 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 15, 2)
+    QNP1 K 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 16, 2)
+    QNP1 J 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 17, 2)
+    QNP1 I 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 18, 2)
+    QNP1 H 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 19, 2)
+    QNP1 G 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 20, 2)
+    QNP1 F 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 21, 2)
+    QNP1 E 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 22, 2)
+    QNP1 D 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 23, 2)
+    QNP1 C 6 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 24, 2)
+    QNP1 B 6 Bright
+    Goto FlashFinish
+    QNP1 A 6 Bright
+    Goto FlashFinish
+  FlashB:
+	TNT1 A 0 A_Light1
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 1, 2)
+    TNT1 A 4
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 2, 2)
+    QNP1 X 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 3, 2)
+    QNP1 W 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 4, 2)
+    QNP1 V 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 5, 2)
+    QNP1 U 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 6, 2)
+    QNP1 T 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 7, 2)
+    QNP1 S 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 8, 2)
+    QNP1 R 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 9, 2)
+    QNP1 Q 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 10, 2)
+    QNP1 P 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 11, 2)
+    QNP1 O 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 12, 2)
+    QNP1 N 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 13, 2)
+    QNP1 M 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 14, 2)
+    QNP1 L 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 15, 2)
+    QNP1 K 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 16, 2)
+    QNP1 J 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 17, 2)
+    QNP1 I 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 18, 2)
+    QNP1 H 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 19, 2)
+    QNP1 G 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 20, 2)
+    QNP1 F 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 21, 2)
+    QNP1 E 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 22, 2)
+    QNP1 D 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 23, 2)
+    QNP1 C 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 24, 2)
+    QNP1 B 4 Bright
+    Goto FlashFinish
+    QNP1 A 4 Bright
+    Goto FlashFinish
+  FlashC:
+	TNT1 A 0 A_Light2
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 1, 2)
+    TNT1 A 4
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 2, 2)
+    QNP2 X 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 3, 2)
+    QNP2 W 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 4, 2)
+    QNP2 V 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 5, 2)
+    QNP2 U 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 6, 2)
+    QNP2 T 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 7, 2)
+    QNP2 S 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 8, 2)
+    QNP2 R 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 9, 2)
+    QNP2 Q 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 10, 2)
+    QNP2 P 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 11, 2)
+    QNP2 O 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 12, 2)
+    QNP2 N 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 13, 2)
+    QNP2 M 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 14, 2)
+    QNP2 L 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 15, 2)
+    QNP2 K 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 16, 2)
+    QNP2 J 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 17, 2)
+    QNP2 I 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 18, 2)
+    QNP2 H 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 19, 2)
+    QNP2 G 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 20, 2)
+    QNP2 F 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 21, 2)
+    QNP2 E 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 22, 2)
+    QNP2 D 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 23, 2)
+    QNP2 C 4 Bright
+    Goto FlashFinish
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifleClip", 24, 2)
+    QNP2 B 4 Bright
+    Goto FlashFinish
+    QNP2 A 4 Bright
+    Goto FlashFinish
+  FlashFinish:
+	TNT1 A 0 A_Light0
+    Goto LightDone
+  Spawn:
+    QNPL X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRiflePowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleFirestormMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerNuclearPlasmaRifleSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLStormNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLSuperchargedNuclearPlasmaPistol",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLBurstCannonNuclearPlasmaRifle",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearVBFG9000",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNuclearBiggestFuckingGun",1,"ScavengerContinue")
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusWeapon", 1)
+	TNT1 A 0 A_TakeInventory("RLNuclearWeaponSetBonusActive", 1)
+  ScavengerContinue:
+	TNT1 A 0 A_Jump(256,1,2)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLHighPowerNuclearPlasmaRifle",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLHighPowerNuclearPlasmaRifleSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLHighPowerNuclearPlasmaRifleState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLHighPowerNuclearPlasmaRifleAmmochain : Inventory
+{
+inventory.maxamount 3
+}
+
+Actor RLHighPowerNuclearPlasmaRifleModLimit : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerNuclearPlasmaRiflePowerMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerNuclearPlasmaRifleBulkMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerNuclearPlasmaRifleAgilityMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerNuclearPlasmaRifleFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLHighPowerNuclearPlasmaRifleSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLHighPowerNuclearPlasmaRifleClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 26
+   Inventory.Icon ""
+}
+
+ACTOR RLHighPowerNuclearPlasmaRiflePickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		QNPL X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLHighPowerNuclearPlasmaRifle",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/hpnukeplasmariflepickup")
+		TNT1 A 0 A_GiveInventory("RLHighPowerNuclearPlasmaRifle",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_GiveInventory("RLNuclearWeaponSetBonusWeapon",1)
+		TNT1 A 0 A_JumpIfInventory("RLNuclearWeaponSetBonusArmor",1,2)
+		TNT1 A 0 A_Print("Picked up a \cvHigh Power Nuclear Plasma Rifle.")
+		Stop
+		TNT1 A 0 A_GiveInventory("RLNuclearWeaponSetBonusActive",1)
+		TNT1 A 0 A_Print("Picked up a \cvHigh Power Nuclear Plasma Rifle.\n\c-= FURIOUS FUSION =\n\cgNuclear weaponry recharges twice as fast", 8, "CONFONT")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= High Power Nuclear Plasma Rifle =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLHighPowerNuclearPlasmaRifle
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		QNPL X 1
+		Loop
+	Death:
+		TNT1 A 0
+		QNPL X 1 A_SpawnItem("RLHighPowerNuclearPlasmaRiflePickup",0,0,0,0)
+		Stop
+	}
+}

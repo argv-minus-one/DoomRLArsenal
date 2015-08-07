@@ -1,0 +1,281 @@
+
+texture optional LAVBICON
+	pic LAVBICON tics 6
+	pic LAVBICO2 tics 6
+	pic LAVBICO3 tics 6
+	pic LAVBICO4 tics 6
+	
+texture optional LAVUICON
+	pic LAVUICON tics 6
+	pic LAVUICO2 tics 6
+	pic LAVUICO3 tics 6
+	pic LAVUICO4 tics 6
+	
+texture optional ENVBICON
+	pic ENVBICON tics 6
+	pic ENVBICO2 tics 6
+	
+texture optional CYN1ICON
+	pic CYN1ICON tics 4
+	pic CYN1ICO2 tics 4
+	pic CYN1ICO3 tics 4
+	
+texture optional CYN2ICON
+	pic CYN2ICON tics 4
+	pic CYN2ICO2 tics 4
+	pic CYN2ICO3 tics 4
+	
+texture optional CYN3ICON
+	pic CYN3ICON tics 4
+	pic CYN3ICO2 tics 4
+	pic CYN3ICO3 tics 4
+	
+texture optional MALKICO2
+	pic MALKICON tics 70
+	pic MALKICO2 tics 3
+	pic MALKICON tics 1
+	pic MALKICO2 tics 3
+	pic MALKICON tics 1
+	pic MALKICO2 tics 3
+	pic MALKICON tics 1
+	pic MALKICO2 tics 3
+	pic MALKICON tics 1
+	pic MALKICO2 tics 3
+	pic MALKICON tics 1
+	
+texture optional BSHDICON
+	pic BSHDICON tics 6
+	pic BSHDICO2 tics 6
+	
+texture optional ESVAICON
+	pic ESVAICON tics 4
+	pic ESVAICO2 tics 4
+	
+texture optional FSHDICON
+	pic FSHDICON tics 4
+	pic FSHDICO2 tics 4
+	
+texture optional ESHDICON
+	pic ESHDICON tics 4
+	pic ESHDICO2 tics 4
+	
+texture optional PSHDICON
+	pic PSHDICON tics 4
+	pic PSHDICO2 tics 4
+	
+texture optional SSHDICON
+	pic SSHDICON tics 4
+	pic SSHDICO2 tics 4
+	
+texture optional CYN1HUD1
+	pic CYN1HUD1 tics 4
+	pic CYN1HUD2 tics 4
+	pic CYN1HUD3 tics 4
+	
+texture optional CYN2HUD1
+	pic CYN2HUD1 tics 4
+	pic CYN2HUD2 tics 4
+	pic CYN2HUD3 tics 4
+	
+texture optional CYN3HUD1
+	pic CYN3HUD1 tics 4
+	pic CYN3HUD2 tics 4
+	pic CYN3HUD3 tics 4
+	
+texture optional BSHDHUD1
+	pic BSHDHUD1 tics 6
+	pic BSHDHUD2 tics 6
+	
+texture optional ESVAHUD1
+	pic ESVAHUD1 tics 4
+	pic ESVAHUD2 tics 4
+	
+texture optional FSHDHUD1
+	pic FSHDHUD1 tics 4
+	pic FSHDHUD2 tics 4
+	
+texture optional ESHDHUD1
+	pic ESHDHUD1 tics 4
+	pic ESHDHUD2 tics 4
+	
+texture optional PSHDHUD1
+	pic PSHDHUD1 tics 4
+	pic PSHDHUD2 tics 4
+	
+texture optional SSHDHUD1
+	pic SSHDHUD1 tics 4
+	pic SSHDHUD2 tics 4
+	
+texture optional MALKHUD2
+	pic MALKHUD1 tics 70
+	pic MALKHUD2 tics 3
+	pic MALKHUD1 tics 1
+	pic MALKHUD2 tics 3
+	pic MALKHUD1 tics 1
+	pic MALKHUD2 tics 3
+	pic MALKHUD1 tics 1
+	pic MALKHUD2 tics 3
+	pic MALKHUD1 tics 1
+	pic MALKHUD2 tics 3
+	pic MALKHUD1 tics 1
+	
+texture optional LAVUHUD1
+	pic LAVUHUD1 tics 6
+	pic LAVUHUD2 tics 6
+	pic LAVUHUD3 tics 6
+	pic LAVUHUD4 tics 6
+
+// Beta 7
+texture optional SHKBICON
+	pic SHKBICON tics 15
+	pic SHKBICO2 tics 1
+	pic SHKBICO3 tics 1
+	pic SHKBICO4 tics 1
+	pic SHKBICO5 tics 1
+	pic SHKBICO6 tics 1
+	pic SHKBICO7 tics 1
+	pic SHKBICO8 tics 1
+	pic SHKBICO9 tics 1
+	pic SHKBIC10 tics 1
+	pic SHKBIC11 tics 1
+	pic SHKBIC12 tics 1
+	
+texture optional RESHICON
+	pic RESHICON tics 6
+	pic RESHICO2 tics 6
+	
+texture optional SURVICON
+	pic SURVICON tics 2
+	pic SURVICO2 tics 2
+	pic SURVICO3 tics 2
+	pic SURVICO4 tics 2
+	pic SURVICO5 tics 2
+	pic SURVICO6 tics 2
+	pic SURVICO7 tics 2
+	pic SURVICO8 tics 2
+	pic SURVICO9 tics 2
+	
+texture optional PASSICO4
+	pic PASSICO4 tics 8
+	pic PASSICON tics 4
+	
+texture optional JETPICON
+	pic JETPICON tics 4
+	pic JETPICO2 tics 2
+	pic JETPICO3 tics 2
+	pic JETPICO2 tics 2
+	
+texture optional BEPSICO2
+	pic BEPSICO2 tics 16
+	pic BEPSICON  tics 2
+	
+texture optional BEPSICO3
+	pic BEPSICO3 tics 16
+	pic BEPSICON  tics 2
+	
+texture optional BEPSHUD4
+	pic BEPSICO4 tics 16
+	pic BEPSICON  tics 2
+	
+texture optional XASPICON
+	pic XASPICON tics 5
+	pic XASPICO2 tics 5
+	pic XASPICO3 tics 5
+	pic XASPICO2 tics 5
+	
+texture optional K8MHICON
+	pic K8MHICON tics 2
+	pic K8MHICO2 tics 2
+	pic K8MHICO3 tics 2
+	pic K8MHICO4 tics 2
+	pic K8MHICO5 tics 2
+	pic K8MHICO6 tics 2
+	
+texture optional 0DAFICO2
+	pic 0DAFICO2 tics 1
+	pic 0DAFICO3 tics 1
+	
+texture optional KTESICO3
+	pic KTESICO3 tics 2
+	pic KTESICO4 tics 2
+	
+texture optional BEESICON
+	pic BEESICON tics 6
+	pic BEESICO2 tics 6
+	
+texture optional CHROICON
+	pic CHROICON tics 4
+	pic CHROICO2 tics 4
+	pic CHROICO3 tics 4
+	pic CHROICO2 tics 4
+	
+	
+texture optional RESHHUD
+	pic RESHHUD  tics 6
+	pic RESHHUD2 tics 6
+	
+texture optional SURVHUD
+	pic SURVHUD tics 2
+	pic SURVHUD2 tics 2
+	pic SURVHUD3 tics 2
+	pic SURVHUD4 tics 2
+	pic SURVHUD5 tics 2
+	pic SURVHUD6 tics 2
+	pic SURVHUD7 tics 2
+	pic SURVHUD8 tics 2
+	pic SURVHUD9 tics 2
+	
+texture optional PASSHUD4
+	pic PASSHUD4 tics 8
+	pic PASSHUD  tics 4
+	
+texture optional JETPHUD
+	pic JETPHUD  tics 4
+	pic JETPHUD2 tics 2
+	pic JETPHUD3 tics 2
+	pic JETPHUD2 tics 2
+	
+texture optional BEPSHUD2
+	pic BEPSHUD2 tics 16
+	pic BEPSHUD  tics 2
+	
+texture optional BEPSHUD3
+	pic BEPSHUD3 tics 16
+	pic BEPSHUD  tics 2
+	
+texture optional BEPSHUD4
+	pic BEPSHUD4 tics 16
+	pic BEPSHUD  tics 2
+	
+texture optional XASPHUD
+	pic XASPHUD  tics 5
+	pic XASPHUD2 tics 5
+	pic XASPHUD3 tics 5
+	pic XASPHUD2 tics 5
+	
+texture optional K8MHHUD
+	pic K8MHHUD  tics 2
+	pic K8MHHUD2 tics 2
+	pic K8MHHUD3 tics 2
+	pic K8MHHUD4 tics 2
+	pic K8MHHUD5 tics 2
+	pic K8MHHUD6 tics 2
+	
+texture optional 0DAFHUD2
+	pic 0DAFHUD2 tics 1
+	pic 0DAFHUD3 tics 1
+	
+texture optional KTESHUD3
+	pic KTESHUD3 tics 2
+	pic KTESHUD4 tics 2
+	
+texture optional BEESHUD
+	pic BEESHUD  tics 6
+	pic BEESHUD2 tics 6
+	
+texture optional CHROHUD
+	pic CHROHUD  tics 4
+	pic CHROHUD2 tics 4
+	pic CHROHUD3 tics 4
+	pic CHROHUD2 tics 4
+	

@@ -1,0 +1,607 @@
+
+ACTOR RLNullPointer : RLWeapon
+{
+  Inventory.Pickupsound "weapons/unique"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was somehow nullified %k. Seriously, what did you do?!"
+  Inventory.Pickupmessage "You picked up Charch's Null Pointer."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Charch's Null Pointer"
+  Weapon.Kickback 0
+  Weapon.SelectionOrder 1900
+  Weapon.SlotNumber 7
+  Weapon.AmmoUse1 10
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLNullPointerClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    TNT1 A 0 A_PlaySound("weapons/nullpointerstart", 7)
+    NULP ABCDE 1
+    Goto ReadyLoop
+  ReadyLoop:
+    TNT1 A 0 A_PlaySound("weapons/nullpointerloop", 6,1,1)
+    NULP FGHIJKLMNO 1 A_WeaponReady (48)
+    Loop
+  ReadyReload:
+    TNT1 A 0 A_PlaySound("weapons/nullpointerloop", 6,1,1)
+    NULP FGHIJKLMNO 1 A_WeaponReady (WRF_NOFIRE | WRF_ALLOWZOOM)
+    Goto ReadyLoop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNullPointerSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNullPointer",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLNullPointer",1)
+	Stop
+  AfterModDrop:
+    TNT1 A 0 A_PlaySound("weapons/nullpointerloop", 6,1,1)
+    NULP FGHIJKLMNO 1 A_WeaponReady (16)
+    Goto ReadyLoop
+  RenegadeAssemblyNoFire:
+    TNT1 A 0 A_PlaySound("weapons/nullpointerloop", 6,1,1)
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    NULP FGHIJKLMNO 1 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLNullPointerSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    NULP EDCB 1
+    TNT1 A 0 A_StopSound(6)
+    NULP A 2 A_Lower
+    Goto DeselectLoop+5
+  DeselectRenegade:
+    TNT1 A 0 A_StopSound(6)
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLNullPointerSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    NULP A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    TNT1 A 0 A_StopSound(6)
+    NULP PQ 2
+    NULP R 2 Bright A_GunFlash
+    NULP S 2 Bright
+    TNT1 A 0 A_PlaySound("weapons/nullpointer", CHAN_WEAPON)
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerNanoMod",1,"FireN")
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerAgilityMod",1,"FireA")
+	TNT1 A 0 A_FireBullets (0, 0, -1, 0, "RLNullField")
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 0, "RLNullFieldP")
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 0, "RLNullFieldP")
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_FireCustomMissile ("RLNullFieldBall", 0, 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 0, "RLNullField")
+    TNT1 A 0 A_BFGSpray ("RLMiniNullField", 30, 1)
+    Goto FireFinish
+  FireN:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 0, "RLNullFieldN")
+    Goto FireFinish
+  FireFinish:
+    NULP TU 2 Bright
+    NULP VW 2
+    NULP A 35
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerClip", 60, "ReadyReload")
+	Goto Reload+3
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerClip", 78, "ReadyReload")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto ReadyReload
+  ReloadSequence:
+    NULP DEFG 1
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerTechnicalMod",1,"Reload1")
+    NULR A 3
+    NULR B 3
+    NULR C 3
+    NULR D 3
+    NULR E 3
+    NULR F 3
+    NULR G 3
+    NULR H 3
+	TNT1 A 35
+	TNT1 A 0 A_PlaySound("weapons/nullpointerunload", 5)
+	Goto ReloadWorking
+  Reload1:
+    NULR A 3
+    NULR B 3
+    NULR C 3
+    NULR D 3
+    NULR E 3
+    NULR F 3
+    NULR G 3
+    NULR H 3
+	TNT1 A 32
+	TNT1 A 0 A_PlaySound("weapons/nullpointerunload", 5)
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLNullPointerClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerClip",60,3)
+	Goto ReloadWorking+5
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerClip",78,2)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_PlaySound("weapons/nullpointerload", CHAN_AUTO)
+	TNT1 A 0 A_JumpIfInventory("RLNullPointerTechnicalMod",1,"ReloadFinish1")
+	TNT1 A 10
+    NULR H 3
+    NULR G 3
+    NULR F 3
+    NULR E 3
+    NULR D 3
+    NULR C 3
+    NULR B 3
+    NULR A 3
+	Goto Ready
+  ReloadFinish1:
+	TNT1 A 10
+    NULR H 3
+    NULR G 3
+    NULR F 3
+    NULR E 3
+    NULR D 3
+    NULR C 3
+    NULR B 3
+    NULR A 3
+	Goto Ready
+  Flash:
+    TNT1 A 4 A_Light1
+    TNT1 A 2 A_Light2
+    TNT1 A 2 A_Light1
+    Goto LightDone
+  Spawn:
+    NULP X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto ReadyReload
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLNullPointerNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNullPointerSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLOnyxMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLNullPointer",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLNullField : BFGExtra
+{
+  +NOBLOCKMAP
+  +NOGRAVITY
+  +FORCEPAIN
+  +PUFFONACTORS
+  +PUFFGETSOWNER
+  +BLOODLESSIMPACT
+  Alpha 0.95
+  Scale 2
+  DamageType "NullDamage"
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/nullfieldloop", 6,1,1)
+    TNT1 A 0 A_JumpIfInventory ("RLNullPointerCharge",60, "Death")
+    R044 J 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 K 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 L 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 M 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 N 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 P 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 Q 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    TNT1 A 0 A_GiveInventory ("RLNullPointerCharge",1)
+    Loop
+  Death:
+    TNT1 A 0 A_StopSound(6)
+    R044 J 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 K 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 L 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 M 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 N 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 O 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 O 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 P 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 Q 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    Loop
+  Crash:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/nullfieldwall", CHAN_BODY)
+    TNT1 A 35
+    Stop
+  }
+}
+
+ACTOR RLNullFieldP : RLNullField
+{
+  Scale 2.5
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/nullfieldloop", 6,1,1)
+    TNT1 A 0 A_JumpIfInventory ("RLNullPointerCharge",60, "Death")
+    R044 J 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 K 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 L 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 M 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 N 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 P 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    R044 Q 1 Bright
+    TNT1 A 0 A_Explode (1,160,0)
+    TNT1 A 0 A_GiveInventory ("RLNullPointerCharge",1)
+    Loop
+  }
+}
+
+ACTOR RLNullFieldN : RLNullField
+{
+  Scale 2
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/nullfieldloop", 6,1,1)
+    TNT1 A 0 A_JumpIfInventory ("RLNullPointerCharge",150, "Death")
+    R044 J 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 K 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 L 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 M 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 N 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 P 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 Q 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    TNT1 A 0 A_GiveInventory ("RLNullPointerCharge",1)
+    Loop
+  }
+}
+
+ACTOR RLMiniNullField : RLNullField
+{
+  Scale 0.5
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/nullfieldloop", 6,1,1)
+    TNT1 A 0 A_JumpIfInventory ("RLNullPointerCharge",35, "Death")
+    R044 J 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 K 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 L 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 M 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 N 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 P 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    R044 Q 1 Bright
+    TNT1 A 0 A_Explode (1,64,0)
+    TNT1 A 0 A_GiveInventory ("RLNullPointerCharge",1)
+    Loop
+  }
+}
+
+ACTOR RLNullFieldBall : Rocket
+{
+  +RIPPER
+  +FORCEPAIN
+  +BLOODLESSIMPACT
+  -DEHEXPLOSION
+  -ROCKETTRAIL
+  Radius 5
+  Height 5
+  Speed 2
+  Scale 2
+  Damage 0
+  RenderStyle Add
+  Alpha 0.95
+  Damagetype "NullDamage"
+  DeathSound "weapons/nullfieldwall"
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_PlaySound("weapons/nullfieldloop", 6,1,1)
+    R044 J 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 K 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 L 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 M 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 N 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 O 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 P 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    R044 Q 1 Bright
+    TNT1 A 0 A_Explode (1,128,0)
+    Loop
+  Death:
+    TNT1 A 0 A_StopSound(6)
+    R044 J 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 K 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 L 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 M 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 N 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 O 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 O 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 P 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    R044 Q 1 Bright
+    TNT1 A 0 A_FadeTo (0, 0.1, 1)
+    Loop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLNullPointerSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerCharge : Inventory
+{
+inventory.maxamount 150
+}
+
+Actor RLNullPointerModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLNullPointerSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLNullPointerClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 78
+   Inventory.Icon ""
+}
+
+ACTOR RLNullPointerPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		NULP X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLNullPointer",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/nullpointerpickup")
+		TNT1 A 0 A_GiveInventory("RLNullPointer",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up \cdCharch's Null Pointer. \c-WTF is this?")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Charch's Null Pointer =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLNullPointer
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		NULP X 1
+		Loop
+	Death:
+		TNT1 A 0
+		NULP X 1 A_SpawnItem("RLNullPointerPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,2269 @@
+
+ACTOR RLRocketLauncher : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was gibbed by %k's rocket."
+  Inventory.Pickupmessage "You picked up a Rocket Launcher."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Rocket Launcher"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 3900
+  Weapon.SlotNumber 5
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLRocketLauncherClip"
+  Weapon.AmmoType2 "RocketAmmo"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherClip", 1, 4)
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherNanoMod",1,2)
+    MISG B 1 A_WeaponReady (48)
+    Loop
+    MISG B 1 A_WeaponReady (44)
+    Goto NanoRegenCheck
+    MISG A 1 A_WeaponReady (32)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherClip", 1, "Ready")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherNanoMod",2,2)
+    MISG B 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+    Goto NanoRegen
+    MISG B 35 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLRocketLauncherClip", 1)
+    Goto NanoRegenCheck
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLMotherInLawConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLMicroLauncherConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLTacticalRocketLauncherConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLMotherInLawConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoRocketLauncherConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLRocketLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLRocketLauncher",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLRocketLauncher",1)
+	Stop
+  AfterModDrop:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherClip", 1, 2)
+    MISG B 8 A_WeaponReady (16)
+    Goto Ready
+    MISG A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    MISG B 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+    MISG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLRocketLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherClip",1,2)
+    MISG B 2 A_Lower
+    Loop
+    MISG A 2 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLRocketLauncherSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherClip",1,2)
+    MISG B 2 A_Raise
+    Loop
+    MISG A 2 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLMotherInLawConfirm",1, "AssembleMotherInLaw")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherConfirm",1, "AssembleMicroLauncher")
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherConfirm",1, "AssembleGrenadeLauncher")
+	TNT1 A 0 A_JumpIfInventory("RLTacticalRocketLauncherConfirm",1, "AssembleTacticalRocketLauncher")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoRocketLauncherConfirm",1, "AssembleNanoManufactureAmmoRocketLauncher")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    MISG A 3
+    MISG B 8 A_GunFlash
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocket", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketB", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",3,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketBB", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",4,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketBBB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketBBBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPB", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",3,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPBB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketPBBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketAB", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",3,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketABB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketABBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPPB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketPPBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPAB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketPABB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",3,"FireAAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketAA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketAAB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketAABB", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPPP", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketPPPB", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPPA", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketPPAB", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",3,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketPAA", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketPAAB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",4,"FireAAAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketAAA", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketAAAB", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPPP:
+	MISG B 12 A_FireCustomMissile ("RLRocketPPPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPPA:
+	MISG B 12 A_FireCustomMissile ("RLRocketPPPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePPAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketPPAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePAAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketPAAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAAAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketAAAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSB", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",3,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSBB", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSBBB", 0, 1)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",1,"FireFSS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSSB", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSSBB", 0, 1)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSP", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSPB", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSPBB", 0, 1)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireSAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSA", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSAB", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSABB", 0, 1)
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSSP", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSSPB", 0, 1)
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSSA", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSSAB", 0, 1)
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSPP", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSPPB", 0, 1)
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSPA", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSPAB", 0, 1)
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",3,"FireSAAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketSAA", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketSAAB", 0, 1)
+    Goto FireFinish
+  FireSSPP:
+	MISG B 12 A_FireCustomMissile ("RLRocketSSPP", 0, 1)
+    Goto FireFinish
+  FireSSAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketSSAA", 0, 1)
+    Goto FireFinish
+  FireSSPA:
+	MISG B 12 A_FireCustomMissile ("RLRocketSSPA", 0, 1)
+    Goto FireFinish
+  FireSPPP:
+	MISG B 12 A_FireCustomMissile ("RLRocketSPPP", 0, 1)
+    Goto FireFinish
+  FireSPPA:
+	MISG B 12 A_FireCustomMissile ("RLRocketSPPA", 0, 1)
+    Goto FireFinish
+  FireSPAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketSPAA", 0, 1)
+    Goto FireFinish
+  FireSAAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketSAAA", 0, 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFF")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketF", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFB", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",3,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFBB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFBBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFF:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFFA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFF", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFFB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFFBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FireFPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFPB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFPBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireFAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFAB", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFABB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFS:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireFSS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFS", 0, 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",2,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFSB", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFSBB", 0, 1)
+    Goto FireFinish
+  FireFFP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFFP", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFFPB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireFFAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFFA", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFFAB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFS:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFFS", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFFSB", 0, 1)
+    Goto FireFinish
+  FireFSS:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFSSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFSS", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFSSB", 0, 1)
+    Goto FireFinish
+  FireFSP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFSP", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFSPB", 0, 1)
+    Goto FireFinish
+  FireFSA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",2,"FireFSSA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireFSAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFSA", 0, 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFSAB", 0, 1)
+    Goto FireFinish
+  FireFPP:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",3,"FireFPPP")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",1,"FireFPPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFPP", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFPPB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFPA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",2,"FireFPPA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",2,"FireFPAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFPA", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFPAB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFAA:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherFirestormMod",2,"FireFFAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherPowerMod",1,"FireFPAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherAgilityMod",3,"FireFAAA")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherBulkMod",1,2)
+	MISG B 12 A_FireCustomMissile ("RLRocketFAA", frandom(1,-1), 1)
+    Goto FireFinish
+	MISG B 12 A_FireCustomMissile ("RLRocketFAAB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFSS:
+	MISG B 12 A_FireCustomMissile ("RLRocketFFSS", 0, 1)
+    Goto FireFinish
+  FireFFSA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFFSA", 0, 1)
+    Goto FireFinish
+  FireFFSP:
+	MISG B 12 A_FireCustomMissile ("RLRocketFFSP", 0, 1)
+    Goto FireFinish
+  FireFFPP:
+	MISG B 12 A_FireCustomMissile ("RLRocketFFPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFFAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFFPA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFFPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFSPP:
+	MISG B 12 A_FireCustomMissile ("RLRocketFSPP", 0, 1)
+    Goto FireFinish
+  FireFSPA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFSPA", 0, 1)
+    Goto FireFinish
+  FireFSAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFSAA", 0, 1)
+    Goto FireFinish
+  FireFSSP:
+	MISG B 12 A_FireCustomMissile ("RLRocketFSSP", 0, 1)
+    Goto FireFinish
+  FireFSSA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFSSA", 0, 1)
+    Goto FireFinish
+  FireFPPP:
+	MISG B 12 A_FireCustomMissile ("RLRocketFPPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFPPA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFPPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFPAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFPAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFAAA:
+	MISG B 12 A_FireCustomMissile ("RLRocketFAAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFinish:
+    MISG B 0 A_Refire
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherNanoMod",1,"Ready")
+    MISG B 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RocketAmmo",1,1)
+	Goto Ready
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherClip",1,"Ready")
+	MISG B 1
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",4,"Reload4")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",3,"Reload3")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",1,"Reload1")
+    MISG C 4
+    MISG D 4
+    MISG E 4
+    MISG F 4
+    MISG G 4
+    TNT1 A 25
+	Goto ReloadWorking
+  Reload1:
+    MISG C 3
+    MISG D 3
+    MISG E 3
+    MISG F 4
+    MISG G 4
+    TNT1 A 25
+	Goto ReloadWorking
+  Reload2:
+    MISG C 3
+    MISG D 3
+    MISG E 3
+    MISG F 3
+    MISG G 3
+    TNT1 A 24
+	Goto ReloadWorking
+  Reload3:
+    MISG C 3
+    MISG D 3
+    MISG E 3
+    MISG F 3
+    MISG G 3
+    TNT1 A 21
+	Goto ReloadWorking
+  Reload4:
+    MISG C 3
+    MISG D 3
+    MISG E 3
+    MISG F 3
+    MISG G 3
+    TNT1 A 18
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("RocketAmmo", 1)
+	TNT1 A 0 A_GiveInventory("RLRocketLauncherClip", 1)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_PlaySound("weapons/rocketload", 5)
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",4,"ReloadFinish4")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",3,"ReloadFinish3")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLRocketLauncherTechnicalMod",1,"ReloadFinish1")
+    MISG H 3
+    MISG I 3
+    MISG J 3
+    MISG K 3
+    MISG A 7 A_ReFire
+	Goto Ready
+  ReloadFinish1:
+    MISG H 2
+    MISG I 2
+    MISG J 2
+    MISG K 3
+    MISG A 7 A_ReFire
+	Goto Ready
+  ReloadFinish2:
+    MISG H 2
+    MISG I 2
+    MISG J 2
+    MISG K 2
+    MISG A 5 A_ReFire
+	Goto Ready
+  ReloadFinish3:
+    MISG H 1
+    MISG I 1
+    MISG J 1
+    MISG K 2
+    MISG A 5 A_ReFire
+	Goto Ready
+  ReloadFinish4:
+    MISG H 1
+    MISG I 1
+    MISG J 1
+    MISG K 1
+    MISG A 3 A_ReFire
+	Goto Ready
+  Flash:
+    MISF A 3 Bright A_Light1
+    MISF B 4 Bright
+    MISF C 4 Bright A_Light2
+    MISF D 4 Bright
+    Goto LightDone
+  Spawn:
+    MISG X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLMotherInLawConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncherConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLTacticalRocketLauncherConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoRocketLauncherConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLMotherInLawConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLMicroLauncherConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLGrenadeLauncherConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLTacticalRocketLauncherConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoRocketLauncherConfirm",1)
+	Goto Ready
+  AssembleMotherInLaw:
+	TNT1 A 0 A_Print("The \cvMother-In-Law \c-has been assembled. Now, hell will pay...")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLRocketLauncherSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLMotherInLawConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLMotherInLaw",1)
+	TNT1 A 0 A_SelectWeapon("RLMotherInLaw")
+	TNT1 A 0 A_TakeInventory("RLRocketLauncher",1)
+	Stop
+  AssembleMicroLauncher:
+	TNT1 A 0 A_Print("\cvMicro Launcher \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLRocketLauncherSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLMicroLauncherConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLMicroLauncher",1)
+	TNT1 A 0 A_SelectWeapon("RLMicroLauncher")
+	TNT1 A 0 A_TakeInventory("RLRocketLauncher",1)
+	Stop
+  AssembleGrenadeLauncher:
+	TNT1 A 0 A_Print("\cvGrenade Launcher \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLRocketLauncherSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLGrenadeLauncherConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLGrenadeLauncher",1)
+	TNT1 A 0 A_SelectWeapon("RLGrenadeLauncher")
+	TNT1 A 0 A_TakeInventory("RLRocketLauncher",1)
+	Stop
+  AssembleTacticalRocketLauncher:
+	TNT1 A 0 A_Print("\cvTactical Rocket Launcher \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLRocketLauncherSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLTacticalRocketLauncherConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLTacticalRocketLauncher",1)
+	TNT1 A 0 A_SelectWeapon("RLTacticalRocketLauncher")
+	TNT1 A 0 A_TakeInventory("RLRocketLauncher",1)
+	Stop
+  AssembleNanoManufactureAmmoRocketLauncher:
+	TNT1 A 0 A_Print("\cvNanomachic Rocket Launcher \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLRocketLauncherSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLRocketLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoRocketLauncherConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLNanoManufactureAmmoRocketLauncher",1)
+	TNT1 A 0 A_SelectWeapon("RLNanoManufactureAmmoRocketLauncher")
+	TNT1 A 0 A_TakeInventory("RLRocketLauncher",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLRocket : Rocket
+{
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Speed 20
+  Decal "Scorch"
+  Damage 20
+  Damagetype "Fire"
+  States
+  {
+  Spawn:
+    MISL A 1 Bright
+    Loop
+  Death:
+    MISL B 8 Bright A_Explode (256,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketB : RLRocket
+{
+  Damage 30
+}
+
+ACTOR RLRocketBB : RLRocket
+{
+  Damage 40
+}
+
+ACTOR RLRocketBBB : RLRocket
+{
+  Damage 50
+}
+
+ACTOR RLRocketBBBB : RLRocket
+{
+  Damage 60
+}
+
+ACTOR RLRocketP : RLRocket
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPB : RLRocket
+{
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPBB : RLRocket
+{
+  Damage 40
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPBBB : RLRocket
+{
+  Damage 50
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketA : RLRocket
+{
+  Speed 30
+}
+
+ACTOR RLRocketAB : RLRocket
+{
+  Speed 30
+  Damage 30
+}
+
+ACTOR RLRocketABB : RLRocket
+{
+  Speed 30
+  Damage 40
+}
+
+ACTOR RLRocketABBB : RLRocket
+{
+  Speed 30
+  Damage 50
+}
+
+ACTOR RLRocketPP : RLRocket
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPPB : RLRocket
+{
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPPBB : RLRocket
+{
+  Damage 40
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPA : RLRocket
+{
+  Speed 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPAB : RLRocket
+{
+  Speed 30
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPABB : RLRocket
+{
+  Speed 30
+  Damage 40
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketAA : RLRocket
+{
+  Speed 40
+}
+
+ACTOR RLRocketAAB : RLRocket
+{
+  Speed 40
+  Damage 30
+}
+
+ACTOR RLRocketAABB : RLRocket
+{
+  Speed 40
+  Damage 40
+}
+
+ACTOR RLRocketPPP : RLRocket
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (448,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPPPB : RLRocket
+{
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (448,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPPA : RLRocket
+{
+  Speed 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPPAB : RLRocket
+{
+  Speed 30
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPAA : RLRocket
+{
+  Speed 40
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPAAB : RLRocket
+{
+  Speed 40
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketAAA : RLRocket
+{
+  Speed 50
+}
+
+ACTOR RLRocketAAAB : RLRocket
+{
+  Speed 50
+  Damage 30
+}
+
+ACTOR RLRocketPPPP : RLRocket
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (512,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPPPA : RLRocket
+{
+  Speed 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (448,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPPAA : RLRocket
+{
+  Speed 40
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPAAA : RLRocket
+{
+  Speed 50
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketAAAA : RLRocket
+{
+  Speed 60
+}
+
+ACTOR RLRocketS : RLRocket
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_CustomMissile("RLRocketSmoke", 8, 0, 0)
+    MISL A 4 Bright A_ScaleVelocity(1.10)
+    Loop
+  }
+}
+
+ACTOR RLRocketSB : RLRocketS
+{
+  Damage 30
+}
+
+ACTOR RLRocketSBB : RLRocketS
+{
+  Damage 40
+}
+
+ACTOR RLRocketSBBB : RLRocketS
+{
+  Damage 50
+}
+
+ACTOR RLRocketSS : RLRocketS
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_CustomMissile("RLRocketSmoke", 8, 0, 0)
+    MISL A 4 Bright A_ScaleVelocity(1.25)
+    Loop
+  }
+}
+
+ACTOR RLRocketSSB : RLRocketSS
+{
+  Damage 30
+}
+
+ACTOR RLRocketSSBB : RLRocketSS
+{
+  Damage 40
+}
+
+ACTOR RLRocketSP : RLRocketS
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPB : RLRocketS
+{
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPBB : RLRocketS
+{
+  Damage 40
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSA : RLRocketS
+{
+  Speed 30
+}
+
+ACTOR RLRocketSAB : RLRocketS
+{
+  Speed 30
+  Damage 30
+}
+
+ACTOR RLRocketSABB : RLRocketS
+{
+  Speed 30
+  Damage 40
+}
+
+ACTOR RLRocketSPP : RLRocketS
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPPB : RLRocketS
+{
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSSA : RLRocketSS
+{
+  Speed 30
+}
+
+ACTOR RLRocketSSAB : RLRocketSS
+{
+  Speed 30
+  Damage 30
+}
+
+ACTOR RLRocketSSP : RLRocketSS
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSSPB : RLRocketSS
+{
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPA : RLRocketS
+{
+  Speed 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPAB : RLRocketS
+{
+  Speed 30
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSAA : RLRocketS
+{
+  Speed 40
+}
+
+ACTOR RLRocketSAAB : RLRocketS
+{
+  Speed 40
+  Damage 30
+}
+
+ACTOR RLRocketSSPP : RLRocketSS
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSSAA : RLRocketSS
+{
+  Speed 40
+}
+
+ACTOR RLRocketSSPA : RLRocketSS
+{
+  Speed 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPPP : RLRocketS
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (448,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPPA : RLRocketS
+{
+  Speed 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSPAA : RLRocketS
+{
+  Speed 40
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSAAA : RLRocketS
+{
+  Speed 50
+}
+
+ACTOR RLRocketF : RLRocket
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (256,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFB : RLRocketF
+{
+  Damage 30
+}
+
+ACTOR RLRocketFBB : RLRocketF
+{
+  Damage 40
+}
+
+ACTOR RLRocketFBBB : RLRocketF
+{
+  Damage 50
+}
+
+ACTOR RLRocketFF : RLRocket
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (256,256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFFB : RLRocketFF
+{
+  Damage 30
+}
+
+ACTOR RLRocketFFBB : RLRocketFF
+{
+  Damage 40
+}
+
+ACTOR RLRocketFP : RLRocket
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (320,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFPB : RLRocketFP
+{
+  Damage 30
+}
+
+ACTOR RLRocketFPBB : RLRocketFP
+{
+  Damage 40
+}
+
+ACTOR RLRocketFA : RLRocketF
+{
+  Speed 30
+}
+
+ACTOR RLRocketFAB : RLRocketF
+{
+  Speed 30
+  Damage 30
+}
+
+ACTOR RLRocketFABB : RLRocketF
+{
+  Speed 30
+  Damage 40
+}
+
+ACTOR RLRocketFS : RLRocketS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (256,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFSB : RLRocketFS
+{
+  Damage 30
+}
+
+ACTOR RLRocketFSBB : RLRocketFS
+{
+  Damage 40
+}
+
+ACTOR RLRocketFFP : RLRocket
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (320,256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFFPB : RLRocketFFP
+{
+  Damage 30
+}
+
+ACTOR RLRocketFFA : RLRocketFF
+{
+  Speed 30
+}
+
+ACTOR RLRocketFFAB : RLRocketFF
+{
+  Speed 30
+  Damage 30
+}
+
+ACTOR RLRocketFFS : RLRocketS
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (256,256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFFSB : RLRocketFFS
+{
+  Damage 30
+}
+
+ACTOR RLRocketFSS : RLRocketSS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (256,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFSSB : RLRocketFSS
+{
+  Damage 30
+}
+
+ACTOR RLRocketFSP : RLRocketS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (320,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFSPB : RLRocketFSP
+{
+  Damage 30
+}
+
+ACTOR RLRocketFSA : RLRocketFS
+{
+  Speed 30
+}
+
+ACTOR RLRocketFSAB : RLRocketFS
+{
+  Speed 30
+  Damage 30
+}
+
+ACTOR RLRocketFPP : RLRocket
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (384,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFPPB : RLRocketFPP
+{
+  Damage 30
+}
+
+ACTOR RLRocketFPA : RLRocketFP
+{
+  Speed 30
+}
+
+ACTOR RLRocketFPAB : RLRocketFP
+{
+  Speed 30
+  Damage 30
+}
+
+ACTOR RLRocketFAA : RLRocketF
+{
+  Speed 40
+}
+
+ACTOR RLRocketFAAB : RLRocketF
+{
+  Speed 40
+  Damage 30
+}
+
+ACTOR RLRocketFFSS : RLRocketSS
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (256,256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFFSA : RLRocketS
+{
+	+FORCERADIUSDMG
+  Speed 30
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (256,256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFFSP : RLRocketS
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (320,256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFFPP : RLRocket
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (384,256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFFAA : RLRocketFF
+{
+  Speed 40
+}
+
+ACTOR RLRocketFFPA : RLRocketFFP
+{
+  Speed 30
+}
+
+ACTOR RLRocketFSPP : RLRocketS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (384,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFSPA : RLRocketFSP
+{
+  Speed 30
+}
+
+ACTOR RLRocketFSAA : RLRocketFS
+{
+  Speed 40
+}
+
+ACTOR RLRocketFSSP : RLRocketSS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (320,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFSSA : RLRocketSS
+{
+  Speed 30
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (256,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFPPP : RLRocket
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (448,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFPPA : RLRocket
+{
+  Speed 30
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (384,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFPAA : RLRocket
+{
+  Speed 40
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (320,192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFAAA : RLRocketF
+{
+  Speed 50
+}
+
+ACTOR RLRocketSmoke
+{
+	Radius 1
+	Height 1
+	PROJECTILE
+	+NOGRAVITY
+	+FLOORCLIP
+	+NOCLIP
+	+NOINTERACTION
+	Alpha 0.8
+	Scale 0.8
+	Speed 6
+	Mass 0
+	RenderStyle Add
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(128, 2)
+		PUFF C 20
+	Stop
+		PUFF D 20
+	Stop
+	}
+}
+
+ACTOR RLWWRocket : RLRocket
+{
+  Damage 30
+}
+
+ACTOR RLWWRocketA : RLRocketA
+{
+  Damage 30
+}
+
+ACTOR RLWWRocketP : RLRocketP
+{
+  Damage 30
+}
+
+//-------------------------------------------------------------------
+//		SHARPSHOOTER PROJECTILES
+
+ACTOR RLRocketSharpshooter : Rocket
+{
+  Species "Player"
+  +THRUSPECIES
+  Speed 20
+  Damage (160)
+  Damagetype "Fire"
+  States
+  {
+  Spawn:
+    MISL A 1 Bright
+    Loop
+  Death:
+    MISL B 8 Bright A_Explode (256,128, 1, 1, 128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketBSharpshooter : RLRocketSharpshooter
+{
+  Damage (240)
+}
+
+ACTOR RLRocketBBSharpshooter : RLRocketSharpshooter
+{
+  Damage (320)
+}
+
+ACTOR RLRocketPSharpshooter : RLRocketSharpshooter
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128, 1, 1, 128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPBSharpshooter : RLRocketSharpshooter
+{
+  Damage (240)
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128, 1, 1, 128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketASharpshooter : RLRocketSharpshooter
+{
+  Speed 30
+}
+
+ACTOR RLRocketABSharpshooter : RLRocketSharpshooter
+{
+  Speed 30
+  Damage (240)
+}
+
+ACTOR RLRocketPPSharpshooter : RLRocketSharpshooter
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (384,128, 1, 1, 128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketPASharpshooter : RLRocketSharpshooter
+{
+  Speed 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128, 1, 1, 128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketAASharpshooter : RLRocketSharpshooter
+{
+  Speed 40
+}
+
+ACTOR RLRocketSSharpshooter : RLRocketSharpshooter
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_CustomMissile("RLRocketSmoke", 8, 0, 0)
+    MISL A 4 Bright A_ScaleVelocity(1.10)
+    Loop
+  }
+}
+
+ACTOR RLRocketSBSharpshooter : RLRocketSSharpshooter
+{
+  Damage (240)
+}
+
+ACTOR RLRocketSSSharpshooter : RLRocketSSharpshooter
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_CustomMissile("RLRocketSmoke", 8, 0, 0)
+    MISL A 4 Bright A_ScaleVelocity(1.25)
+    Loop
+  }
+}
+
+ACTOR RLRocketSPSharpshooter : RLRocketSSharpshooter
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (320,128, 1, 1, 128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketSASharpshooter : RLRocketSSharpshooter
+{
+  Speed 30
+}
+
+ACTOR RLRocketFSharpshooter : RLRocketSharpshooter
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (256,192, 1, 1, 192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFBSharpshooter : RLRocketFSharpshooter
+{
+  Damage (240)
+}
+
+ACTOR RLRocketFFSharpshooter : RLRocketSharpshooter
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (256,256, 1, 1, 256)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFPSharpshooter : RLRocketSharpshooter
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (320,192, 1, 1, 192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLRocketFASharpshooter : RLRocketFSharpshooter
+{
+  Speed 30
+}
+
+ACTOR RLRocketFSSharpshooter : RLRocketSSharpshooter
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.75)
+    MISL B 8 Bright A_Explode (256,192, 1, 1, 192)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLWWRocketSharpshooter : RLRocketSharpshooter
+{
+  Damage (240)
+}
+
+ACTOR RLWWRocketASharpshooter : RLRocketASharpshooter
+{
+  Damage (240)
+}
+
+ACTOR RLWWRocketPSharpshooter : RLRocketPSharpshooter
+{
+  Damage (240)
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLRocketLauncherSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLRocketLauncherModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLRocketLauncherPowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLRocketLauncherBulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLRocketLauncherAgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLRocketLauncherTechnicalMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLRocketLauncherFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLRocketLauncherNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLRocketLauncherSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLRocketLauncherClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 1
+   Inventory.Icon ""
+}
+
+ACTOR RLRocketLauncherPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		MISG X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLRocketLauncher",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup3") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/rocketlauncherpickup")
+		TNT1 A 0 A_GiveInventory("RLRocketLauncher",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cjRocket Launcher.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("RocketAmmo",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cj= Rocket Launcher =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	NotPickup3:
+		TNT1 A 0 A_JumpIfInventory("RLMissileLauncher",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLNapalmLauncher",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLUnknownHerald",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLRevenantsLauncher",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLHurricaneCannon",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLMicroLauncher",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLTacticalRocketLauncher",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLMiniMissilePistol",1,"NotPickup")
+		TNT1 A 0 A_JumpIfInventory("RLGrenadeLauncher",1,"NotPickup")
+		Goto NotPickup2
+	AmmoPickup:
+		TNT1 A 0 A_JumpIfInventory("RocketAmmo",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("RocketAmmo",5)
+		Stop
+	AmmoFull:
+		MISG X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLRocketLauncher
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		MISG X 1
+		Loop
+	Death:
+		TNT1 A 0
+		MISG X 1 A_SpawnItem("RLRocketLauncherPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,389 @@
+
+ACTOR RLSteelBeast : RLWeapon
+{
+  Inventory.Pickupsound "weapons/unique"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was murdered by %k's Steel Beast."
+  Inventory.Pickupmessage "You picked up the Steel Beast."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Steel Beast"
+  Weapon.Kickback 50
+  Weapon.SelectionOrder 11
+  Weapon.SlotNumber 3
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLSteelBeastClip"
+  Weapon.AmmoType2 "Shell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    STBE A 1 A_WeaponReady (48)
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLSteelBeastSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSteelBeast",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLSteelBeast",1)
+	Stop
+  AfterModDrop:
+    STBE A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    STBE A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLSteelBeastSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    STBE A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLSteelBeastSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    STBE A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    STBE A 3
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastNanoMod",1,"FireN")
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastBulkMod",1,"FireB")
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastAgilityMod",1,"FireA")
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegade")
+	TNT1 A 0 A_FireBullets (5, 3, 10, 10, "RLBulletPuff")
+    Goto FireFinish
+  FireRenegade:
+	TNT1 A 0 A_FireBullets (5, 3, 15, 10, "RLBulletPuff")
+    Goto FireFinish
+  FireP:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeP")
+	TNT1 A 0 A_FireBullets (5, 3, 10, 12, "RLBulletPuff")
+    Goto FireFinish
+  FireRenegadeP:
+	TNT1 A 0 A_FireBullets (5, 3, 15, 12, "RLBulletPuff")
+    Goto FireFinish
+  FireA:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeA")
+	TNT1 A 0 A_FireBullets (4.5, 2.5, 10, 10, "RLBulletPuff")
+    Goto FireFinish
+  FireRenegadeA:
+	TNT1 A 0 A_FireBullets (4.5, 2.5, 10, 10, "RLBulletPuff")
+    Goto FireFinish
+  FireB:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeB")
+	TNT1 A 0 A_FireBullets (5, 3, 12, 10, "RLBulletPuff")
+    Goto FireFinish
+  FireRenegadeB:
+	TNT1 A 0 A_FireBullets (5, 3, 12, 10, "RLBulletPuff")
+    Goto FireFinish
+  FireF:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeF")
+	TNT1 A 0 A_FireBullets (8, 5, 50, 2, "RLBulletPuff")
+    TNT1 A 0 A_PlaySound("weapons/steelbeastfirestorm", CHAN_WEAPON)
+    Goto FireFinish+1
+  FireRenegadeF:
+	TNT1 A 0 A_FireBullets (8, 5, 75, 2, "RLBulletPuff")
+    TNT1 A 0 A_PlaySound("weapons/steelbeastfirestorm", CHAN_WEAPON)
+    Goto FireFinish+1
+  FireS:
+	TNT1 A 0 A_FireBullets (1, 1, -1, 100, "RLSteelBeastExplosivePuff")
+    Goto FireFinish
+  FireN:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "FireRenegadeN")
+	TNT1 A 0 A_FireBullets (5, 3, 10, 10, "RLSteelBeastDisruptorPuff")
+    Goto FireFinish
+  FireRenegadeN:
+	TNT1 A 0 A_FireBullets (5, 3, 10, 10, "RLSteelBeastDisruptorPuff")
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/steelbeast", CHAN_WEAPON)
+    STBE Q 2 Bright A_GunFlash
+    STBE R 2 Bright A_GunFlash
+    STBE CB 1
+    Goto Ready
+  Reload:
+	STBE A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastClip", 1, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Shell", 1, "ReloadSequence")
+	Goto Ready
+  ReloadSequence:
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastTechnicalMod",1,"Reload1")
+    STBE D 1
+    STBE EFGHIJ 1
+    STBE K 3
+    STBE L 1 A_PlaySound("weapons/steelbeastpump", 5)
+	Goto ReloadWorking
+  Reload1:
+    STBE D 1
+    STBE EFGHIJ 1
+    STBE K 1
+    STBE L 1 A_PlaySound("weapons/steelbeastpump", 5)
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Shell", 1)
+	TNT1 A 0 A_GiveInventory("RLSteelBeastClip", 1)
+	Goto ReloadFinish
+  ReloadFinish:
+	TNT1 A 0 A_JumpIfInventory("RLSteelBeastTechnicalMod",1,"ReloadFinish1")
+    STBE MNO 1
+    STBE P 3
+    STBE ONMLJIHGFED 1
+    STBE A 2
+	Goto Ready
+  ReloadFinish1:
+    STBE MNO 1
+    STBE P 1
+    STBE ONMLJIHGFED 1
+    STBE A 1
+	Goto Ready
+  Flash:
+    TNT1 A 2 A_Light1
+    TNT1 A 2 A_Light2
+    Goto LightDone
+  Spawn:
+    STBE X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSteelBeastNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLSteelBeastSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLOnyxMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLSteelBeast",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLSteelBeastExplosivePuff
+{ 
+   ActiveSound "weapons/bulletexp"
+   PainSound "weapons/bulletexp"
+   AttackSound "weapons/bulletexp"
+   +NOGRAVITY
+   +NOBLOCKMAP
+   +PUFFONACTORS
+   +PUFFGETSOWNER
+   +RANDOMIZE
+   +THRUGHOST
+   RenderStyle Add
+   Alpha 0.9
+   Mass 5
+   Scale 1.4
+   Decal "RevenantScorch"
+   Damagetype "Fire"
+   States
+   {
+   Spawn:
+      TNT1 A 0
+      MICX A 3 Bright A_Explode (20, 64, 0, 1)
+      MICX BCDEFG 3 Bright
+      Stop
+   }
+}
+
+ACTOR RLSteelBeastDisruptorPuff : BulletPuff
+{ 
+   +PUFFGETSOWNER
+   +THRUGHOST
+   Damagetype "Bullet"
+   PainType "CyberDisruptor"
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLSteelBeastSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSteelBeastSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLSteelBeastClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 1
+   Inventory.Icon ""
+}
+
+ACTOR RLSteelBeastPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		STBE X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLSteelBeast",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/steelbeastpickup")
+		TNT1 A 0 A_GiveInventory("RLSteelBeast",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up the \cdSteel Beast.")
+		TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+		Stop
+		TNT1 A 0 A_PlaySound("renegade/laugh", CHAN_VOICE)
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Steel Beast =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLSteelBeast
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		STBE X 1
+		Loop
+	Death:
+		TNT1 A 0
+		STBE X 1 A_SpawnItem("RLSteelBeastPickup",0,0,0,0)
+		Stop
+	}
+}

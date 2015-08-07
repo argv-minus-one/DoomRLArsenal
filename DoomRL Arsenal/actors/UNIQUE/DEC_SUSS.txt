@@ -1,0 +1,575 @@
+
+ACTOR RLSussGun : RLWeapon
+{
+  Inventory.Pickupsound "weapons/unique"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o somehow got hit by %k's torrent of suss gun shots."
+  Inventory.Pickupmessage "You picked up the suss gun."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Suss Gun"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 1900
+  Weapon.SlotNumber 6
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    TNT1 A 0 A_PlaySound("weapons/sussgunselect", 5)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1,"ReadyMain")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunTechnicalMod",1,"Ready2")
+    SUSS VUTSRQPONMLKJ 1
+    Goto ReadyMain
+  Ready2:
+    SUSS VTRPNLJ 1
+    Goto ReadyMain
+  ReadyMain:
+    TNT1 A 0 A_StopSound(6)
+    SUSS A 1 A_WeaponReady (48)
+    Goto ReadyMain+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLSussGunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLSussGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSussGun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLSussGun",1)
+	Stop
+  AfterModDrop:
+    SUSS A 8 A_WeaponReady (16)
+    Goto ReadyMain
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    SUSS A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLSussGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+    TNT1 A 0 A_PlaySound("weapons/sussgunselect", 5)
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunTechnicalMod",1,"Deselect2")
+    SUSS JKLMNOPQRSTUV 1
+    Goto DeselectLoop
+  Deselect2:
+    SUSS JLNPRTV 1
+    Goto DeselectLoop
+  DeselectLoop:
+    TNT1 A 0 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLSussGunSelected", 1)
+	Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_Raise
+    Goto SelectLoop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("ReadyMain")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLSussGunNanoMod",1,"FireN")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunBulkMod",1,"FireB")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"Fire2")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 1, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 0, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  Fire2:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 1, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 0, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"FireP2")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallP", frandom(18,-18), 1, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallP", frandom(18,-18), 0, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireP2:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallP", frandom(18,-18), 1, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallP", frandom(18,-18), 0, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireB:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"FireB2")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,3)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 1, -4, 0, 0, frandom(5,-5))
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall2", frandom(18,-18), 0, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 0, -4, 0, 0, frandom(5,-5))
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall2", frandom(18,-18), 0, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireB2:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,3)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 1, 4, 0, 0, frandom(5,-5))
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall2", frandom(18,-18), 0, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(18,-18), 0, 4, 0, 0, frandom(5,-5))
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall2", frandom(18,-18), 0, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"FireA2")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(16,-16), 1, -4, 0, 0, frandom(3,-3))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(16,-16), 0, -4, 0, 0, frandom(3,-3))
+    Goto FireFinish
+  FireA2:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(16,-16), 1, 4, 0, 0, frandom(3,-3))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBall", frandom(16,-16), 0, 4, 0, 0, frandom(3,-3))
+    Goto FireFinish
+  FireS:
+    TNT1 A 0 A_PlaySound("weapons/sussgunhitscan", 6, 1, 1)
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireBullets (18, 5, -1, (random(1,8)*12), "RLSussGunPuff", FBF_USEAMMO | FBF_NORANDOM)
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (18, 5, -1, (random(1,8)*12), "RLSussGunPuff", FBF_NORANDOM)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"FireF2")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallF", frandom(18,-18), 1, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallF", frandom(18,-18), 0, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireF2:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallF", frandom(18,-18), 1, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallF", frandom(18,-18), 0, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireN:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"FireN2")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallN", frandom(18,-18), 1, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallN", frandom(18,-18), 0, -4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireN2:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLAmmochainPerk",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallN", frandom(18,-18), 1, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLSussGunBallN", frandom(18,-18), 0, 4, 0, 0, frandom(5,-5))
+    Goto FireFinish
+  FireFinish:
+	TNT1 A 0 A_CheckFloor (2)
+	TNT1 A 0 A_Jump(256,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingSteelBootsToken",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingProtectiveBootsToken",1,3)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingPlasteelBootsToken",1,2)
+    TNT1 A 0 A_ChangeVelocity (Cos(Pitch) * -0.1, 0, Sin(Pitch) * 0.1, 1)
+	TNT1 A 0 A_JumpIfInventory("RLSussGunContinueFire",1,"FireFinishBoth")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"FireFinishLeft")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunSniperMod",1,2)
+    TNT1 A 0 A_PlaySound("weapons/sussgun", CHAN_WEAPON)
+    SUSS B 3 Bright A_GunFlash
+	TNT1 A 0 A_GiveInventory("RLSussGunState",1)
+	TNT1 A 0 A_Refire("FireReturn")
+	TNT1 A 0 A_TakeInventory("RLSussGunContinueFire",1)
+    TNT1 A 0 A_StopSound(6)
+    SUSS D 3 Bright
+    SUSS J 2
+    Goto FireFinishAmmochain
+  FireFinishLeft:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunSniperMod",1,2)
+    TNT1 A 0 A_PlaySound("weapons/sussgun", CHAN_WEAPON)
+    SUSS C 3 Bright A_GunFlash
+	TNT1 A 0 A_TakeInventory("RLSussGunState",1)
+	TNT1 A 0 A_Refire("FireReturn")
+	TNT1 A 0 A_TakeInventory("RLSussGunContinueFire",1)
+    TNT1 A 0 A_StopSound(6)
+    SUSS E 3 Bright
+    SUSS J 2
+    Goto FireFinishAmmochain
+  FireFinishBoth:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunState",1,"FireFinishBothLeft")
+	TNT1 A 0 A_JumpIfInventory("RLSussGunSniperMod",1,2)
+    TNT1 A 0 A_PlaySound("weapons/sussgun", 5)
+	TNT1 A 0 A_Jump(128,3)
+    SUSS G 3 Bright A_GunFlash
+	TNT1 A 0 A_Jump(256,2)
+    SUSS I 3 Bright A_GunFlash
+	TNT1 A 0 A_GiveInventory("RLSussGunState",1)
+	TNT1 A 0 A_Refire("FireReturn")
+	TNT1 A 0 A_TakeInventory("RLSussGunContinueFire",1)
+    TNT1 A 0 A_StopSound(6)
+    SUSS E 3 Bright
+    SUSS J 2
+    Goto FireFinishAmmochain
+  FireFinishBothLeft:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunSniperMod",1,2)
+    TNT1 A 0 A_PlaySound("weapons/sussgun", 7)
+	TNT1 A 0 A_Jump(128,3)
+    SUSS F 3 Bright A_GunFlash
+	TNT1 A 0 A_Jump(256,2)
+    SUSS H 3 Bright A_GunFlash
+	TNT1 A 0 A_TakeInventory("RLSussGunState",1)
+	TNT1 A 0 A_Refire("FireReturn")
+	TNT1 A 0 A_TakeInventory("RLSussGunContinueFire",1)
+    TNT1 A 0 A_StopSound(6)
+    SUSS D 3 Bright
+    SUSS J 2
+    Goto FireFinishAmmochain
+  FireReturn:
+	TNT1 A 0 A_GiveInventory("RLSussGunContinueFire",1)
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeInventory("RLSussGunAmmochain",3)
+	TNT1 A 0 A_GiveInventory("RLSussGunAmmochain",1)
+    Goto Fire
+  FireFinishAmmochain:
+	TNT1 A 0 A_JumpIfInventory("RLSussGunAmmochain",3,2)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeInventory("RLSussGunAmmochain",3)
+	TNT1 A 0 A_GiveInventory("RLSussGunAmmochain",1)
+    Goto ReadyMain
+  Flash:
+    TNT1 A 3 A_Light1
+    TNT1 A 3 A_Light2
+    Goto LightDone
+  Spawn:
+    SUSS X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+    SUSS A 1 A_WeaponReady (WRF_NOFIRE)
+	Goto ReadyMain
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+    TNT1 A 0 A_StopSound(6)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLSussGunModLimit", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunPowerMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunBulkMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunAgilityMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunTechnicalMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunSniperMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunFirestormMod", 1)
+    TNT1 A 0 A_TakeInventory("RLSussGunNanoMod", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLSussGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLOnyxMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLSussGun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLSussGunBall : PlasmaBall
+{
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Radius 6
+  Height 3
+  Alpha 0.85
+  Scale 0.12
+  Speed 30
+  Damage 12
+  Decal "RedPlasmaScorch"
+  Damagetype "Plasma"
+  SeeSound ""
+  DeathSound "weapons/sussgunimpact"
+  States
+  {
+  Spawn:
+    SUSB ABCDEF 1 Bright
+    Loop
+  Death:
+    TNT1 AAAA 0 A_SpawnItemEx ("RLSussGunGunSpark", 0, 0, 0, frandom(-5,5), frandom(-5,5), frandom(-5,5), 0, SXF_NOCHECKPOSITION)
+    TNT1 A 5
+    Stop
+  }
+}
+
+ACTOR RLSussGunBall2 : RLSussGunBall
+{
+  Speed 32
+}
+
+ACTOR RLSussGunBallP : RLSussGunBall
+{
+  Damage 15
+}
+
+ACTOR RLSussGunBallF : RLSussGunBall
+{
+  +USEBOUNCESTATE
+  +SEEKERMISSILE
+  BounceType "Hexen"
+  BounceFactor 1
+  WallBounceFactor 1
+  BounceCount 2
+  BounceSound "weapons/sussgunimpact"
+  States
+  {
+  Bounce:
+    TNT1 A 0 A_SpawnItemEx ("RLSussGunGunSpark", 0, 0, 0, frandom(-5,5), frandom(-5,5), frandom(-5,5), 0, SXF_NOCHECKPOSITION)
+    TNT1 A 0 A_SeekerMissile (5, 5, SMF_LOOK | SMF_PRECISE, 256) 
+    Goto Spawn
+  }
+}
+
+ACTOR RLSussGunBallN : RLSussGunBall
+{
+  +RIPPER
+  Damage 5
+}
+
+ACTOR RLSussGunGunSpark
+{
+	radius 3
+	height 6
+	speed 12
+	RenderStyle ADD
+	Alpha		0.6
+	Scale		0.45
+	Mass		0
+	Gravity 0.4
+	BounceType "Doom"
+	+MISSILE
+	+FLOORCLIP
+	+DONTSPLASH
+	+NOTELEPORT
+	+THRUACTORS
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_ScaleVelocity (random (0.5, 1.5))
+	QTCB AAAA 1 Bright A_FadeTo (0, 0.05, 1)
+	QTCB BBB 1 Bright A_FadeTo (0, 0.05, 1)
+	QTCB CC 1 Bright A_FadeTo (0, 0.05, 1)
+	Stop
+  }
+}
+
+ACTOR RLSussGunPuff : BulletPuff
+{
+  -ALLOWPARTICLES
+  -RANDOMIZE
+  +PUFFONACTORS
+  +ALWAYSPUFF
+  +THRUGHOST
+  RenderStyle Add
+  Translation "112:127=168:191"
+  Alpha 1
+  Scale 0.2
+  VSpeed 0
+  Mass 5
+  Decal "RedPlasmaScorch"
+  Damagetype "Plasma"
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_PlaySound("weapons/sussgunimpact", CHAN_AUTO)
+    TNT1 AAA 0 A_SpawnItemEx ("RLSussGunGunSpark", 0, 0, 0, frandom(-5,5), frandom(-5,5), frandom(-5,5), 0, SXF_NOCHECKPOSITION)
+    SHOK ACEGIKMOQ 1 Bright A_FadeTo (0.1, 0.1, 0)
+	Stop
+  Melee:
+    Goto Spawn
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLSussGunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunContinueFire : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunAmmochain : Inventory
+{
+inventory.maxamount 3
+}
+
+Actor RLSussGunModLimit : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunPowerMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunBulkMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunAgilityMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunTechnicalMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunNanoMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunFirestormMod : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLSussGunSniperMod : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLSussGunPickup : CustomInventory
+{
+    +INVENTORY.NEVERRESPAWN
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		SUSS X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLSussGun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/sussgunpickup")
+		TNT1 A 0 A_GiveInventory("RLSussGun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("\cdSUSS GUN")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cd=U= Suss Gun =U=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLSussGun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		SUSS X 1
+		Loop
+	Death:
+		TNT1 A 0
+		SUSS X 1 A_SpawnItem("RLSussGunPickup",0,0,0,0)
+		Stop
+	}
+}

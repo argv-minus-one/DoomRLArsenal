@@ -1,0 +1,495 @@
+
+ACTOR RLShredderPistol : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was torn apart by %k's shredder pistol."
+  Inventory.Pickupmessage "You picked up a Shredder Pistol."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Shredder Pistol"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 1900
+  Weapon.SlotNumber 3
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLShredderPistolClip"
+  Weapon.AmmoType2 "Shell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolNanoMod",1,2)
+    SHRP A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolClip",1,2)
+    SHRP A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    SHRP A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolClip", 7, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolClip", 9, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolClip", 11, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLShredderPistolClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolNanoMod",2,2)
+    SHRP A 17 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    SHRP A 9 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolPowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLShredderPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLShredderPistol",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLShredderPistol",1)
+	Stop
+  AfterModDrop:
+    SHRP A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    SHRP A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLShredderPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TNT1 A 0 A_Lower
+    SHRP A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLShredderPistolSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TNT1 A 0 A_Raise
+    SHRP A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    SHRP BCDE 1
+  FireContinue:
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (6.5, 3, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6.5, 3, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (6.5, 3, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6.5, 3, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 3.5, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 3.5, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (6.5, 3, -1, 8, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6.5, 3, -1, (64), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (6, 2.5, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (6, 2.5, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (5.5, 2, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 1, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 1, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, 1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, 1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4.5, 1, -1, 7, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4.5, 1, -1, (56), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLSharpshooterPerk",1,2)
+	TNT1 A 0 A_FireBullets (4, 0.5, -1, 6, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (4, 0.5, -1, (48), "RLBulletPuff", FBF_NORANDOM | FBF_USEAMMO)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/shredderpistol", CHAN_WEAPON)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolState",1,"FireFinish2")
+	TNT1 A 0 A_GiveInventory("RLShredderPistolState",1)
+    TNT1 A 0 A_GunFlash
+    SHRP I 1 Bright
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolFirestormMod",1,2)
+    SHRP I 1 Bright
+	TNT1 A 0 A_JumpIfInventory("PowerInfiniteAmmo",1,"InfiniteAmmo")
+	TNT1 A 0 A_JumpIfInventory("DRPGRedAuraInfiniteAmmo",1,"InfiniteAmmo")
+	TNT1 A 0 A_JumpIfNoAmmo(1)
+    Goto FireContinue
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolFirestormMod",2,"FireEnd")
+    SHRP FGHGFE 2
+    SHRP DCBA 1
+    Goto Ready
+  FireEnd:
+    SHRP FGHGFE 1
+    SHRP DCBA 1
+    Goto Ready
+  FireFinish2:
+	TNT1 A 0 A_TakeInventory("RLShredderPistolState",1)
+    TNT1 A 0 A_GunFlash ("Flash2")
+    SHRP J 1 Bright
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolFirestormMod",1,2)
+    SHRP J 1 Bright
+	TNT1 A 0 A_JumpIfInventory("PowerInfiniteAmmo",1,"InfiniteAmmo2")
+	TNT1 A 0 A_JumpIfInventory("DRPGRedAuraInfiniteAmmo",1,"InfiniteAmmo2")
+	TNT1 A 0 A_JumpIfNoAmmo(1)
+    Goto FireContinue
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolFirestormMod",2,"FireEnd2")
+    SHRP GHGFE 2
+    SHRP DCBA 1
+    Goto Ready
+  FireEnd2:
+    SHRP GHGFE 1
+    SHRP DCBA 1
+    Goto Ready
+  InfiniteAmmo:
+	TNT1 A 0 A_Refire ("FireContinue")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolFirestormMod",2,"FireEnd")
+    SHRP FGHGFE 2
+    SHRP DCBA 1
+    Goto Ready
+  InfiniteAmmo2:
+	TNT1 A 0 A_Refire ("FireContinue")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolFirestormMod",2,"FireEnd2")
+    SHRP GHGFE 2
+    SHRP DCBA 1
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolNanoMod",1,"Ready")
+	SHRP A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolClip", 7, "Ready")
+	Goto Reload+7
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolClip", 9, "Ready")
+	Goto Reload+7
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolClip", 11, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Shell", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolTechnicalMod",1,"Reload1")
+    SHRP K 2
+    SHRP L 2
+    SHRP M 2
+	SHRP N 2
+	SHRP O 2
+	SHRP P 2
+    TNT1 A 0 A_PlaySound("weapons/shredderpistolload", 5)
+	TNT1 A 12
+	Goto ReloadWorking
+  Reload1:
+    SHRP K 2
+    SHRP L 2
+    SHRP M 2
+	SHRP N 2
+	SHRP O 2
+	SHRP P 2
+    TNT1 A 0 A_PlaySound("weapons/shredderpistolload", 5)
+	TNT1 A 9
+	Goto ReloadWorking
+  Reload2:
+    SHRP K 2
+    SHRP L 2
+    SHRP M 2
+	SHRP N 2
+	SHRP O 2
+	SHRP P 2
+    TNT1 A 0 A_PlaySound("weapons/shredderpistolload", 5)
+	TNT1 A 6
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Shell", 1)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolBulkMod",1,2)
+	TNT1 A 0 A_GiveInventory("RLShredderPistolClip", 7)
+	Goto ReloadWorking+6
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolBulkMod",2,2)
+	TNT1 A 0 A_GiveInventory("RLShredderPistolClip", 9)
+	Goto ReloadWorking+6
+	TNT1 A 0 A_GiveInventory("RLShredderPistolClip", 11)
+	TNT1 A 0
+	Goto ReloadFinish
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/shredderpistolcock", 7)
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLShredderPistolTechnicalMod",1,"ReloadFinish1")
+    SHRP P 2
+    SHRP O 2
+    SHRP N 2
+	SHRP M 2
+	SHRP L 2
+	SHRP K 2
+	Goto Ready
+  ReloadFinish1:
+    SHRP P 2
+    SHRP O 2
+    SHRP N 2
+	SHRP M 2
+	SHRP L 2
+	SHRP K 2
+	Goto Ready
+  ReloadFinish2:
+    SHRP P 2
+    SHRP O 2
+    SHRP N 2
+	SHRP M 2
+	SHRP L 2
+	SHRP K 2
+	Goto Ready
+  Flash:
+    TNT1 A 2 Bright A_Light1
+    Goto LightDone
+  Flash2:
+    TNT1 A 2 Bright A_Light2
+    Goto LightDone
+  Spawn:
+    SHRP X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolPowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLShredderPistolNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLShredderPistolSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLShredderPistol",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLShredderPistolSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLShredderPistolState : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLShredderPistolModLimit : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLShredderPistolPowerMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLShredderPistolBulkMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLShredderPistolAgilityMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLShredderPistolTechnicalMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLShredderPistolNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLShredderPistolFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLShredderPistolSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLShredderPistolClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 11
+   Inventory.Icon ""
+}
+
+ACTOR RLShredderPistolPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		SHRP X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLShredderPistol",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/shredderpistolpickup")
+		TNT1 A 0 A_GiveInventory("RLShredderPistol",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvShredder Pistol.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Shell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Shredder Pistol =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Shell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Shell",4)
+		Stop
+	AmmoFull:
+		SHRP X 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLShredderPistol
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		SHRP X 1
+		Loop
+	Death:
+		TNT1 A 0
+		SHRP X 1 A_SpawnItem("RLShredderPistolPickup",0,0,0,0)
+		Stop
+	}
+}
+
+Actor DRPGRedAuraInfiniteAmmo : Inventory
+{
+inventory.maxamount 1
+}

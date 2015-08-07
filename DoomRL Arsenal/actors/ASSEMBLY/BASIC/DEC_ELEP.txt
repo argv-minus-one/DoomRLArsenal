@@ -1,0 +1,413 @@
+
+ACTOR RLElephantGun : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was hunted by %k's Elephant Gun."
+  Inventory.Pickupmessage "You picked up an Elephant Gun."
+  Decal BulletChip
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Elephant Gun"
+  Weapon.Kickback 500
+  Weapon.SelectionOrder 1900
+  Weapon.SlotNumber 3
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLElephantGunClip"
+  Weapon.AmmoType2 "Shell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunNanoMod",1,2)
+    MSSG A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+    MSSG A 35 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunClip", 1, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLElephantGunClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunNanoMod",2,2)
+    MSSG A 17 A_WeaponReady (32)
+    Goto NanoRegenCheck+1
+    MSSG A 9 A_WeaponReady (32)
+    Goto NanoRegenCheck+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLElephantGunModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunPowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLElephantGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLElephantGun",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLElephantGun",1)
+	Stop
+  AfterModDrop:
+    MSSG A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    MSSG A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLElephantGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    MSSG A 1 A_Lower
+    Goto DeselectLoop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLElephantGunSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    MSSG A 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    MSSG A 3
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunBulkMod",1,2)
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 50, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunBulkMod",2,2)
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 55, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 60, "RLBulletPuff")
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunBulkMod",1,2)
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 55, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 60, "RLBulletPuff")
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunBulkMod",1,2)
+	TNT1 A 0 A_FireBullets (1, 0.5, -1, 50, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (1, 0.5, -1, 55, "RLBulletPuff")
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 60, "RLBulletPuff")
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_FireBullets (1, 0.5, -1, 55, "RLBulletPuff")
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_FireBullets (0.5, 0, -1, 50, "RLBulletPuff")
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunBulkMod",1,2)
+	TNT1 A 0 A_FireBullets (0, 0, -1, 50, "RLBulletPuff")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (0, 0, -1, 55, "RLBulletPuff")
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 100, "RLBulletPuff")
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 55, "RLBulletPuff")
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_FireBullets (0, 0, -1, 50, "RLBulletPuff")
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunFirestormMod",2,"FireFF")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunPowerMod",1,"FireFP")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunAgilityMod",1,"FireFA")
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunBulkMod",1,2)
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 50, "RLElephantGunPuffF")
+    Goto FireFinish
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 55, "RLElephantGunPuffF")
+    Goto FireFinish
+  FireFF:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 50, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 128)
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 50, "RLElephantGunPuffFF")
+    Goto FireFinish
+  FireFP:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 30, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (1.5, 1, -1, 55, "RLElephantGunPuffF")
+    Goto FireFinish
+  FireFA:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (1, 0.5, -1, 50, "RLElephantGunPuffF")
+    Goto FireFinish
+  FireFS:
+	TNT1 A 0 A_FireBullets (0, 0, 1, 25, "RLShotgunPuffCloseRange", FBF_NOPITCH | FBF_NORANDOM, 96)
+	TNT1 A 0 A_FireBullets (0, 0, -1, 50, "RLElephantGunPuffF")
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/elephantgun", CHAN_WEAPON)
+	TNT1 A 0 A_CheckFloor (2)
+	TNT1 A 0 A_Jump(256,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingSteelBootsToken",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingProtectiveBootsToken",1,3)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingPlasteelBootsToken",1,2)
+    TNT1 A 0 A_ChangeVelocity (Cos(Pitch) * -4, 0, Sin(Pitch) * 4, 1)
+    TNT1 A 0 A_GunFlash
+    MSSF AB 2 Bright
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunNanoMod",1,"Ready")
+	TNT1 A 0 A_JumpIfInventory("Shell",1,1)
+	Goto Ready
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunClip",1,"Ready")
+	MSSG A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunTechnicalMod",1,"Reload1")
+    MSSG B 7
+    MSSG C 7
+    MSSG D 5
+	MSSG E 3
+	Goto ReloadWorking
+  Reload1:
+    MSSG B 5
+    MSSG C 5
+    MSSG D 4
+	MSSG E 3
+	Goto ReloadWorking
+  Reload2:
+    MSSG B 3
+    MSSG C 3
+    MSSG D 3
+	MSSG E 3
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Shell", 1)
+	TNT1 A 0 A_GiveInventory("RLElephantGunClip", 1)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/elephantgunload", 5)
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLElephantGunTechnicalMod",1,"ReloadFinish1")
+    MSSG C 4
+    MSSG B 4
+    MSSG A 3
+    MSSG A 0 A_ReFire
+	Goto Ready
+  ReloadFinish1:
+    MSSG C 3
+    MSSG B 3
+    MSSG A 2
+    MSSG A 0 A_ReFire
+	Goto Ready
+  ReloadFinish2:
+    MSSG C 2
+    MSSG B 2
+    MSSG A 1
+    MSSG A 0 A_ReFire
+	Goto Ready
+  Flash:
+    TNT1 A 3 Bright A_Light1
+    TNT1 A 3 Bright A_Light2
+    Goto LightDone
+  Spawn:
+    SHOT A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLElephantGunModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunPowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLElephantGunNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLElephantGunSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLElephantGun",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLElephantGunSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLElephantGunModLimit : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLElephantGunPowerMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLElephantGunBulkMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLElephantGunAgilityMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLElephantGunTechnicalMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLElephantGunNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLElephantGunFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLElephantGunSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLElephantGunClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 1
+   Inventory.Icon ""
+}
+
+ACTOR RLElephantGunPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		MSSI A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLElephantGun",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/elephantgunpickup")
+		TNT1 A 0 A_GiveInventory("RLElephantGun",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvElephant Gun.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Shell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Elephant Gun =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Shell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Shell",4)
+		Stop
+	AmmoFull:
+		MSSI A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLElephantGun
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		MSSI A 1
+		Loop
+	Death:
+		TNT1 A 0
+		MSSI A 1 A_SpawnItem("RLElephantGunPickup",0,0,0,0)
+		Stop
+	}
+}

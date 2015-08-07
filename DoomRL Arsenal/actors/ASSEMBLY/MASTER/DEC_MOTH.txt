@@ -1,0 +1,277 @@
+
+ACTOR RLMotherInLaw : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was visited by %k's mother-in-law."
+  Inventory.Pickupmessage "You picked up the Mother-In-Law!"
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Mother-In-Law"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 3900
+  Weapon.SlotNumber 5
+  Weapon.AmmoUse1 0
+  Weapon.AmmoGive1 0
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+    MOTH A 1 A_WeaponReady (32)
+    Loop
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLMotherInLawSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLMotherInLaw",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLMotherInLaw",1)
+	Stop
+  AfterModDrop:
+    MOTH A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    MOTH A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLMotherInLawSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    MOTH A 2 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLMotherInLawSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    MOTH A 2 A_Raise
+    Loop
+  Fire:
+    MOTH A 3
+    MOTH B 3 Bright A_GunFlash
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_CheckFloor (2)
+	TNT1 A 0 A_Jump(256,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingSteelBootsToken",1,4)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingProtectiveBootsToken",1,3)
+	TNT1 A 0 A_JumpIfInventory("RLGrapplingPlasteelBootsToken",1,2)
+    TNT1 A 0 A_ChangeVelocity (Cos(Pitch) * -15, 0, Sin(Pitch) * 15, 1)
+	MOTH C 3 Bright A_FireCustomMissile ("RLMotherInLawRocket", 0, 0)
+    Goto FireFinish
+  FireFinish:
+    MOTH D 3 Bright
+    MOTH EFGH 3
+    MOTH A 50 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH)
+	Goto Ready
+  Flash:
+    TNT1 A 6 A_Light1
+    TNT1 A 3 A_Light2
+    TNT1 A 3 A_Light1
+    Goto LightDone
+  Spawn:
+    MOTH X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLMotherInLawSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_Jump(256,1,2,3,4)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLNanoMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLMotherInLaw",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLMotherInLawRocket : Rocket
+{
+  Speed 22
+  Damage 25
+  Damagetype "Fire"
+  Scale 0.6
+  Mass 128
+  Species "Player"
+  +THRUSPECIES
+  +FORCERADIUSDMG
+  +THRUGHOST
+  Decal "SuperScorch"
+  SeeSound "weapons/motherinlaw"
+  DeathSound "weapons/motherinlawexplode"
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_JumpIf(mass >> 21840, 2)
+    MOTM A 1 Bright A_SetMass(mass+2)
+	TNT1 A 0 A_JumpIf(mass >> 160, 1)
+    Loop
+	TNT1 A 0 A_JumpIf(mass >> 200, 2)
+    TNT1 A 0 A_CustomMissile("RLMotherInLawSmallShockwave", 4, 0, 180)
+    Loop
+	TNT1 A 0 A_JumpIf(mass >> 250, 2)
+    TNT1 A 0 A_CustomMissile("RLMotherInLawMediumShockwave", 4, 0, 180)
+    Loop
+	TNT1 A 0 A_JumpIf(mass >> 300, 2)
+    TNT1 A 0 A_CustomMissile("RLMotherInLawBigShockwave", 4, 0, 180)
+    Loop
+    TNT1 A 0 A_CustomMissile("RLMotherInLawHugeShockwave", 4, 0, 180)
+    Loop
+  Death:
+	TNT1 A 0 A_SetScale (mass/50)
+    MISL B 8 Bright A_Explode (mass*2,mass*1.5)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMotherInLawSmallShockwave : PlasmaBall
+{
+  -SOLID
+  +NOCLIP
+  Translation "112:127=208:223"
+  Speed 1
+  Damage 0
+  Alpha 0.85
+  Scale 0.4
+  VSpeed 0
+  SeeSound ""
+  DeathSound ""
+  States
+  {
+  Spawn:
+    SHOK ACEGIKMOQ 1 Bright A_FadeTo (0.1, 0.1, 0)
+	Stop
+  }
+}
+
+ACTOR RLMotherInLawMediumShockwave : RLMotherInLawSmallShockwave
+{
+  Scale 0.7
+}
+
+ACTOR RLMotherInLawBigShockwave : RLMotherInLawSmallShockwave
+{
+  Scale 1.2
+}
+
+ACTOR RLMotherInLawHugeShockwave : RLMotherInLawSmallShockwave
+{
+  Scale 2.5
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLMotherInLawSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+ACTOR RLMotherInLawPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		MOTH X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLMotherInLaw",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/motherinlawpickup")
+		TNT1 A 0 A_GiveInventory("RLMotherInLaw",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up the \cvMother-In-Law.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv=M= Mother-In-Law =M=", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR DroppedRLMotherInLaw
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		MOTH X 1
+		Loop
+	Death:
+		TNT1 A 0
+		LAUN A 1 A_SpawnItem("RLMotherInLawPickup",0,0,0,0)
+		Stop
+	}
+}

@@ -1,0 +1,1549 @@
+
+ACTOR RLTristarBlaster : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was divided in three by %k's tristar blaster."
+  Inventory.Pickupmessage "You picked up a tristar blaster."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Tristar Blaster"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 20
+  Weapon.SlotNumber 6
+  Weapon.AmmoUse1 15
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLTristarBlasterClip"
+  Weapon.AmmoType2 "Cell"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterNanoMod",1,2)
+    TRIS A 1 A_WeaponReady (48)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLChaingunClip",15,2)
+    TRIS A 70 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	Goto NanoRegenCheckBegin
+  NanoRegenCheckBegin:
+    TRIS A 70 A_WeaponReady (32)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 45, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 58, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 71, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 84, "Ready")
+	Goto NanoRegen
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 97, "Ready")
+	Goto NanoRegen
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLTristarBlasterClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterNanoMod",2,3)
+    TRIS E 2 A_WeaponReady (32)
+    TRIS A 15 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+    TRIS E 2 A_WeaponReady (32)
+    TRIS A 7 A_WeaponReady (32)
+    Goto NanoRegenCheckBegin+1
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerTristarBlaster",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNanomanufactureAmmoTristarBlaster",1,"WeaponDropConfirmContinue")
+	TNT1 A 0 A_TakeInventory("RLCerberusSetBonusTristarBlaster", 1)
+	TNT1 A 0 A_TakeInventory("RLCerberusSetBonusActive", 1)
+  WeaponDropConfirmContinue:
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerTristarBlasterConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoTristarBlasterConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLTristarBlasterSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_TakeInventory("RLCerberusSetBonusTristarBlaster",1)
+	TNT1 A 0 A_TakeInventory("RLCerberusSetBonusActive",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTristarBlaster",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLTristarBlaster",1)
+	Stop
+  AfterModDrop:
+    TRIS A 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    TRIS A 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLTristarBlasterSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    TRIS A 2 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLTristarBlasterSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    TRIS A 2 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerTristarBlasterConfirm",1, "AssembleHighPowerTristarBlaster")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoTristarBlasterConfirm",1, "AssembleNanoManufactureAmmoTristarBlaster")
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBall", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBall", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBall", -15, 0)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FirePA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallP", -15, 0)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallA", -15, 0)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",3,"FirePPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FirePPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPP", -15, 0)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FirePPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FirePAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPA", -15, 0)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FirePAA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",3,"FireAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAA", -15, 0)
+    Goto FireFinish
+  FirePPP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",4,"FirePPPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FirePPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPP", -15, 0)
+    Goto FireFinish
+  FirePPA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",3,"FirePPPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FirePPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPA", -15, 0)
+    Goto FireFinish
+  FirePAA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FirePPAA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",3,"FirePAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPAA", -15, 0)
+    Goto FireFinish
+  FireAAA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FirePAAA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",4,"FireAAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAAA", -15, 0)
+    Goto FireFinish
+  FirePPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPPP", -15, 0)
+    Goto FireFinish
+  FirePPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPPA", -15, 0)
+    Goto FireFinish
+  FirePPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPPAA", -15, 0)
+    Goto FireFinish
+  FirePAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPAAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPAAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallPAAA", -15, 0)
+    Goto FireFinish
+  FireAAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAAAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAAAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallAAAA", -15, 0)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireSA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallS", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallS", -15, 0)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",1,"FireFSS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireSSA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSS", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSS", -15, 0)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireSSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FireSPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSP", -15, 0)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireSSA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireSPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSA", -15, 0)
+    Goto FireFinish
+  FireSSP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireSSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSP", -15, 0)
+    Goto FireFinish
+  FireSSA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireSSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSA", -15, 0)
+    Goto FireFinish
+  FireSPP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireSSPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",3,"FireSPPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireSPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPP", -15, 0)
+    Goto FireFinish
+  FireSPA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireSSPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FireSPPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireSPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPA", -15, 0)
+    Goto FireFinish
+  FireSAA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireSSAA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireSPAA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",3,"FireSAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSAA", -15, 0)
+    Goto FireFinish
+  FireSSPP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSPP", -15, 0)
+    Goto FireFinish
+  FireSSAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSAA", -15, 0)
+    Goto FireFinish
+  FireSSPA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSSPA", -15, 0)
+    Goto FireFinish
+  FireSPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPPP", -15, 0)
+    Goto FireFinish
+  FireSPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPPA", -15, 0)
+    Goto FireFinish
+  FireSPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSPAA", -15, 0)
+    Goto FireFinish
+  FireSAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSAAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSAAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallSAAA", -15, 0)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFF")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallF", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallF", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallF", -15, 0)
+    Goto FireFinish
+  FireFF:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFFA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFF", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFF", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFF", -15, 0)
+    Goto FireFinish
+  FireFP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FireFPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFP", -15, 0)
+    Goto FireFinish
+  FireFA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFSA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireFAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBall", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBall", -15, 0)
+    Goto FireFinish
+  FireFS:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireFSS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFSA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFS", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFS", -15, 0)
+    Goto FireFinish
+  FireFFP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFFPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFP", -15, 0)
+    Goto FireFinish
+  FireFFA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireFFAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFA", -15, 0)
+    Goto FireFinish
+  FireFFS:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFFSA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFS", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFS", -15, 0)
+    Goto FireFinish
+  FireFSS:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFSS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFSSA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSS", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSS", -15, 0)
+    Goto FireFinish
+  FireFSP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireFSSP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFSPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSP", -15, 0)
+    Goto FireFinish
+  FireFSA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFSA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",2,"FireFSSA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireFSAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSA", -15, 0)
+    Goto FireFinish
+  FireFPP:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFSPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",3,"FireFPPP")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",1,"FireFPPA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPP", -15, 0)
+    Goto FireFinish
+  FireFPA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFSPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",2,"FireFPPA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",2,"FireFPAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPA", -15, 0)
+    Goto FireFinish
+  FireFAA:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterFirestormMod",2,"FireFFAA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterPowerMod",1,"FireFPAA")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterAgilityMod",3,"FireFAAA")
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFAA", -15, 0)
+    Goto FireFinish
+  FireFFSS:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSS", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSS", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSS", -15, 0)
+    Goto FireFinish
+  FireFFSA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSA", -15, 0)
+    Goto FireFinish
+  FireFFSP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFSP", -15, 0)
+    Goto FireFinish
+  FireFFPP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFPP", -15, 0)
+    Goto FireFinish
+  FireFFAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFAA", -15, 0)
+    Goto FireFinish
+  FireFFPA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFFPA", -15, 0)
+    Goto FireFinish
+  FireFSPP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSPP", -15, 0)
+    Goto FireFinish
+  FireFSPA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSPA", -15, 0)
+    Goto FireFinish
+  FireFSAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSAA", -15, 0)
+    Goto FireFinish
+  FireFSSP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSSP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSSP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSSP", -15, 0)
+    Goto FireFinish
+  FireFSSA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSSA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSSA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFSSA", -15, 0)
+    Goto FireFinish
+  FireFPPP:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPPP", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPPP", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPPP", -15, 0)
+    Goto FireFinish
+  FireFPPA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPPA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPPA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPPA", -15, 0)
+    Goto FireFinish
+  FireFPAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFPAA", -15, 0)
+    Goto FireFinish
+  FireFAAA:
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFAAA", 0, 1)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFAAA", 15, 0)
+	TNT1 A 0 A_FireCustomMissile ("RLTristarBlasterBallFAAA", -15, 0)
+    Goto FireFinish
+  FireFinish:
+    TNT1 A 0 A_PlaySound("weapons/tristarblaster", CHAN_WEAPON)
+	TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusActive",1,"FireSetBonus")
+    TRIS B 6 Bright A_GunFlash
+    TRIS C 6 Bright
+    TRIS DEA 6
+    TRIS A 6 A_Refire
+    Goto Ready
+  FireSetBonus:
+    TRIS B 2 Bright A_GunFlash
+    TRIS C 2 Bright
+    TRIS DEA 2
+    TRIS A 2 A_Refire
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterNanoMod",1,"Ready")
+	TRIS A 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 45, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 58, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 71, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 84, "Ready")
+	Goto Reload+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip", 97, "Ready")
+	TNT1 A 0 A_JumpIfInventory("Cell", 1, 1)
+	Goto Ready
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",4,"Reload4")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",3,"Reload3")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",2,"Reload2")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",1,"Reload1")
+    TRIS F 3
+    TRIS G 3
+    TRIS H 3
+    TRIS I 3
+    TRIS J 3
+    TRIS K 3
+    TRIS L 3
+    TRIS M 3
+    TRIS N 3 A_PlaySound("weapons/tristarblasterunload", 6)
+    TNT1 A 15
+	Goto ReloadWorking
+  Reload1:
+    TRIS F 2
+    TRIS G 2
+    TRIS H 2
+    TRIS I 3
+    TRIS J 3
+    TRIS K 3
+    TRIS L 3
+    TRIS M 3
+    TRIS N 3 A_PlaySound("weapons/tristarblasterunload", 6)
+    TNT1 A 15
+	Goto ReloadWorking
+  Reload2:
+    TRIS F 2
+    TRIS G 2
+    TRIS H 2
+    TRIS I 2
+    TRIS J 2
+    TRIS K 2
+    TRIS L 3
+    TRIS M 3
+    TRIS N 3 A_PlaySound("weapons/tristarblasterunload", 6)
+    TNT1 A 15
+	Goto ReloadWorking
+  Reload3:
+    TRIS F 2
+    TRIS G 2
+    TRIS H 2
+    TRIS I 2
+    TRIS J 2
+    TRIS K 2
+    TRIS L 2
+    TRIS M 2
+    TRIS N 2 A_PlaySound("weapons/tristarblasterunload", 6)
+    TNT1 A 15
+	Goto ReloadWorking
+  Reload4:
+    TRIS F 2
+    TRIS G 2
+    TRIS H 2
+    TRIS I 2
+    TRIS J 2
+    TRIS K 2
+    TRIS L 2
+    TRIS M 2
+    TRIS N 2 A_PlaySound("weapons/tristarblasterunload", 6)
+    TNT1 A 12
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("Cell", 1)
+	TNT1 A 0 A_GiveInventory("RLTristarBlasterClip", 1)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",1,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip",45,9)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",2,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip",58,7)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",3,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip",71,5)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterBulkMod",4,2)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip",84,3)
+	Goto ReloadWorking+11
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterClip",97,2)
+	TNT1 A 0 A_JumpIfInventory("Cell",1,2)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+    TNT1 A 0 A_PlaySound("weapons/tristarblasterload", 5)
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",4,"ReloadFinish4")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",3,"ReloadFinish3")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",2,"ReloadFinish2")
+	TNT1 A 0 A_JumpIfInventory("RLTristarBlasterTechnicalMod",1,"ReloadFinish1")
+    TRIS N 3
+    TRIS M 3
+    TRIS L 3
+    TRIS K 3
+    TRIS J 3
+	TRIS I 3
+	TRIS H 3
+	TRIS G 3
+	TRIS F 3
+	TRIS E 3
+	Goto Ready
+  ReloadFinish1:
+    TRIS N 2
+    TRIS M 2
+    TRIS L 2
+    TRIS K 3
+    TRIS J 3
+	TRIS I 3
+	TRIS H 3
+	TRIS G 3
+	TRIS F 3
+	TRIS E 3
+	Goto Ready
+  ReloadFinish2:
+    TRIS N 2
+    TRIS M 2
+    TRIS L 2
+    TRIS K 2
+    TRIS J 2
+	TRIS I 2
+	TRIS H 3
+	TRIS G 3
+	TRIS F 3
+	TRIS E 3
+	Goto Ready
+  ReloadFinish3:
+    TRIS N 2
+    TRIS M 2
+    TRIS L 2
+    TRIS K 2
+    TRIS J 2
+	TRIS I 2
+	TRIS H 2
+	TRIS G 2
+	TRIS F 2
+	TRIS E 3
+	Goto Ready
+  ReloadFinish4:
+    TRIS N 1
+    TRIS M 1
+    TRIS L 2
+    TRIS K 2
+    TRIS J 2
+	TRIS I 2
+	TRIS H 2
+	TRIS G 2
+	TRIS F 2
+	TRIS E 2
+	Goto Ready
+  Flash:
+    TNT1 A 4 A_Light2
+    TNT1 A 1 A_Light1
+    Goto LightDone
+  Spawn:
+    TRIS X -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerTristarBlasterConfirm",1, "CancelAssembly")
+	TNT1 A 0 A_JumpIfInventory("RLNanoManufactureAmmoTristarBlasterConfirm",1, "CancelAssembly")
+	Goto Ready
+  CancelAssembly:
+	TNT1 A 0 A_Print("Assembly canceled.")
+	TNT1 A 0 A_PlaySound("hud/assemblycancel", 5)
+	TNT1 A 0 A_TakeInventory("RLHighPowerTristarBlasterConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoTristarBlasterConfirm",1)
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerTristarBlasterConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoTristarBlasterConfirm",1)
+	TNT1 A 0 A_TakeInventory("RLTristarBlasterSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_JumpIfInventory("RLHighPowerTristarBlaster",1,"ScavengerContinue")
+	TNT1 A 0 A_JumpIfInventory("RLNanomanufactureAmmoTristarBlaster",1,"ScavengerContinue")
+	TNT1 A 0 A_TakeInventory("RLCerberusSetBonusTristarBlaster", 1)
+	TNT1 A 0 A_TakeInventory("RLCerberusSetBonusActive", 1)
+  ScavengerContinue:
+	TNT1 A 0 A_Jump(32,2,3)
+	TNT1 A 0 A_Jump(256,3,4,5,6)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLFirestormMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLSniperMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLBulkMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLPowerMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLAgilityMod",0,0,0)
+	Goto ScavengerTimeEnd
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLTristarBlaster",1)
+	Stop
+  AssembleHighPowerTristarBlaster:
+	TNT1 A 0 A_Print("\cvHigh Power Tristar Blaster \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_TakeInventory("RLTristarBlasterSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLHighPowerTristarBlasterConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLHighPowerTristarBlaster",1)
+	TNT1 A 0 A_SelectWeapon("RLHighPowerTristarBlaster")
+	TNT1 A 0 A_TakeInventory("RLTristarBlaster",1)
+	Stop
+  AssembleNanoManufactureAmmoTristarBlaster:
+	TNT1 A 0 A_Print("\cvNanomachic Tristar Blaster \c-assembled.")
+    TNT1 A 0 A_PlaySound("weapons/assembly", CHAN_ITEM)
+	TNT1 A 0 A_JumpIfInventory("RLScavengerPerk",1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+    TNT1 A 0 A_PlaySound("technician/laugh", CHAN_VOICE)
+    TNT1 A 0 A_PlaySound("weapons/masterassembly", CHAN_AUTO)
+	TNT1 A 0 A_TakeInventory("RLTristarBlasterSelected", 1)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterModLimit", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterPowerMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterBulkMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterAgilityMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterTechnicalMod", 4)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLTristarBlasterNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLNanoManufactureAmmoTristarBlasterConfirm",1)
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, 2)
+	TNT1 A 0 A_Jump(256, 2)
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_GiveInventory("RLNanoManufactureAmmoTristarBlaster",1)
+	TNT1 A 0 A_SelectWeapon("RLNanoManufactureAmmoTristarBlaster")
+	TNT1 A 0 A_TakeInventory("RLTristarBlaster",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLTristarBlasterBall : PlasmaBall
+{
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Radius 13
+  Height 8
+  Alpha 0.85
+  Scale 0.25
+  Speed 30
+  Decal "BlueBFGLightning"
+  Damage 12
+  Damagetype "Plasma"
+  SeeSound ""
+  DeathSound "weapons/tristarblasterhit"
+  States
+  {
+  Spawn:
+    PULS CDEFED 2 Bright
+    Loop
+  Death:
+	TNT1 A 0 A_SetScale(1)
+    IXPL A 8 Bright A_Explode (128,96)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallP : RLTristarBlasterBall
+{
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallA : RLTristarBlasterBall
+{
+  Speed 35
+}
+
+ACTOR RLTristarBlasterBallPP : RLTristarBlasterBall
+{
+  Damage 16
+}
+
+ACTOR RLTristarBlasterBallPA : RLTristarBlasterBall
+{
+  Speed 35
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallAA : RLTristarBlasterBall
+{
+  Speed 45
+}
+
+ACTOR RLTristarBlasterBallPPP : RLTristarBlasterBall
+{
+  Damage 18
+}
+
+ACTOR RLTristarBlasterBallPPA : RLTristarBlasterBall
+{
+  Speed 35
+  Damage 16
+}
+
+ACTOR RLTristarBlasterBallPAA : RLTristarBlasterBall
+{
+  Speed 45
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallAAA : RLTristarBlasterBall
+{
+  Speed 55
+}
+
+ACTOR RLTristarBlasterBallPPPP : RLTristarBlasterBall
+{
+  Damage 20
+}
+
+ACTOR RLTristarBlasterBallPPPA : RLTristarBlasterBall
+{
+  Speed 35
+  Damage 18
+}
+
+ACTOR RLTristarBlasterBallPPAA : RLTristarBlasterBall
+{
+  Speed 45
+  Damage 16
+}
+
+ACTOR RLTristarBlasterBallPAAA : RLTristarBlasterBall
+{
+  Speed 55
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallAAAA : RLTristarBlasterBall
+{
+  Speed 65
+}
+
+ACTOR RLTristarBlasterBallS : RLTristarBlasterBall
+{
+  States
+  {
+  Spawn:
+    PULS CDEFED 2 Bright A_ScaleVelocity(1.05)
+    Loop
+  }
+}
+
+ACTOR RLTristarBlasterBallSS : RLTristarBlasterBall
+{
+  States
+  {
+  Spawn:
+    PULS CDEFED 2 Bright A_ScaleVelocity(1.125)
+    Loop
+  }
+}
+
+ACTOR RLTristarBlasterBallSP : RLTristarBlasterBallS
+{
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallSA : RLTristarBlasterBallS
+{
+  Speed 35
+}
+
+ACTOR RLTristarBlasterBallSPP : RLTristarBlasterBallS
+{
+  Damage 16
+}
+
+ACTOR RLTristarBlasterBallSSA : RLTristarBlasterBallSS
+{
+  Speed 35
+}
+
+ACTOR RLTristarBlasterBallSSP : RLTristarBlasterBallSS
+{
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallSPA : RLTristarBlasterBallS
+{
+  Speed 35
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallSAA : RLTristarBlasterBallS
+{
+  Speed 45
+}
+
+ACTOR RLTristarBlasterBallSSPP : RLTristarBlasterBallSS
+{
+  Damage 16
+}
+
+ACTOR RLTristarBlasterBallSSAA : RLTristarBlasterBallSS
+{
+  Speed 45
+}
+
+ACTOR RLTristarBlasterBallSSPA : RLTristarBlasterBallSS
+{
+  Speed 35
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallSPPP : RLTristarBlasterBallS
+{
+  Damage 18
+}
+
+ACTOR RLTristarBlasterBallSPPA : RLTristarBlasterBallS
+{
+  Speed 35
+  Damage 16
+}
+
+ACTOR RLTristarBlasterBallSPAA : RLTristarBlasterBallS
+{
+  Speed 45
+  Damage 14
+}
+
+ACTOR RLTristarBlasterBallSAAA : RLTristarBlasterBallS
+{
+  Speed 55
+}
+
+ACTOR RLTristarBlasterBallF : RLTristarBlasterBall
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFF : RLTristarBlasterBall
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFP : RLTristarBlasterBallP
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFA : RLTristarBlasterBallA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFS : RLTristarBlasterBallS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFP : RLTristarBlasterBallP
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFA : RLTristarBlasterBallA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFS : RLTristarBlasterBallS
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSS : RLTristarBlasterBallSS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSP : RLTristarBlasterBallSP
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSA : RLTristarBlasterBallSA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFPP : RLTristarBlasterBallPP
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFPA : RLTristarBlasterBallPA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFAA : RLTristarBlasterBallAA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFSS : RLTristarBlasterBallSS
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFSA : RLTristarBlasterBallSA
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFSP : RLTristarBlasterBallSP
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFPP : RLTristarBlasterBallPP
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFAA : RLTristarBlasterBallAA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFFPA : RLTristarBlasterBallPA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.50)
+    IXPL A 8 Bright A_Explode (128,160)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSPP : RLTristarBlasterBallSPP
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSPA : RLTristarBlasterBallSPA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSAA : RLTristarBlasterBallSAA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSSP : RLTristarBlasterBallSSP
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFSSA : RLTristarBlasterBallSSA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFPPP : RLTristarBlasterBallPPP
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFPPA : RLTristarBlasterBallPPA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFPAA : RLTristarBlasterBallPAA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLTristarBlasterBallFAAA : RLTristarBlasterBallAAA
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale(1.25)
+    IXPL A 8 Bright A_Explode (128,128)
+    IXPL B 6 Bright
+    IXPL C 4 Bright
+    Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLTristarBlasterSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLTristarBlasterModLimit : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLTristarBlasterPowerMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLTristarBlasterBulkMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLTristarBlasterAgilityMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLTristarBlasterTechnicalMod : Inventory
+{
+inventory.maxamount 4
+}
+
+Actor RLTristarBlasterNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLTristarBlasterFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLTristarBlasterSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLTristarBlasterClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 97
+   Inventory.Icon ""
+}
+
+ACTOR RLTristarBlasterPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		TRIS X -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLTristarBlaster",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/tristarblasterpickup")
+		TNT1 A 0 A_GiveInventory("RLTristarBlaster",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_GiveInventory("RLCerberusSetBonusTristarBlaster",1)
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusBoots",1,"SetBonusCheck")
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusArmor",1,"SetBonusCheck")
+	PickupFinish:
+		TNT1 A 0 A_Print("Picked up a \ctTristar Blaster.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("Cell",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\ct= Tristar Blaster =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("Cell",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("Cell",45)
+		Stop
+	AmmoFull:
+		TRIS X 1
+		Fail
+	SetBonusCheck:
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusBoots",1,1)
+		Goto PickupFinish
+		TNT1 A 0 A_JumpIfInventory("RLCerberusSetBonusArmor",1,1)
+		Goto PickupFinish
+		TNT1 A 0 A_GiveInventory("RLCerberusSetBonusActive",1)
+		TNT1 A 0 A_Print("Picked up a \ctTristar Blaster.\n\c-= TRINITY GUARDIAN =\n\cgTristar Blaster fires three times faster", 8, "CONFONT")
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR DroppedRLTristarBlaster
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		TRIS X 1
+		Loop
+	Death:
+		TNT1 A 0
+		TRIS X 1 A_SpawnItem("RLTristarBlasterPickup",0,0,0,0)
+		Stop
+	}
+}

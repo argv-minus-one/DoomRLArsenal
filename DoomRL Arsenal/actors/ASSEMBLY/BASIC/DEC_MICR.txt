@@ -1,0 +1,616 @@
+
+ACTOR RLMicroLauncher : RLWeapon
+{
+  Inventory.Pickupsound "misc/w_pkup"
+  Weapon.UpSound "weapons/weaponholster"
+  Obituary "%o was punted by %k's mini-rocket."
+  Inventory.Pickupmessage "You picked up a Micro Launcher."
+  +AMMO_OPTIONAL
+  +NOALERT
+  +INVENTORY.UNTOSSABLE
+  Tag "Micro Launcher"
+  Weapon.Kickback 40
+  Weapon.SelectionOrder 2900
+  Weapon.SlotNumber 5
+  Weapon.AmmoUse1 1
+  Weapon.AmmoGive1 0
+  Weapon.AmmoType1 "RLMicroLauncherClip"
+  Weapon.AmmoType2 "RocketAmmo"
+  States
+  {
+  Ready:
+	TNT1 A 0 A_JumpIfInventory("RLRenegadeAssemblyCheck",1,"RenegadeAssemblyNoFire")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherClip", 1, 4)
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherNanoMod",1,2)
+    MICF R 1 A_WeaponReady (48)
+    Loop
+    MICF R 1 A_WeaponReady (44)
+    Goto Ready+6
+    MICF R 1 A_WeaponReady (32)
+    Loop
+  NanoRegenCheck:
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherClip", 1, "Ready")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherNanoMod",2,2)
+    MICF R 70 A_WeaponReady (44)
+    Goto NanoRegen
+    MICF R 35 A_WeaponReady (44)
+  NanoRegen:
+	TNT1 A 0 A_GiveInventory("RLMicroLauncherClip", 1)
+    Goto NanoRegenCheck
+  ScavengerDrop:
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"WeaponDropConfirm")
+	TNT1 A 0 A_GiveInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_Print("Press again to drop current weapon, or press Alt Fire to scrap it for a Mod Pack.")
+	Goto AfterModDrop
+  WeaponDropConfirm:
+	TNT1 A 0 A_JumpIfInventory("RLShellshockPerk",1, 1)
+	Goto WeaponDropConfirm+2
+	TNT1 A 0 A_GiveInventory("RLRenegadeAssemblyCheck",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherPowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLMicroLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLMicroLauncher",0,0,0)
+	TNT1 A 1 A_TakeInventory("RLMicroLauncher",1)
+	Stop
+  AfterModDrop:
+    MICF R 8 A_WeaponReady (16)
+    Goto Ready
+  RenegadeAssemblyNoFire:
+	TNT1 A 0 A_TakeInventory("RLRenegadeAssemblyCheck",1)
+    MICF R 9 A_WeaponReady (WRF_NOFIRE | WRF_NOBOB)
+    Goto Ready
+  Deselect:
+	TNT1 A 0
+	TNT1 A 0 A_TakeInventory("RLArmorModItemActivate",1)
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+	TNT1 A 0 A_TakeInventory("RLWeaponDrop",1)
+	TNT1 A 0 A_TakeInventory("RLUseBulkMod",1)
+	TNT1 A 0 A_TakeInventory("RLUsePowerMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseAgilityMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseTechnicalMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseNanoMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseFirestormMod",1)
+	TNT1 A 0 A_TakeInventory("RLUseSniperMod",1)
+	TNT1 A 0 A_TakeInventory("RLMicroLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+  DeselectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "DeselectRenegade")
+    MICF R 1 A_Lower
+    Loop
+  DeselectRenegade:
+    TNT1 A 0 A_Lower
+    loop
+  SelectRenegade: 
+    TNT1 A 0 A_Raise
+    loop
+  SelectSetWeapon:
+	TNT1 A 0 A_GiveInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_GiveInventory("RLMicroLauncherSelected", 1)
+    Goto SelectLoop
+  SelectLoop:
+    TNT1 A 0 A_JumpIfInventory("RLShellshockPerk", 1, "SelectRenegade")
+    MICF R 1 A_Raise
+    Loop
+  Fire:
+	TNT1 A 0 A_JumpIfNoAmmo("Reload")
+    MICF R 3
+    MICF A 1 Bright A_GunFlash
+	TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherFirestormMod",1,"FireF")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherSniperMod",1,"FireS")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherPowerMod",1,"FireP")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherAgilityMod",1,"FireA")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherBulkMod",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocket", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherBulkMod",2,2)
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketB", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketBB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireP:
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherPowerMod",2,"FirePP")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherAgilityMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherBulkMod",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketP", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketPB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireA:
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherPowerMod",1,"FirePA")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherAgilityMod",2,"FireAA")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherBulkMod",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketA", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketAB", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePP:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketPP", frandom(1,-1), 1)
+    Goto FireFinish
+  FirePA:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketPA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireAA:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketAA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireS:
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherSniperMod",2,"FireSS")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherFirestormMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherPowerMod",1,"FireSP")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherAgilityMod",1,"FireSA")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherBulkMod",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketS", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketSB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireSS:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketSS", frandom(1,-1), 1)
+    Goto FireFinish
+  FireSP:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketSP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireSA:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketSA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireF:
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherFirestormMod",2,"FireFF")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherSniperMod",1,"FireFS")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherPowerMod",1,"FireFP")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherAgilityMod",1,"FireFA")
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherBulkMod",1,2)
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketF", frandom(1,-1), 1)
+    Goto FireFinish
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketFB", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFF:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketFF", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFP:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketFP", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFA:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketFA", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFS:
+	TNT1 A 0 A_FireCustomMissile ("RLMicroRocketFS", frandom(1,-1), 1)
+    Goto FireFinish
+  FireFinish:
+    MICF BC 1 Bright
+    MICF DEF 1
+    Goto Ready
+  Reload:
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherNanoMod",1,"Ready")
+    MICF R 1 A_WeaponReady (WRF_NOPRIMARY | WRF_ALLOWZOOM)
+	TNT1 A 0 A_JumpIfInventory("RocketAmmo",1,1)
+	Goto Ready
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherClip",1,"Ready")
+	MICF F 10
+	TNT1 A 0 // Play the reload animation.
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherTechnicalMod",1,"Reload1")
+    MICF G 1
+    MICF H 1
+    MICF I 1
+    TNT1 A 6
+    MICF J 1
+    MICF K 1
+    MICF L 1
+    MICF M 1
+    MICF N 1
+    MICF O 1
+	Goto ReloadWorking
+  Reload1:
+    MICF G 1
+    MICF H 1
+    MICF I 1
+    TNT1 A 3
+    MICF J 1
+    MICF K 1
+    MICF L 1
+    MICF M 1
+    MICF N 1
+    MICF O 1
+  ReloadWorking:
+	TNT1 A 0 A_TakeInventory("RocketAmmo", 1)
+	TNT1 A 0 A_GiveInventory("RLMicroLauncherClip", 1)
+	TNT1 A 0
+	Goto ReloadFinish
+	TNT1 A 0
+	Goto ReloadWorking
+  ReloadFinish:
+	TNT1 A 0 A_PlaySound("weapons/microlauncherload", 5)
+	TNT1 A 0 A_JumpIfInventory("RLMicroLauncherTechnicalMod",1,"ReloadFinish1")
+    MICF P 1
+    MICF Q 1
+    TNT1 A 6
+    MICF I 1
+    MICF H 1
+    MICF G 1
+    MICF F 1
+    MICF R 7 A_ReFire
+	Goto Ready
+  ReloadFinish1:
+    MICF P 1
+    MICF Q 1
+    TNT1 A 3
+    MICF I 1
+    MICF H 1
+    MICF G 1
+    MICF F 1
+    MICF R 7 A_ReFire
+	Goto Ready
+  Flash:
+    TNT1 A 1 Bright A_Light1
+    TNT1 A 1 Bright A_Light2
+    TNT1 A 1 Bright
+    Goto LightDone
+  Spawn:
+    MICL A -1
+    Stop
+  Altfire:
+	TNT1 A 0 A_JumpIfInventory("RLArmorModItemActivate",1, "ArmorModConversion")
+	TNT1 A 0 A_JumpIfInventory("RLScavengerDrop",1,"ScavengerTime")
+	Goto Ready
+  ScavengerTime:
+	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")
+	TNT1 A 0 A_TakeInventory("RLScavengerDrop",1)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherModLimit", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherPowerMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherBulkMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherAgilityMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherTechnicalMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherSniperMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherFirestormMod", 2)
+    TNT1 A 0 A_TakeInventory("RLMicroLauncherNanoMod", 2)
+	TNT1 A 0 A_TakeInventory("RLStandardWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLAssembledWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLExoticWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLUniqueWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLLegendaryWeaponToken", 1)
+	TNT1 A 0 A_TakeInventory("RLMicroLauncherSelected", 1)
+	TNT1 A 0 A_TakeInventory("RLWeaponLimit",1)
+	TNT1 A 0 A_FireCustomMissile("DroppedRLTechnicalMod",0,0,0)
+	Goto ScavengerTimeEnd
+  ScavengerTimeEnd:
+	TNT1 A 1 A_TakeInventory("RLMicroLauncher",1)
+	Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		PROJECTILES
+
+ACTOR RLMicroRocket : Rocket
+{
+  Radius 6
+  Height 4
+  Scale 0.7
+  Speed 25
+  Damage 20
+  Damagetype "Fire"
+  Species "Player"
+  +THRUSPECIES
+  +THRUGHOST
+  Decal "RevenantScorch"
+  SeeSound "weapons/microlauncher"
+  DeathSound "weapons/smallexp"
+  States
+  {
+  Spawn:
+    MICM A 1 Bright
+    Loop
+  Death:
+    MISL B 8 Bright A_Explode (160,116)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketB : RLMicroRocket
+{
+  Damage 30
+}
+
+ACTOR RLMicroRocketBB : RLMicroRocket
+{
+  Damage 40
+}
+
+ACTOR RLMicroRocketP : RLMicroRocket
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (192,116)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketPB : RLMicroRocket
+{
+  Damage 30
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (192,116)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketA : RLMicroRocket
+{
+  Speed 35
+}
+
+ACTOR RLMicroRocketAB : RLMicroRocket
+{
+  Speed 35
+  Damage 30
+}
+
+ACTOR RLMicroRocketPP : RLMicroRocket
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (224,116)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketPA : RLMicroRocketP
+{
+  Speed 35
+}
+
+ACTOR RLMicroRocketAA : RLMicroRocket
+{
+  Speed 45
+}
+
+ACTOR RLMicroRocketS : RLMicroRocket
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_CustomMissile("RLRocketSmoke", 8, 0, 0)
+    MICM A 4 Bright A_ScaleVelocity(1.10)
+    Loop
+  }
+}
+
+ACTOR RLMicroRocketSB : RLMicroRocketS
+{
+  Damage 30
+}
+
+ACTOR RLMicroRocketSS : RLMicroRocketS
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_CustomMissile("RLRocketSmoke", 8, 0, 0)
+    MICM A 4 Bright A_ScaleVelocity(1.25)
+    Loop
+  }
+}
+
+ACTOR RLMicroRocketSP : RLMicroRocketS
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (192,116)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketSA : RLMicroRocketS
+{
+  Speed 35
+}
+
+ACTOR RLMicroRocketF : RLMicroRocket
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.00)
+    MISL B 8 Bright A_Explode (160,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketFB : RLMicroRocketF
+{
+  Damage 30
+}
+
+ACTOR RLMicroRocketFF : RLMicroRocket
+{
+	+FORCERADIUSDMG
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (2.50)
+    MISL B 8 Bright A_Explode (160,144)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketFP : RLMicroRocket
+{
+  States
+  {
+  Death:
+    MISL B 8 Bright A_Explode (192,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+ACTOR RLMicroRocketFA : RLMicroRocketF
+{
+  Speed 35
+}
+
+ACTOR RLMicroRocketFS : RLMicroRocketS
+{
+  States
+  {
+  Death:
+	TNT1 A 0 A_SetScale (1.00)
+    MISL B 8 Bright A_Explode (160,128)
+    MISL C 6 Bright
+    MISL D 4 Bright
+    Stop
+  }
+}
+
+//-------------------------------------------------------------------
+//		MECHANICS
+
+Actor RLMicroLauncherSelected : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor RLMicroLauncherModLimit : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLMicroLauncherPowerMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLMicroLauncherBulkMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLMicroLauncherAgilityMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLMicroLauncherTechnicalMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLMicroLauncherFirestormMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLMicroLauncherNanoMod : Inventory
+{
+inventory.maxamount 2
+}
+
+Actor RLMicroLauncherSniperMod : Inventory
+{
+inventory.maxamount 2
+}
+
+ACTOR RLMicroLauncherClip : Ammo
+{
+   +INVENTORY.IGNORESKILL
+   Inventory.MaxAmount 1
+   Inventory.Icon ""
+}
+
+ACTOR RLMicroLauncherPickup : CustomInventory
+{
+	Radius 16
+	Height 8
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	States
+	{
+	Spawn:
+		MICL A -1
+		Stop
+	Pickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RLMicroLauncher",1,"NotPickup") // If the player already has this weapon, they are not given the weapon
+		TNT1 A 0 A_JumpIfInventory("RLWeaponLimit",0,"NotPickup2") // The absolute max limit check for weapons
+		TNT1 A 0 A_PlaySound("weapons/microlauncherpickup")
+		TNT1 A 0 A_GiveInventory("RLMicroLauncher",1)
+		TNT1 A 0 A_GiveInventory("RLWeaponLimit",1)
+		TNT1 A 0 A_Print("Picked up a \cvMicro Launcher.")
+		Stop
+	NotPickup:
+		TNT1 A 0 A_JumpIfInventory("RocketAmmo",0,1)
+		Goto AmmoPickup
+	NotPickup2:
+		TNT1 A 0 A_JumpIfInventory("DRLA_WeaponAntiLogFloodCheck",1,"NotPickup_NoPrint")
+		TNT1 A 0 A_GiveInventory("DRLA_WeaponAntiLogFloodCheck")
+		TNT1 A 0 A_Print("\cv= Micro Launcher =", 2, "CONFONT")
+	 NotPickup_NoPrint:	
+		TNT1 A 0
+		Fail
+	AmmoPickup:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("RocketAmmo",0,"AmmoFull")
+		TNT1 A 0 A_PlaySound("misc/w_pkup")
+		TNT1 A 1 A_GiveInventory("RocketAmmo",5)
+		Stop
+	AmmoFull:
+		MICL A 1
+		Fail
+	}
+}
+
+ACTOR DroppedRLMicroLauncher
+{
+	PROJECTILE
+	-NOGRAVITY
+	Damage 0
+	Radius 16
+	Height 8
+	Speed 9
+	DeathSound "weapons/gundrop"
+	States
+	{
+	Spawn:
+		MICL A 1
+		Loop
+	Death:
+		TNT1 A 0
+		MICL A 1 A_SpawnItem("RLMicroLauncherPickup",0,0,0,0)
+		Stop
+	}
+}
