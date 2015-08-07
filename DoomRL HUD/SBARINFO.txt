@@ -10807,7 +10807,7 @@ InInventory RLEnergyDischargeHarnessCounter, 5
 	InInventory RLTrigunSelected {
 	InInventory RLTrigunFirestormLearntToken {
 //		Size limit for description "----------------------------------"
-		DrawString CONFONT, White, "5x damage shots", 10, 82, 1, alignment (left);
+		DrawString CONFONT, White, "2.5x damage shots", 10, 82, 1, alignment (left);
 				}
 	InInventory not RLTrigunFirestormLearntToken {
 		DrawString CONFONT, White, "Unknown effect", 10, 82, 1, alignment (left);
