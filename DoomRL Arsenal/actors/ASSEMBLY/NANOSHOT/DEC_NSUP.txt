@@ -160,7 +160,7 @@ ACTOR RLNanoShrapnelSuperShotgun : RLWeapon
     TNT1 A 0 A_ChangeVelocity (Cos(Pitch) * -1.2, 0, Sin(Pitch) * 1.2, 1)
     NSSG B 4 Bright A_GunFlash
     NSSG C 3 Bright
-    NSSG A 3
+    NSSG A 30
     Goto Ready
   Flash:
     TNT1 A 4 A_Light1

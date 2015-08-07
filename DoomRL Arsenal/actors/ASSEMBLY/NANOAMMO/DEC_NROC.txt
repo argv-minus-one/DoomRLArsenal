@@ -91,6 +91,7 @@ ACTOR RLNanoManufactureAmmoRocketLauncher : RLWeapon
 	MISG B 11 A_FireCustomMissile ("RLRocket", frandom(1,-1), 1)
     Goto FireFinish
   FireFinish:
+    MISG A 33
     MISG B 1 A_Refire
 	Goto Ready
   Flash:

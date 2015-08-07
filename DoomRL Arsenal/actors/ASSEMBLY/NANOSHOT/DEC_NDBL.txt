@@ -152,7 +152,7 @@ ACTOR RLNanoShrapnelDoubleShotgun : RLWeapon
     TNT1 A 0 A_ChangeVelocity (Cos(Pitch) * -0.8, 0, Sin(Pitch) * 0.8, 1)
     DBLS B 4 Bright A_GunFlash
     DBLS C 3 Bright
-    DBLS A 3
+    DBLS A 30
     Goto Ready
   Flash:
     TNT1 A 4 A_Light1
@@ -227,11 +227,13 @@ ACTOR RLNanoShrapnelDoubleShotgun : RLWeapon
 	TNT1 A 0 A_GiveInventory("RLNanoShrapnelDoubleShotgunState",1)
     DBLS L 3 Bright A_GunFlash
     DBLS M 3 Bright
+    DBLS A 15
     Goto Ready
   FireSingleFinish2:
 	TNT1 A 0 A_TakeInventory("RLNanoShrapnelDoubleShotgunState",1)
     DBLS N 3 Bright A_GunFlash
     DBLS O 3 Bright
+    DBLS A 15
     Goto Ready
   ScavengerTime:
 	TNT1 A 0 A_Print("Mod pack extracted from discarded weapon.")

@@ -92,7 +92,7 @@ ACTOR RLNanoManufactureAmmoMissileLauncher : RLWeapon
     Goto FireFinish
   FireFinish:
     CLAU CD 4 Bright
-    CLAU A 1
+    CLAU A 15
     CLAU A 3 A_Refire
     Goto Ready
   Flash:

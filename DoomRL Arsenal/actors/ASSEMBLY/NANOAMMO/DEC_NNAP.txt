@@ -91,6 +91,7 @@ ACTOR RLNanoManufactureAmmoNapalmLauncher : RLWeapon
     Goto FireFinish
   FireFinish:
     NAPA DEFGH 2 Bright
+    NAPA A 27
     Goto Ready
   Flash:
     TNT1 A 2 A_Light1
