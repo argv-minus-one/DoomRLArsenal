@@ -327,13 +327,9 @@ ACTOR RLGatlingGun : RLWeapon
     DGTG F 3
     DGTG E 3
 	DGTG D 2 A_PlaySound("weapons/gatlingwinddown", 6)
-	DGTG A 3
-	DGTG B 3
-	DGTG C 3
-	DGTG D 4
-	DGTG A 4
-	DGTG B 4
-	DGTG C 2
+	DGTG ABC 3 A_WeaponReady(WRF_NOSWITCH)
+	DGTG DAB 4 A_WeaponReady(WRF_NOSWITCH)
+	DGTG C 2 A_WeaponReady(WRF_NOSWITCH)
 	Goto Ready
   ReloadFinish1:
     DGTG I 12 A_PlaySound("weapons/chaingunload", 5)
@@ -343,13 +339,8 @@ ACTOR RLGatlingGun : RLWeapon
     DGTG F 3
     DGTG E 3
 	DGTG D 2 A_PlaySound("weapons/gatlingwinddown", 6)
-	DGTG A 3
-	DGTG B 3
-	DGTG C 3
-	DGTG D 3
-	DGTG A 3
-	DGTG B 3
-	DGTG C 2
+	DGTG ABCDAB 3 A_WeaponReady(WRF_NOSWITCH)
+	DGTG C 2 A_WeaponReady(WRF_NOSWITCH)
 	Goto Ready
   ReloadFinish2:
     DGTG I 12 A_PlaySound("weapons/gatlinggunload", 5)
@@ -359,13 +350,8 @@ ACTOR RLGatlingGun : RLWeapon
     DGTG F 3
     DGTG E 3
 	DGTG D 2 A_PlaySound("weapons/gatlingwinddown", 6)
-	DGTG A 3
-	DGTG B 3
-	DGTG C 3
-	DGTG D 3
-	DGTG A 3
-	DGTG B 3
-	DGTG C 2
+	DGTG ABCDAB 3 A_WeaponReady(WRF_NOSWITCH)
+	DGTG C 2 A_WeaponReady(WRF_NOSWITCH)
 	Goto Ready
   Flash:
 	TNT1 A 0 A_JumpIfInventory("RLGatlingGunFirestormMod",2,2)

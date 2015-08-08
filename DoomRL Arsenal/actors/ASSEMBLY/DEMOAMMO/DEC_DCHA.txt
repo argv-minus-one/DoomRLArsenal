@@ -149,10 +149,9 @@ ACTOR RLDemolitionAmmoChaingun : RLWeapon
     TNT1 A 0 A_PlaySound("weapons/demochaingunwinddown", 6)
 	BCHG AB 3
 	BCHG CD 4
-	TNT1 A 0 A_JumpIfNoAmmo(2)
-	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
-	BCHG AB 5
-	BCHG CD 6
+	TNT1 A 0 A_JumpIfNoAmmo(1)
+	BCHG AB 5 A_WeaponReady(WRF_NOSWITCH)
+	BCHG CD 6 A_WeaponReady(WRF_NOSWITCH)
 	Goto Ready
   Flash:
 	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoChaingunState",1,3)

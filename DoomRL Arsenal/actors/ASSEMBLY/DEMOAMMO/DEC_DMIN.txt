@@ -176,14 +176,9 @@ ACTOR RLDemolitionAmmoMinigun : RLWeapon
 	Goto ReloadSpin
   ReloadSpin:
 	TNT1 A 0 A_PlaySound("weapons/demominigunwinddown", 6)
-	ZGGG A 3
-	ZGGG B 3
-	ZGGG C 3
-	ZGGG D 4
-	ZGGG A 4
-	ZGGG B 4
-	ZGGG C 5
-	ZGGG D 5
+	ZGGG ABC 3 A_WeaponReady(WRF_NOSWITCH)
+	ZGGG DAB 4 A_WeaponReady(WRF_NOSWITCH)
+	ZGGG CD 5 A_WeaponReady(WRF_NOSWITCH)
 	Goto Ready
   Flash:
 	TNT1 A 0 A_JumpIfInventory("RLDemolitionAmmoMinigunState",1,2)

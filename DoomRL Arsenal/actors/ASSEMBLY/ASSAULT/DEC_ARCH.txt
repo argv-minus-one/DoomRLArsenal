@@ -207,10 +207,9 @@ ACTOR RLAssaultRifleChaingun : RLWeapon
     TNT1 A 0 A_PlaySound("weapons/assaultchaingunwinddown", 6)
 	PKCG AB 3
 	PKCG CD 4
-	TNT1 A 0 A_JumpIfNoAmmo(2)
-	TNT1 A 0 A_WeaponReady(WRF_NOBOB | WRF_NOSWITCH)
-	PKCG AB 5
-	PKCG CD 6
+	TNT1 A 0 A_JumpIfNoAmmo(1)
+	PKCG AB 5 A_WeaponReady(WRF_NOSWITCH)
+	PKCG CD 6 A_WeaponReady(WRF_NOSWITCH)
 	Goto Ready
   Flash:
 	TNT1 A 0 A_JumpIfInventory("RLAssaultRifleChaingunState",1,4)
